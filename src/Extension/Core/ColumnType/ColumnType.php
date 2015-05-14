@@ -23,7 +23,7 @@ class ColumnType implements ColumnTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['field_mapping', 'label']);
         $resolver->setDefaults(['field_mapping_single' => true]);

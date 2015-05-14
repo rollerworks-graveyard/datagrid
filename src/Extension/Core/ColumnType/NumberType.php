@@ -41,7 +41,7 @@ class NumberType extends AbstractColumnType
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             // default precision is locale specific (usually around 3)

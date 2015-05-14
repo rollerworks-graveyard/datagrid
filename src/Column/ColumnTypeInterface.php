@@ -25,7 +25,7 @@ interface ColumnTypeInterface
      *
      * @return
      */
-    public function setDefaultOptions(OptionsResolver $resolver);
+    public function configureOptions(OptionsResolver $resolver);
 
     /**
      * Configures the column.
