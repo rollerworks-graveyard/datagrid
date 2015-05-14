@@ -14,7 +14,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnTypeExtension;
 use Rollerworks\Component\Datagrid\Column\ColumnAbstractTypeExtension;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Allows to set the column sorting order.

@@ -16,17 +16,16 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\SingleMappingTransformer;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ColumnType implements ColumnTypeInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['field_mapping', 'label']);
-
         $resolver->setDefaults(['field_mapping_single' => true]);
 
         $resolver->setAllowedTypes([

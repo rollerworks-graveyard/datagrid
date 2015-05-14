@@ -17,7 +17,7 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\CompoundColumnTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * CompoundColumn allows multiple sub-columns for advanced view building.
@@ -51,7 +51,7 @@ class CompoundColumnType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['label', 'columns']);
 

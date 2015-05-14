@@ -13,7 +13,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
 
 use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -40,7 +40,7 @@ class BooleanType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'true_value' => 'true',

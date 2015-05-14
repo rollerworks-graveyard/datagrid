@@ -18,7 +18,7 @@ use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\DateTimeToLoca
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\StringToDateTimeTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TimestampToDateTimeTransformer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * DateTimeType.
@@ -102,7 +102,7 @@ class DateTimeType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'input' => 'datetime',

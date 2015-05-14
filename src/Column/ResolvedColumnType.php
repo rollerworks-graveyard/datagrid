@@ -18,7 +18,7 @@ use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>

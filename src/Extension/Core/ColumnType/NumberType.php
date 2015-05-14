@@ -14,7 +14,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
 use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NumberType extends AbstractColumnType
 {
@@ -41,7 +41,7 @@ class NumberType extends AbstractColumnType
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             // default precision is locale specific (usually around 3)

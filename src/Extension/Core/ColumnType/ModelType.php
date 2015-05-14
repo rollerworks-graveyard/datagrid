@@ -18,7 +18,7 @@ use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\NestedListTran
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -87,7 +87,7 @@ class ModelType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'model_trim' => false,

@@ -15,7 +15,7 @@ use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -93,7 +93,7 @@ class ActionType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['actions']);
 

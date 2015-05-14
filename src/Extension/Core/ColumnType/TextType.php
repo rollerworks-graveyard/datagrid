@@ -15,7 +15,7 @@ use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextType extends AbstractColumnType
 {
@@ -51,7 +51,7 @@ class TextType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'trim' => false,

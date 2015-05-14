@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -21,9 +21,11 @@ interface ColumnTypeInterface
     /**
      * Sets the default options for this type.
      *
-     * @param OptionsResolverInterface $resolver The resolver for the options.
+     * @param OptionsResolver|OptionsResolverInterface $resolver The resolver for the options.
+     *
+     * @return
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver);
+    public function setDefaultOptions(OptionsResolver $resolver);
 
     /**
      * Configures the column.
