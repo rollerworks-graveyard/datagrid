@@ -22,7 +22,7 @@ displaying all kinds of lists in your application without duplicating code.
 Requirements
 ------------
 
-You need at least PHP 5.4, and Intl extension for international support.
+You need at least PHP 5.5, and Intl extension for international support.
 
 For framework integration you may use the following;
 
