@@ -18,7 +18,6 @@ use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -250,7 +249,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * Returns the configured options resolver used for this type.
      *
-     * @return OptionsResolverInterface The options resolver
+     * @return OptionsResolver The options resolver
      */
     public function getOptionsResolver()
     {
