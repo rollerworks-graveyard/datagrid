@@ -36,11 +36,42 @@ interface ColumnTypeExtensionInterface
     public function buildCellView(ColumnInterface $column, CellView $view);
 
     /**
+     * Transform the value before passing it to ColumnTypeInterface::transformValue().
+     *
+     * Note that this done before the filterValue() method of the type
+     * that is extended.
+     *
+     * So with type: column <- datetime (with extension) <- pubdate.
+     * '<-' indicating the parent-type.
+     *
+     * Will call the preFilterValue() method for "datetime" after the
+     * "column" type is filtered!
+     *
+     * @param mixed           $value
+     * @param ColumnInterface $column
+     * @param array           $options
+     *
+     * @return mixed Returns the filtered value
+     */
+    public function preFilterValue($value, ColumnInterface $column, array $options);
+
+    /**
+     * Transform the value before passing it to the view.
+     *
+     * @param mixed           $value
+     * @param ColumnInterface $column
+     * @param array           $options
+     *
+     * @return mixed Returns the filtered value
+     */
+    public function postTransformValue($value, ColumnInterface $column, array $options);
+
+    /**
      * Configures the default options for this type.
      *
-     * @param OptionsResolverInterface $optionsResolver
+     * @param OptionsResolver $optionsResolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $optionsResolver);
+    public function configureOptions(OptionsResolver $optionsResolver);
 
     /**
      * Returns the name of the type being extended.

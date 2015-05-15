@@ -42,7 +42,7 @@ abstract class ColumnAbstractTypeExtension implements ColumnTypeExtensionInterfa
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
     }
 }

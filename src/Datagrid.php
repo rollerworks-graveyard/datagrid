@@ -11,21 +11,19 @@
 
 namespace Rollerworks\Component\Datagrid;
 
-use Rollerworks\Component\Datagrid\Column\Column;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
+use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Datagrid implementation.
+ * Default Datagrid implementation.
  *
  * This class should not be construct directly.
- * Use DatagridFactory::createDatagrid() for creating
- * a new Datagrid instance.
+ * Use DatagridFactory::createDatagrid() DatagridFactory::createDatagridBuilder()
+ * to creating a new Datagrid.
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author FSi sp. z o.o. <info@fsi.pl>
@@ -49,50 +47,42 @@ class Datagrid implements DatagridInterface
     /**
      * @var array
      */
-    private $data = ['original' => null, 'processed' => null];
+    private $data = [
+        'original' => null,
+        'processed' => null,
+    ];
 
     /**
-     * DataMapper used by all columns to retrieve data from rowset objects.
+     * DataMapper used by all columns to retrieve
+     * data from rowset objects.
      *
      * @var DataMapperInterface
      */
     private $dataMapper;
 
     /**
-     * @var DatagridFactoryInterface
-     */
-    private $datagridFactory;
-
-    /**
-     * Columns.
+     * Datagrid columns.
      *
      * @var ColumnInterface[]
      */
     private $columns = [];
 
     /**
-     * @var array[]
-     */
-    private $unresolvedColumns = [];
-
-    /**
      * EventDispatcher for data and view creation.
      *
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     private $dispatcher;
 
     /**
      * Constructor.
      *
-     * @param string                   $name
-     * @param DatagridFactoryInterface $datagridFactory
-     * @param DataMapperInterface      $dataMapper
+     * @param string              $name
+     * @param DataMapperInterface $dataMapper
      */
-    public function __construct($name, DatagridFactoryInterface $datagridFactory, $dataMapper = null)
+    public function __construct($name, $dataMapper = null)
     {
         $this->name = $name;
-        $this->datagridFactory = $datagridFactory;
         $this->dispatcher = new EventDispatcher();
         $this->dataMapper = $dataMapper;
     }
@@ -106,17 +96,9 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param DataMapperInterface $dataMapper
-     */
-    public function setDataMapper(DataMapperInterface $dataMapper)
-    {
-        $this->dataMapper = $dataMapper;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function addEventListener($eventName, $listener, $priority = 0)
+    public function addEventListener($eventName, callable $listener, $priority = 0)
     {
         $this->dispatcher->addListener($eventName, $listener, $priority);
 
@@ -126,38 +108,9 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    public function addColumn($name, ColumnInterface $column)
     {
-        $this->dispatcher->addSubscriber($subscriber);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEventDispatcher()
-    {
-        return $this->dispatcher;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addColumn($column, $type = 'text', $options = [])
-    {
-        if ($column instanceof ColumnInterface) {
-            $this->columns[$column->getName()] = $column;
-            unset($this->unresolvedColumns[$column->getName()]);
-
-            return $this;
-        }
-
-        $this->columns[$column] = null;
-        $this->unresolvedColumns[$column] = [
-            'type' => $type,
-            'options' => $options,
-        ];
+        $this->columns[$name] = $column;
 
         return $this;
     }
@@ -167,12 +120,8 @@ class Datagrid implements DatagridInterface
      */
     public function getColumn($name)
     {
-        if (isset($this->unresolvedColumns[$name])) {
-            return $this->resolveColumn($name);
-        }
-
-        if (!$this->hasColumn($name)) {
-            throw new \InvalidArgumentException(sprintf('Column "%s" does not exist in datagrid.', $name));
+        if (!isset($this->columns[$name])) {
+            throw new UnknownColumnException($name, $this);
         }
 
         return $this->columns[$name];
@@ -183,8 +132,6 @@ class Datagrid implements DatagridInterface
      */
     public function getColumns()
     {
-        $this->resolveColumns();
-
         return $this->columns;
     }
 
@@ -193,15 +140,7 @@ class Datagrid implements DatagridInterface
      */
     public function hasColumn($name)
     {
-        if (isset($this->unresolvedColumns[$name])) {
-            return true;
-        }
-
-        if (isset($this->columns[$name])) {
-            return true;
-        }
-
-        return false;
+        return isset($this->columns[$name]);
     }
 
     /**
@@ -209,8 +148,6 @@ class Datagrid implements DatagridInterface
      */
     public function hasColumnType($type)
     {
-        $this->resolveColumns();
-
         foreach ($this->columns as $column) {
             if ($column->getType()->getName() === $type) {
                 return true;
@@ -225,11 +162,11 @@ class Datagrid implements DatagridInterface
      */
     public function removeColumn($name)
     {
-        if (!$this->hasColumn($name)) {
-            throw new \InvalidArgumentException(sprintf('Column "%s" does not exist in datagrid.', $name));
+        if (!isset($this->columns[$name])) {
+            throw new UnknownColumnException($name, $this);
         }
 
-        unset($this->columns[$name], $this->unresolvedColumns[$name]);
+        unset($this->columns[$name]);
 
         return $this;
     }
@@ -261,6 +198,7 @@ class Datagrid implements DatagridInterface
 
         $event = new DatagridEvent($this, $data);
         $this->dispatcher->dispatch(DatagridEvents::PRE_SET_DATA, $event);
+
         $data = $event->getData();
 
         if (!is_array($data) && !$data instanceof \Traversable) {
@@ -295,13 +233,12 @@ class Datagrid implements DatagridInterface
     {
         $event = new DatagridEvent($this, $data);
         $this->dispatcher->dispatch(DatagridEvents::PRE_BIND_DATA, $event);
+
         $data = $event->getData();
 
         if (!is_array($data) && !$data instanceof \ArrayIterator) {
             throw new UnexpectedTypeException($data, ['array', 'ArrayIterator']);
         }
-
-        $this->resolveColumns();
 
         foreach ($data as $index => $values) {
             if (!isset($this->rowset[$index])) {
@@ -329,9 +266,6 @@ class Datagrid implements DatagridInterface
         $event = new DatagridEvent($this, null);
         $this->dispatcher->dispatch(DatagridEvents::PRE_BUILD_VIEW, $event);
 
-        // Resolve after PRE_BUILD_VIEW so columns can be removed without speed lose
-        $this->resolveColumns();
-
         $view = new DatagridView($this, $this->columns, $this->getRowset());
 
         $event = new DatagridEvent($this, $view);
@@ -351,38 +285,11 @@ class Datagrid implements DatagridInterface
     private function getRowset()
     {
         if (!isset($this->rowset)) {
-            throw new BadMethodCallException('setDate() must be called before before you can create a view from the Datagrid.');
+            throw new BadMethodCallException(
+                'setDate() must be called before before you can create a view from the Datagrid.'
+            );
         }
 
         return $this->rowset;
-    }
-
-    /**
-     * Converts an unresolved column into a {@link Column} instance.
-     *
-     * @param string $name The name of the unresolved column
-     *
-     * @return Column The created instance.
-     */
-    private function resolveColumn($name)
-    {
-        $info = $this->unresolvedColumns[$name];
-        $column = $this->datagridFactory->createColumn($name, $info['type'], $this, $info['options']);
-        $this->columns[$name] = $column;
-        unset($this->unresolvedColumns[$name]);
-
-        return $column;
-    }
-
-    /**
-     * Converts all unresolved columns into {@link Column} instances.
-     */
-    private function resolveColumns()
-    {
-        foreach ($this->unresolvedColumns as $name => $info) {
-            $this->columns[$name] = $this->datagridFactory->createColumn($name, $info['type'], $this, $info['options']);
-        }
-
-        $this->unresolvedColumns = [];
     }
 }

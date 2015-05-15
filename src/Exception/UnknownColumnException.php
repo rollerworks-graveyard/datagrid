@@ -11,17 +11,50 @@
 
 namespace Rollerworks\Component\Datagrid\Exception;
 
+use Rollerworks\Component\Datagrid\DatagridInterface;
+
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 class UnknownColumnException extends \InvalidArgumentException implements ExceptionInterface
 {
     /**
-     * @param string $fieldName
-     * @param string $datagrid
+     * @var DatagridInterface
      */
-    public function __construct($fieldName, $datagrid)
+    private $datagrid;
+
+    /**
+     * @var string
+     */
+    private $columnName;
+
+    /**
+     * @param string            $columnName
+     * @param DatagridInterface $datagrid
+     */
+    public function __construct($columnName, DatagridInterface $datagrid)
     {
-        parent::__construct(sprintf('Column "%s" is not registered in the Datagrid.', $fieldName, $datagrid));
+        $this->datagrid = $datagrid;
+        $this->columnName = $columnName;
+
+        parent::__construct(
+            sprintf('Column "%s" is not registered in Datagrid "%s".', $columnName, $datagrid->getName())
+        );
+    }
+
+    /**
+     * @return DatagridInterface
+     */
+    public function getDatagrid()
+    {
+        return $this->datagrid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColumnName()
+    {
+        return $this->columnName;
     }
 }

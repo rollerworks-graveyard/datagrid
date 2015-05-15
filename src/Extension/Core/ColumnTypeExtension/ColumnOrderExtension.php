@@ -36,6 +36,22 @@ class ColumnOrderExtension extends ColumnAbstractTypeExtension
     /**
      * {@inheritdoc}
      */
+    public function preFilterValue($value, ColumnInterface $column, array $options)
+    {
+        return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postTransformValue($value, ColumnInterface $column, array $options)
+    {
+        return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getExtendedType()
     {
         return 'column';
@@ -44,7 +60,7 @@ class ColumnOrderExtension extends ColumnAbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'display_order' => null,

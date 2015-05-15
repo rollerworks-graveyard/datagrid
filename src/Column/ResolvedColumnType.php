@@ -263,7 +263,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
             $this->innerType->configureOptions($this->optionsResolver);
 
             foreach ($this->typeExtensions as $extension) {
-                $extension->setDefaultOptions($this->optionsResolver);
+                $extension->configureOptions($this->optionsResolver);
             }
         }
 

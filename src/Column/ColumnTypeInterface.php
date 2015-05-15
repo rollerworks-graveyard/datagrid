@@ -21,9 +21,7 @@ interface ColumnTypeInterface
     /**
      * Sets the default options for this type.
      *
-     * @param OptionsResolver|OptionsResolverInterface $resolver The resolver for the options.
-     *
-     * @return
+     * @param OptionsResolver $resolver The resolver for the options.
      */
     public function configureOptions(OptionsResolver $resolver);
 
@@ -52,6 +50,17 @@ interface ColumnTypeInterface
      * @param array           $options The resolved options
      */
     public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options);
+
+    /**
+     * Transform the value before passing it to view.
+     *
+     * @param mixed           $value
+     * @param ColumnInterface $column
+     * @param array           $options
+     *
+     * @return mixed
+     */
+    public function transformValue($value, ColumnInterface $column, array $options);
 
     /**
      * Get the name of the column type.

@@ -18,18 +18,18 @@ class DatagridEvent extends Event
     /**
      * @var DatagridInterface
      */
-    protected $datagrid;
+    private $datagrid;
 
     /**
-     * @var array|\ArrayAccess|\Traversable
+     * @var array|\Traversable
      */
-    protected $data;
+    private $data;
 
     /**
      * Constructor.
      *
-     * @param DatagridInterface               $datagrid
-     * @param array|\ArrayAccess|\Traversable $data
+     * @param DatagridInterface  $datagrid
+     * @param array|\Traversable $data
      */
     public function __construct(DatagridInterface $datagrid, $data)
     {
@@ -38,6 +38,8 @@ class DatagridEvent extends Event
     }
 
     /**
+     * Get the datagrid object.
+     *
      * @return DatagridInterface
      */
     public function getDatagrid()
@@ -46,9 +48,9 @@ class DatagridEvent extends Event
     }
 
     /**
-     * Returns the data associated with this event.
+     * Return the data set on the datagrid.
      *
-     * @return mixed
+     * @return array|\Traversable
      */
     public function getData()
     {
@@ -56,9 +58,12 @@ class DatagridEvent extends Event
     }
 
     /**
-     * Allows updating data for example if you need to filter values.
+     * Set the data set on the datagrid.
      *
-     * @param mixed $data
+     * Allows updating data for example if you need
+     * to filter values.
+     *
+     * @param array|\Traversable $data
      */
     public function setData($data)
     {

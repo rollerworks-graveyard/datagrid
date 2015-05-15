@@ -30,29 +30,29 @@ class DatagridView implements DatagridViewInterface
      *
      * @var array
      */
-    protected $columns = [];
+    private $columns = [];
 
     /**
      * @var HeaderView[]
      */
-    protected $columnsHeaders = [];
+    private $columnsHeaders = [];
 
     /**
      * @var array
      */
-    protected $originColumns = [];
+    private $originColumns = [];
 
     /**
      * Datagrid the view bound to.
      *
      * @var DatagridInterface
      */
-    protected $datagrid;
+    private $datagrid;
 
     /**
      * @var DataRowsetInterface
      */
-    protected $rowset;
+    private $rowset;
 
     /**
      * Constructs.
@@ -72,7 +72,7 @@ class DatagridView implements DatagridViewInterface
 
         foreach ($columns as $column) {
             if (!$column instanceof ColumnInterface) {
-                throw new UnexpectedTypeException($column, 'Rollerworks\Component\Datagrid\Column\ColumnInterface');
+                throw new UnexpectedTypeException($column, ColumnInterface::class);
             }
 
             $this->columns[$column->getName()] = $column;
@@ -180,7 +180,13 @@ class DatagridView implements DatagridViewInterface
     public function replaceColumn(HeaderView $column)
     {
         if (!array_key_exists($column->column->getName(), $this->columns)) {
-            throw new InvalidArgumentException(sprintf('Column with name "%s" is not registered in this view for "%s".', $column->column->getName(), $this->datagrid->getName()));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Column with name "%s" is not registered in this view for "%s".',
+                    $column->column->getName(),
+                    $this->datagrid->getName()
+                )
+            );
         }
 
         $this->columnsHeaders[$column->column->getName()] = $column;
@@ -345,7 +351,7 @@ class DatagridView implements DatagridViewInterface
      *
      * @return array
      */
-    protected function getOriginColumns()
+    private function getOriginColumns()
     {
         if ($this->originColumns) {
             return $this->originColumns;
