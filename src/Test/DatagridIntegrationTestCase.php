@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Test;
 
-use Rollerworks\Component\Datagrid\Column\ColumnRegistry;
+use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistry;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactory;
 use Rollerworks\Component\Datagrid\DatagridFactory;
 use Rollerworks\Component\Datagrid\DataMapper\PropertyAccessorMapper;
@@ -31,7 +31,7 @@ abstract class DatagridIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $extensions = [new CoreExtension()];
         $extensions = array_merge($extensions, $this->getExtensions());
 
-        $typesRegistry = new ColumnRegistry($extensions, $resolvedTypeFactory);
+        $typesRegistry = new ColumnTypeRegistry($extensions, $resolvedTypeFactory);
         $this->factory = new DatagridFactory($typesRegistry, $resolvedTypeFactory, new PropertyAccessorMapper());
     }
 

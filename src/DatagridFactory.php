@@ -12,7 +12,7 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\Column;
-use Rollerworks\Component\Datagrid\Column\ColumnRegistryInterface;
+use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
@@ -27,23 +27,14 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 class DatagridFactory implements DatagridFactoryInterface
 {
     /**
-     * Array of already registered Datagrids.
-     *
-     * This is used to ensure datagrids are uniquely named.
-     *
-     * @var array
-     */
-    private $datagrids = [];
-
-    /**
      * @var DataMapperInterface
      */
     private $dataMapper;
 
     /**
-     * @var ColumnRegistryInterface
+     * @var ColumnTypeRegistryInterface
      */
-    private $registry;
+    private $typeRegistry;
 
     /**
      * @var ResolvedColumnTypeFactoryInterface
@@ -51,16 +42,14 @@ class DatagridFactory implements DatagridFactoryInterface
     private $resolvedTypeFactory;
 
     /**
-     * @param ColumnRegistryInterface            $registry
+     * @param ColumnTypeRegistryInterface            $registry
      * @param ResolvedColumnTypeFactoryInterface $resolvedTypeFactory
      * @param DataMapperInterface                $dataMapper
-     *
-     * @throws \InvalidArgumentException
      */
-    public function __construct(ColumnRegistryInterface $registry, ResolvedColumnTypeFactoryInterface $resolvedTypeFactory, DataMapperInterface $dataMapper)
+    public function __construct(ColumnTypeRegistryInterface $registry, ResolvedColumnTypeFactoryInterface $resolvedTypeFactory, DataMapperInterface $dataMapper)
     {
         $this->dataMapper = $dataMapper;
-        $this->registry = $registry;
+        $this->typeRegistry = $registry;
         $this->resolvedTypeFactory = $resolvedTypeFactory;
     }
 
@@ -69,16 +58,7 @@ class DatagridFactory implements DatagridFactoryInterface
      */
     public function createDatagrid($name)
     {
-        if (isset($this->datagrids[$name])) {
-            throw new DatagridException(sprintf('Datagrid name "%s" is not unique.', $name));
-        }
-
-        $this->datagrids[$name] = true;
-
-        $datagrid = new Datagrid($name, $this, null);
-        $datagrid->setDataMapper($this->dataMapper);
-
-        return $datagrid;
+        return new Datagrid($name, $this->dataMapper);
     }
 
     /**
@@ -116,9 +96,16 @@ class DatagridFactory implements DatagridFactoryInterface
         if ($type instanceof ColumnTypeInterface) {
             $type = $this->resolveType($type);
         } elseif (is_string($type)) {
-            $type = $this->registry->getType($type);
+            $type = $this->typeRegistry->getType($type);
         } elseif (!$type instanceof ResolvedColumnTypeInterface) {
-            throw new UnexpectedTypeException($type, 'string', 'Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface', 'Rollerworks\Component\Datagrid\Column\ColumnTypeInterface');
+            throw new UnexpectedTypeException(
+                $type,
+                [
+                    'string',
+                    ResolvedColumnTypeInterface::class,
+                    ColumnTypeInterface::class,
+                ]
+            );
         }
 
         $column = $type->createColumn($name, $datagrid, $options);
@@ -145,7 +132,7 @@ class DatagridFactory implements DatagridFactoryInterface
         if ($parentType instanceof ColumnTypeInterface) {
             $parentType = $this->resolveType($parentType);
         } elseif (null !== $parentType) {
-            $parentType = $this->registry->getType($parentType);
+            $parentType = $this->typeRegistry->getType($parentType);
         }
 
         return $this->resolvedTypeFactory->createResolvedType(

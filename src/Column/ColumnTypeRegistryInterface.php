@@ -18,7 +18,7 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-interface ColumnRegistryInterface
+interface ColumnTypeRegistryInterface
 {
     /**
      * Returns a column type by name.

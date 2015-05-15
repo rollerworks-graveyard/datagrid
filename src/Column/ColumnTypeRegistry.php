@@ -19,7 +19,7 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class ColumnRegistry implements ColumnRegistryInterface
+class ColumnTypeRegistry implements ColumnTypeRegistryInterface
 {
     /**
      * Extensions.
