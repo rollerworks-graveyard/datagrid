@@ -64,6 +64,14 @@ class DatagridFactory implements DatagridFactoryInterface
     /**
      * {@inheritdoc}
      */
+    public function createDatagridBuilder($name, DataMapperInterface $dataMapper = null)
+    {
+        return new DatagridBuilder($this, $name, $dataMapper ?: $this->dataMapper);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createColumn($name, $type, DatagridInterface $datagrid, array $options = [])
     {
         $column = $this->createColumnBuilder($name, $datagrid, $type, $options);

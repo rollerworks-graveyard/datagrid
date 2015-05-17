@@ -11,8 +11,14 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
+use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
+use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
+use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
+use Rollerworks\Component\Datagrid\DatagridBuilderInterface;
 use Rollerworks\Component\Datagrid\DatagridFactory;
 use Rollerworks\Component\Datagrid\DatagridInterface;
+use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 
 class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,14 +44,14 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnRegistryInterface');
-        $this->resolvedTypeFactory = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface');
-        $this->dataMapper = $this->getMock('Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface');
+        $this->registry = $this->getMock(ColumnTypeRegistryInterface::class);
+        $this->resolvedTypeFactory = $this->getMock(ResolvedColumnTypeFactoryInterface::class);
+        $this->dataMapper = $this->getMock(DataMapperInterface::class);
 
         $this->factory = new DatagridFactory($this->registry, $this->resolvedTypeFactory, $this->dataMapper);
     }
 
-    public function testCreateGrids()
+    public function testCreateGrid()
     {
         $grid = $this->factory->createDatagrid('grid');
 
@@ -53,12 +59,19 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('grid', $grid->getName());
     }
 
+    public function testCreateGridBuilder()
+    {
+        $this->assertInstanceOf(DatagridBuilderInterface::class, $this->factory->createDatagridBuilder('grid'));
+        $this->assertInstanceOf(DatagridBuilderInterface::class, $this->factory->createDatagridBuilder('grid2'));
+    }
+
     public function testCreateColumn()
     {
         $grid = $this->factory->createDatagrid('grid');
 
-        $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $column = $this->getMockBuilder('Rollerworks\Component\Datagrid\Column\Column')->disableOriginalConstructor()->getMock();
+        $type = $this->getMock(ResolvedColumnTypeInterface::class);
+
+        $column = $this->getMock(ColumnInterface::class);
         $column->expects($this->once())
                 ->method('getOptions')
                 ->will($this->returnValue(['foo' => 'bar']));
@@ -82,9 +95,6 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataMapper()
     {
-        $this->assertInstanceOf(
-            'Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface',
-            $this->factory->getDataMapper()
-        );
+        $this->assertInstanceOf(DataMapperInterface::class, $this->factory->getDataMapper());
     }
 }
