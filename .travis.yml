@@ -9,7 +9,7 @@ php:
 
 matrix:
     include:
-        - php: 5.4
+        - php: 5.5
           env: DEPENDENCIES='low'
         - php: 5.6
           env: DEPENDENCIES='dev'
@@ -27,10 +27,9 @@ cache:
 
 install:
     - export SYMFONY_DEPRECATIONS_HELPER=weak
-    - export COMPOSER_ROOT_VERSION=dev-master
     - if [ "$DEPENDENCIES" == "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
     - if [ "$DEPENDENCIES" != "low" ]; then travis_retry composer update; fi;
     - if [ "$DEPENDENCIES" == "low" ]; then travis_retry composer update --prefer-lowest; fi;
 
 script:
-    - bin/phpunit --configuration phpunit.xml.dist --verbose
+    - phpunit --configuration phpunit.xml.dist --verbose
