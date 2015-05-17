@@ -52,17 +52,6 @@ interface ColumnTypeInterface
     public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options);
 
     /**
-     * Transform the value before passing it to view.
-     *
-     * @param mixed           $value
-     * @param ColumnInterface $column
-     * @param array           $options
-     *
-     * @return mixed
-     */
-    public function transformValue($value, ColumnInterface $column, array $options);
-
-    /**
      * Get the name of the column type.
      *
      * @return string

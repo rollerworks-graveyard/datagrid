@@ -55,7 +55,7 @@ class BooleanType extends AbstractColumnType
 
                     $boolValue = true;
                     foreach ($value as $val) {
-                        $boolValue = (boolean) ($boolValue & (boolean) $val);
+                        $boolValue = (bool) ($boolValue & (bool) $val);
                         if (!$boolValue) {
                             break;
                         }

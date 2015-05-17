@@ -36,22 +36,6 @@ class ColumnOrderExtension extends ColumnAbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function preFilterValue($value, ColumnInterface $column, array $options)
-    {
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function postTransformValue($value, ColumnInterface $column, array $options)
-    {
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getExtendedType()
     {
         return 'column';

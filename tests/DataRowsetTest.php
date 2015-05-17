@@ -12,21 +12,19 @@
 namespace Rollerworks\Component\Datagrid\Tests;
 
 use Rollerworks\Component\Datagrid\DataRowset;
+use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 
 class DataRowsetTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCreateWithInvalidData()
+    public function testCannotCreateWithInvalidData()
     {
-        $this->setExpectedException(
-             'Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException',
-             'Expected argument of type "array", "Traversable", "string" given'
-        );
+        $this->setExpectedException(UnexpectedTypeException::class);
 
         new DataRowset('Invalid Data');
     }
 
-    public function testCreateRowset()
+    public function testCreateRowsetWithArray()
     {
         $data = [
             'e1' => new Entity('entity1'),

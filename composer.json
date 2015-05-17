@@ -30,7 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Rollerworks\\Component\\Datagrid\\": "tests/"
+            "Rollerworks\\Component\\Datagrid\\Tests\\": "tests/"
         }
     },
     "config": {

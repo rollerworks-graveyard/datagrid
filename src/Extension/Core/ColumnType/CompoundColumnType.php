@@ -13,6 +13,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
 
 use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\CompoundColumnTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
@@ -21,8 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * CompoundColumn allows multiple sub-columns for advanced view building.
- *
- * @todo Add support for data-binding, pass the binding as we do with transformers.
  *
  * One can reference this type as parent and set the options
  * 'value_glue' and 'value_format' to null and then build the view manually.
@@ -58,7 +57,6 @@ class CompoundColumnType extends AbstractColumnType
         $resolver->setDefaults([
             'value_glue' => '<br>',
             'value_format' => null,
-
             'field_mapping' => function (Options $options, $fieldMapping) {
                 if ($fieldMapping) {
                     return $fieldMapping;
@@ -66,9 +64,10 @@ class CompoundColumnType extends AbstractColumnType
 
                 // No mapping was set load the mapping from the children
                 $fieldMapping = [];
+
                 foreach ($options['columns'] as $subColumn) {
                     if (!$subColumn instanceof ColumnInterface) {
-                        throw new UnexpectedTypeException($subColumn, 'Rollerworks\Component\Datagrid\Column\ColumnInterface');
+                        throw new UnexpectedTypeException($subColumn, ColumnInterface::class);
                     }
 
                     $fieldMapping = array_merge($fieldMapping, $subColumn->getOption('field_mapping', []));
@@ -115,7 +114,5 @@ class CompoundColumnType extends AbstractColumnType
         if (null !== $options['value_glue'] || null !== $options['value_format']) {
             $column->addViewTransformer(new ValueFormatTransformer('', $options['value_glue'], $options['value_format']));
         }
-
-        // XXX Add binding EventListener (when we eventually resolved the binding issue)
     }
 }

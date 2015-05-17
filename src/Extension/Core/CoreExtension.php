@@ -11,12 +11,12 @@
 
 namespace Rollerworks\Component\Datagrid\Extension\Core;
 
-use Rollerworks\Component\Datagrid\DatagridAbstractExtension;
+use Rollerworks\Component\Datagrid\AbstractDatagridExtension;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class CoreExtension extends DatagridAbstractExtension
+class CoreExtension extends AbstractDatagridExtension
 {
     /**
      * {@inheritdoc}

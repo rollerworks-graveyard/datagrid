@@ -14,6 +14,7 @@ namespace Rollerworks\Component\Datagrid;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
+use Rollerworks\Component\Datagrid\Exception\DatagridException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -23,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * This class should not be construct directly.
  * Use DatagridFactory::createDatagrid() DatagridFactory::createDatagridBuilder()
- * to creating a new Datagrid.
+ * to create a new Datagrid.
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author FSi sp. z o.o. <info@fsi.pl>
@@ -108,8 +109,16 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function addColumn($name, ColumnInterface $column)
+    public function addColumn(ColumnInterface $column)
     {
+        $name = $column->getName();
+
+        if (isset($this->columns[$name])) {
+            throw new DatagridException(
+                sprintf('A column with name "%s" is already registered on the datagrid', $name)
+            );
+        }
+
         $this->columns[$name] = $column;
 
         return $this;
@@ -202,7 +211,7 @@ class Datagrid implements DatagridInterface
         $data = $event->getData();
 
         if (!is_array($data) && !$data instanceof \Traversable) {
-            throw new \InvalidArgumentException('Array or Traversable object is expected in setData method.');
+            throw new UnexpectedTypeException($data, ['array', 'Traversable']);
         }
 
         $this->rowset = new DataRowset($data);

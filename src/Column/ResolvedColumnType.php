@@ -228,6 +228,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
         $dataMapper = $column->getDatagrid()->getDataMapper();
 
         $values = [];
+
         foreach ($column->getOption('field_mapping') as $field) {
 
             // Ignore null and boolean as these fields-names are always illegal
@@ -283,10 +284,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     protected function newColumn($name, DatagridInterface $datagrid, array $options)
     {
-        $column = new Column($name, $this, new EventDispatcher(), $options);
-        $column->setDatagrid($datagrid);
-
-        return $column;
+        return new Column($name, $this, new EventDispatcher(), $datagrid, $options);
     }
 
     /**

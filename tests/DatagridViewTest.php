@@ -11,8 +11,13 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
+use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
+use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
+use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridView;
+use Rollerworks\Component\Datagrid\DataRowset;
+use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 
 class DatagridViewTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,6 +30,45 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
      * @var DatagridView
      */
     private $gridView;
+
+    protected function setUp()
+    {
+        $type = $this->getMock(ResolvedColumnTypeInterface::class);
+        $type->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('text'));
+
+        $datagrid = $this->getMock(DatagridInterface::class);
+        $column = $this->getMock(ColumnInterface::class);
+
+        $column->expects($this->any())
+            ->method('getType')
+            ->will($this->returnValue($type));
+
+        $this->rowset = new DataRowset([
+            'e1' => new Entity('entity1'),
+            'e2' => new Entity('entity2'),
+        ]);
+
+        $this->gridView = new DatagridView($datagrid, [$column], $this->rowset);
+
+        $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
+        $column->expects($this->any())
+            ->method('getType')
+            ->will($this->returnValue($type));
+
+        $columnHeader = new HeaderView($column, $this->gridView, 'foo');
+
+        $column->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+
+        $column->expects($this->any())
+            ->method('getType')
+            ->will($this->returnValue($type));
+
+        $this->gridView->setColumns([$columnHeader]);
+    }
 
     public function testHasColumn()
     {
@@ -118,45 +162,6 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
 
     public function testCount()
     {
-        $this->rowset->expects($this->any())
-            ->method('count')
-            ->will($this->returnValue(2));
-
         $this->assertCount(2, $this->gridView);
-    }
-
-    protected function setUp()
-    {
-        $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
-
-        $datagrid = $this->getMock('Rollerworks\Component\Datagrid\DatagridInterface');
-        $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
-
-        $column->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue($type));
-
-        $this->rowset = $this->getMock('Rollerworks\Component\Datagrid\DataRowsetInterface');
-        $this->gridView = new DatagridView($datagrid, [$column], $this->rowset);
-
-        $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
-        $column->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue($type));
-
-        $columnHeader = new HeaderView($column, $this->gridView, 'foo');
-
-        $column->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
-
-        $column->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue($type));
-
-        $this->gridView->setColumns([$columnHeader]);
     }
 }

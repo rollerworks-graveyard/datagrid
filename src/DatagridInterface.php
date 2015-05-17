@@ -39,12 +39,12 @@ interface DatagridInterface
     /**
      * Add new a column to the datagrid.
      *
-     * @param string          $name
      * @param ColumnInterface $column
      *
      * @return DatagridInterface
+     * @internal param string $name
      */
-    public function addColumn($name, ColumnInterface $column);
+    public function addColumn(ColumnInterface $column);
 
     /**
      * Remove a column from the datagrid.

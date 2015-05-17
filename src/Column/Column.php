@@ -69,14 +69,21 @@ class Column implements ColumnInterface
      *
      * @throws \InvalidArgumentException when the name is invalid
      */
-    public function __construct($name, ResolvedColumnTypeInterface $type, EventDispatcherInterface $dispatcher, array $options = [])
-    {
-        //FieldSet::validateName($name);
-
+    public function __construct(
+        $name,
+        ResolvedColumnTypeInterface $type,
+        EventDispatcherInterface $dispatcher,
+        DatagridInterface $datagrid,
+        array $options = []
+    ) {
         if ('' === $name) {
-            throw new \InvalidArgumentException(sprintf(
-                'The name "%s" contains illegal characters. Names should start with a letter, digit or underscore and only contain letters, digits, numbers, underscores ("_"), hyphens ("-") and colons (":").', $name
-            ));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The name "%s" contains illegal characters. Names should start with a letter, digit or underscore '.
+                    'and only contain letters, digits, numbers, underscores ("_"), hyphens ("-") and colons (":").',
+                    $name
+                )
+            );
         }
 
         $this->name = $name;
@@ -84,24 +91,11 @@ class Column implements ColumnInterface
         $this->options = $options;
         $this->locked = false;
         $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * @param DatagridInterface $datagrid
-     *
-     * @throws BadMethodCallException
-     */
-    public function setDatagrid(DatagridInterface $datagrid)
-    {
-        if ($this->datagrid) {
-            throw new BadMethodCallException('setDatagrid() should be called only once per column.');
-        }
-
         $this->datagrid = $datagrid;
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -109,7 +103,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -117,7 +111,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function addViewTransformer(DataTransformerInterface $viewTransformer, $forcePrepend = false)
     {
@@ -135,7 +129,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function resetViewTransformers()
     {
@@ -149,7 +143,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function getViewTransformers()
     {
@@ -193,7 +187,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function getDatagrid()
     {
@@ -201,7 +195,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -209,7 +203,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function getOption($name, $default = null)
     {
@@ -221,7 +215,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function hasOption($name)
     {
@@ -229,7 +223,7 @@ class Column implements ColumnInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function createHeaderView(DatagridViewInterface $datagrid)
     {

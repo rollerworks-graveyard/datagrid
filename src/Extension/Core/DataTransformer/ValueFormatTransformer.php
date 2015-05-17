@@ -35,6 +35,7 @@ class ValueFormatTransformer implements DataTransformerInterface
      * @var callback|null|string
      */
     private $format;
+
     /**
      * @param string|array         $emptyValue
      * @param null|string          $glue

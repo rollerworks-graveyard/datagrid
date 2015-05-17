@@ -17,6 +17,7 @@ use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\SingleMappingTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ColumnType implements ColumnTypeInterface
 {
@@ -28,11 +29,20 @@ class ColumnType implements ColumnTypeInterface
         $resolver->setRequired(['field_mapping', 'label']);
         $resolver->setDefaults(['field_mapping_single' => true]);
 
-        $resolver->setAllowedTypes([
-            'label' => 'string',
-            'field_mapping' => 'array',
-            'field_mapping_single' => 'bool',
-        ]);
+        // BC layer for Symfony 2.7 and 3.0
+        if ($resolver instanceof OptionsResolverInterface) {
+            $resolver->setAllowedTypes(
+                [
+                    'label' => 'string',
+                    'field_mapping' => 'array',
+                    'field_mapping_single' => 'bool',
+                ]
+            );
+        } else {
+            $resolver->setAllowedTypes('label', 'string');
+            $resolver->setAllowedTypes('field_mapping', 'array');
+            $resolver->setAllowedTypes('field_mapping_single', 'bool');
+        }
     }
 
     /**

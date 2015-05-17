@@ -12,6 +12,7 @@
 namespace Rollerworks\Component\Datagrid\Tests;
 
 use Rollerworks\Component\Datagrid\DatagridFactory;
+use Rollerworks\Component\Datagrid\DatagridInterface;
 
 class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -47,11 +48,9 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateGrids()
     {
         $grid = $this->factory->createDatagrid('grid');
-        $this->assertInstanceOf('Rollerworks\Component\Datagrid\Datagrid', $grid);
-        $this->assertEquals('grid', $grid->getName());
 
-        $this->setExpectedException('Rollerworks\Component\Datagrid\Exception\DatagridException');
-        $this->factory->createDatagrid('grid');
+        $this->assertInstanceOf(DatagridInterface::class, $grid);
+        $this->assertEquals('grid', $grid->getName());
     }
 
     public function testCreateColumn()
@@ -83,6 +82,9 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataMapper()
     {
-        $this->assertInstanceOf('Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface', $this->factory->getDataMapper());
+        $this->assertInstanceOf(
+            'Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface',
+            $this->factory->getDataMapper()
+        );
     }
 }

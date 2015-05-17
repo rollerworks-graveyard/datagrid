@@ -53,12 +53,4 @@ abstract class AbstractColumnType implements ColumnTypeInterface
     {
         return 'column';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function transformValue($value, ColumnInterface $column, array $options)
-    {
-        return $value;
-    }
 }

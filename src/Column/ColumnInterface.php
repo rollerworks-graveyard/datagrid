@@ -36,6 +36,35 @@ interface ColumnInterface
     public function getType();
 
     /**
+     * Appends / prepends a transformer to the view transformer chain.
+     *
+     * The transform method of the transformer is used to convert data from the
+     * normalized to the view format.
+     * The reverseTransform method of the transformer is used to convert from the
+     * view to the normalized format.
+     *
+     * @param DataTransformerInterface $viewTransformer
+     * @param Boolean                  $forcePrepend    if set to true, prepend instead of appending
+     *
+     * @return self The configuration object.
+     */
+    public function addViewTransformer(DataTransformerInterface $viewTransformer, $forcePrepend = false);
+
+    /**
+     * Clears the view transformers.
+     *
+     * @return self The configuration object.
+     */
+    public function resetViewTransformers();
+
+    /**
+     * Returns the view transformers of the column cell.
+     *
+     * @return DataTransformerInterface[] An array of {@link DataTransformerInterface} instances.
+     */
+    public function getViewTransformers();
+
+    /**
      * Adds an event listener that listens on the specified events.
      *
      * @param string   $eventName The event to listen on
