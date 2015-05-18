@@ -12,12 +12,11 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\Column;
-use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
+use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
-use Rollerworks\Component\Datagrid\Exception\DatagridException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
@@ -42,7 +41,7 @@ class DatagridFactory implements DatagridFactoryInterface
     private $resolvedTypeFactory;
 
     /**
-     * @param ColumnTypeRegistryInterface            $registry
+     * @param ColumnTypeRegistryInterface        $registry
      * @param ResolvedColumnTypeFactoryInterface $resolvedTypeFactory
      * @param DataMapperInterface                $dataMapper
      */

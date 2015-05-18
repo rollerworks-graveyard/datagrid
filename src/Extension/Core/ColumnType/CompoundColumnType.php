@@ -13,7 +13,6 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
 
 use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\CompoundColumnTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;

@@ -33,7 +33,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
     /**
      * @var ColumnInterface[]
      */
-    private $columns = array();
+    private $columns = [];
 
     /**
      * @var array[]
@@ -46,9 +46,9 @@ final class DatagridBuilder implements DatagridBuilderInterface
     private $locked;
 
     /**
-     * @param DatagridFactory     $factory
-     * @param string              $name
-     * @param DataMapperInterface $dataMapper
+     * @param DatagridFactoryInterface $factory
+     * @param string                   $name
+     * @param DataMapperInterface      $dataMapper
      */
     public function __construct(DatagridFactoryInterface $factory, $name, DataMapperInterface $dataMapper = null)
     {
@@ -82,10 +82,10 @@ final class DatagridBuilder implements DatagridBuilderInterface
             throw new UnexpectedTypeException($type, ['string', ColumnTypeInterface::class]);
         }
 
-        $this->unresolvedColumns[$field] = array(
+        $this->unresolvedColumns[$field] = [
             'type' => $type,
             'options' => $options,
-        );
+        ];
 
         return $this;
     }

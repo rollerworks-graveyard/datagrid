@@ -14,7 +14,6 @@ namespace Rollerworks\Component\Datagrid;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -42,7 +41,6 @@ interface DatagridInterface
      * @param ColumnInterface $column
      *
      * @return DatagridInterface
-     * @internal param string $name
      */
     public function addColumn(ColumnInterface $column);
 
@@ -135,7 +133,7 @@ interface DatagridInterface
      *
      * @param string   $eventName The event to listen on
      * @param callable $listener  The listener
-     * @param int $priority       The priority of the listener.
+     * @param int      $priority  The priority of the listener.
      *                            The higher this value, the earlier an event
      *                            listener will be triggered in the chain.
      *                            Note that priority must be between -255 and 255

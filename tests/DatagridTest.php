@@ -16,10 +16,8 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
-use Rollerworks\Component\Datagrid\DatagridRowView;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 
 class DatagridTest extends \PHPUnit_Framework_TestCase

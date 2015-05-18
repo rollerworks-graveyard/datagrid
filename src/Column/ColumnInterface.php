@@ -14,7 +14,6 @@ namespace Rollerworks\Component\Datagrid\Column;
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
 use Rollerworks\Component\Datagrid\DataTransformerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
