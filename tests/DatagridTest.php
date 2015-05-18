@@ -11,18 +11,19 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
+use Prophecy\Argument;
+use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
+use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\DatagridRowView;
+use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
+use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 
 class DatagridTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $factory;
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -35,9 +36,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->factory = $this->getMock('Rollerworks\Component\Datagrid\DatagridFactoryInterface');
-
-        $this->dataMapper = $this->getMock('Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface');
+        $this->dataMapper = $this->getMock(DataMapperInterface::class);
         $this->dataMapper->expects($this->any())
             ->method('getData')
             ->will($this->returnCallback(function ($field, Entity $object) {
@@ -60,7 +59,30 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
                 return;
             }));
 
-        $this->datagrid = new Datagrid('grid', $this->factory, $this->dataMapper);
+        $this->datagrid = new Datagrid('grid', $this->dataMapper);
+    }
+
+    /**
+     * @param string $name
+     * @param string $typeName
+     * @param bool   $reveal
+     *
+     * @return ResolvedColumnTypeInterface|\Prophecy\Prophecy\ObjectProphecy
+     */
+    private function createColumn($name = 'foo1', $typeName = 'text', $reveal = true)
+    {
+        $type = $this->prophesize(ResolvedColumnTypeInterface::class);
+        $type->getName()->willReturn($typeName);
+
+        $column = $this->prophesize(ColumnInterface::class);
+        $column->getName()->willReturn($name);
+        $column->getType()->willReturn($type->reveal());
+
+        if (!$reveal) {
+            return $column;
+        }
+
+        return $column->reveal();
     }
 
     public function testGetName()
@@ -70,26 +92,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testHasColumn()
     {
-        $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
-
-        $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
-        $column->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo1'));
-
-        $column->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue($type));
-
-        $this->factory->expects($this->once())
-            ->method('createColumn')
-            ->with('foo1', 'text', $this->datagrid, [])
-            ->will($this->returnValue($column));
-
-        $this->datagrid->addColumn('foo1', 'text');
+        $this->datagrid->addColumn($this->createColumn());
 
         $this->assertTrue($this->datagrid->hasColumn('foo1'));
         $this->assertTrue($this->datagrid->hasColumnType('text'));
@@ -97,30 +100,13 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->datagrid->hasColumn('foo2'));
         $this->assertFalse($this->datagrid->hasColumnType('this_type_cant_exists'));
 
-        $this->assertInstanceOf('Rollerworks\Component\Datagrid\Column\ColumnInterface', $this->datagrid->getColumn('foo1'));
+        $this->assertInstanceOf(ColumnInterface::class, $this->datagrid->getColumn('foo1'));
     }
 
     public function testRemoveColumn()
     {
-        $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
-        $column->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo1'));
-
-        $column2 = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
-        $column2->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo2'));
-
-        $this->factory->expects($this->any())
-            ->method('createColumn')
-            ->will($this->returnValueMap([
-                ['foo1', 'text', $this->datagrid, [], $column],
-                ['foo2', 'text', $this->datagrid, [], $column2],
-            ]));
-
-        $this->datagrid->addColumn('foo1', 'text');
-        $this->datagrid->addColumn('foo2', 'text');
+        $this->datagrid->addColumn($this->createColumn());
+        $this->datagrid->addColumn($this->createColumn('foo2'));
 
         $this->assertTrue($this->datagrid->hasColumn('foo1'));
         $this->assertTrue($this->datagrid->hasColumn('foo2'));
@@ -133,11 +119,20 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataMapper()
     {
-        $this->assertInstanceOf('Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface', $this->datagrid->getDataMapper());
+        $this->assertInstanceOf(DataMapperInterface::class, $this->datagrid->getDataMapper());
     }
 
     public function testSetData()
     {
+        $column = $this->createColumn('foo1', 'text', false);
+        $column->createHeaderView(Argument::any(), Argument::any())->will(
+            function ($args) use ($column) {
+                return new HeaderView($column->reveal(), $args[0], 'foo1');
+            }
+        );
+
+        $this->datagrid->addColumn($column->reveal());
+
         $gridData = [
             new Entity('entity1'),
             new Entity('entity2'),
@@ -155,7 +150,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->datagrid->createView());
     }
 
-    public function testSetDataForArray()
+    public function testSetDataWithArray()
     {
         $gridData = [
             ['one'],
@@ -170,8 +165,8 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $view = $this->datagrid->createView();
 
         $keys = [];
+
         foreach ($view as $row) {
-            /* @var DatagridRowView $row */
             $keys[] = $row->getIndex();
         }
 
@@ -180,57 +175,98 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testBindArrayData()
     {
-        $this->datagrid->bindData([]);
+        $gridData = [
+            new Entity('entity1'),
+            new Entity('entity2'),
+        ];
+
+        $bindData = [
+            ['some', 'data'],
+            ['next', 'data'],
+        ];
+
+        $column = $this->createColumn('foo1', 'text', false);
+
+        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
+        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
+
+        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
+        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
+
+        $this->datagrid->addColumn($column->reveal());
+
+        $this->datagrid->setData($gridData);
+        $this->datagrid->bindData($bindData);
+
+        // The binding of data will NOT update the datagrid itself.
+        // Updating is done by Event listeners listening for (POST|PRE)_BIND_DATA
+
+        $this->assertEquals($gridData, $this->datagrid->getData());
     }
 
-    public function testBindArrayIteratorData()
+    public function testBindDataExtraRowsAreIgnored()
     {
-        $this->datagrid->bindData(new \ArrayIterator([]));
+        $gridData = [
+            new Entity('entity1'),
+            new Entity('entity2'),
+        ];
+
+        $bindData = [
+            ['some', 'data'],
+            ['next', 'data'],
+            ['next', 'data'],
+        ];
+
+        $column = $this->createColumn('foo1', 'text', false);
+
+        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
+        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
+
+        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
+        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
+
+        $this->datagrid->addColumn($column->reveal());
+
+        $this->datagrid->setData($gridData);
+        $this->datagrid->bindData($bindData);
+
+        // The binding of data will NOT update the datagrid itself.
+        // Updating is done by Event listeners listening for (POST|PRE)_BIND_DATA
+
+        $this->assertEquals($gridData, $this->datagrid->getData());
     }
 
-    public function testBindInvalidData()
+    /**
+     * @expectedException \Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException
+     */
+    public function testCannotBindWithInvalidData()
     {
-        $this->setExpectedException('Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException', 'Expected argument of type "array", "ArrayIterator", "boolean" given');
         $this->datagrid->bindData(false);
     }
 
     public function testCreateView()
     {
-        $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
+        $column = $this->createColumn('foo1', 'text', false);
+        $column->createHeaderView(Argument::any(), Argument::any())->will(
+            function ($args) use ($column) {
+                return new HeaderView($column->reveal(), $args[0], 'foo1');
+            }
+        );
 
-        $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
-        $column->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo1'));
+        $this->datagrid->addColumn($column->reveal());
 
-        $column->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue($type));
-
-        $column->expects($this->any())
-            ->method('createHeaderView')
-            ->will($this->returnCallback(function ($datagrid) use ($column) {
-                return new HeaderView($column, $datagrid, 'foo1');
-            }));
-
-        $this->factory->expects($this->once())
-                ->method('createColumn')
-                ->with('foo1', 'text', $this->datagrid, ['foo' => 'bar'])
-                ->will($this->returnValue($column));
-
-        $this->datagrid->addColumn('foo1', 'text', ['foo' => 'bar']);
         $gridData = [
             new Entity('entity1'),
             new Entity('entity2'),
         ];
 
         $this->datagrid->setData($gridData);
+
         $datagridView = $this->datagrid->createView();
 
-        $this->assertInstanceOf('Rollerworks\Component\Datagrid\DatagridViewInterface', $datagridView);
+        $this->assertInstanceOf(DatagridViewInterface::class, $datagridView);
+
         $this->assertTrue($datagridView->hasColumn('foo1'));
+        $this->assertFalse($datagridView->hasColumn('foo2'));
     }
 }
