@@ -19,6 +19,7 @@ use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\StringToDateTi
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TimestampToDateTimeTransformer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * DateTimeType.
@@ -112,21 +113,29 @@ class DateTimeType extends AbstractColumnType
             'format' => null,
         ]);
 
-        $resolver->setAllowedTypes([
-            'input' => ['array', 'string'],
-            'model_timezone' => ['null', 'string'],
-            'view_timezone' => ['null', 'string'],
-            'date_format' => ['null', 'string', 'integer'],
-            'format' => ['null', 'string'],
-        ]);
+        if ($resolver instanceof OptionsResolverInterface) {
+            $resolver->setAllowedTypes(
+                [
+                    'input' => ['array', 'string'],
+                    'model_timezone' => ['null', 'string'],
+                    'view_timezone' => ['null', 'string'],
+                    'date_format' => ['null', 'string', 'integer'],
+                    'format' => ['null', 'string'],
+                ]
+            );
 
-        $resolver->setAllowedValues([
-            'input' => [
-                'string',
-                'timestamp',
-                'datetime',
-                'array',
-            ],
-        ]);
+            $resolver->setAllowedValues(
+                [
+                    'input' => ['string', 'timestamp', 'datetime', 'array'],
+                ]
+            );
+        } else {
+            $resolver->setAllowedTypes('input', ['array', 'string']);
+            $resolver->setAllowedTypes('model_timezone', ['null', 'string']);
+            $resolver->setAllowedTypes('view_timezone', ['null', 'string']);
+            $resolver->setAllowedTypes('date_format', ['null', 'string', 'integer']);
+            $resolver->setAllowedTypes('format', ['null', 'string']);
+            $resolver->setAllowedValues('input', ['string', 'timestamp', 'datetime', 'array']);
+        }
     }
 }

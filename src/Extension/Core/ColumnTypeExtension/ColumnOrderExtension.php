@@ -15,6 +15,7 @@ use Rollerworks\Component\Datagrid\Column\ColumnAbstractTypeExtension;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Allows to set the column sorting order.
@@ -50,11 +51,14 @@ class ColumnOrderExtension extends ColumnAbstractTypeExtension
             'display_order' => null,
         ]);
 
-        $resolver->setAllowedTypes([
-            'display_order' => [
-                'integer',
-                'null',
-            ],
-        ]);
+        if ($resolver instanceof OptionsResolverInterface) {
+            $resolver->setAllowedTypes(
+                [
+                    'display_order' => ['integer', 'null'],
+                ]
+            );
+        } else {
+            $resolver->setAllowedTypes('display_order', ['integer', 'null']);
+        }
     }
 }

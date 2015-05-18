@@ -15,6 +15,7 @@ use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -71,7 +72,11 @@ class ActionType extends AbstractColumnType
 
             if ($actionOpts['redirect_uri']) {
                 if (is_object($actionOpts['redirect_uri'])) {
-                    $actionOpts['redirect_uri'] = $actionOpts['redirect_uri']($name, $actionOpts['label'], $view->value);
+                    $actionOpts['redirect_uri'] = $actionOpts['redirect_uri'](
+                        $name,
+                        $actionOpts['label'],
+                        $view->value
+                    );
                 }
 
                 if (false !== strpos($url, '?')) {
@@ -96,19 +101,27 @@ class ActionType extends AbstractColumnType
     {
         $resolver->setRequired(['actions']);
 
-        $this->actionOptionsResolver->setDefaults([
-            'redirect_uri' => null,
-            'label' => null,
-        ]);
+        $this->actionOptionsResolver->setDefaults(
+            [
+                'redirect_uri' => null,
+                'label' => null,
+            ]
+        );
 
-        $this->actionOptionsResolver->setRequired([
-            'uri_scheme',
-        ]);
+        $this->actionOptionsResolver->setRequired(['uri_scheme']);
 
-        $this->actionOptionsResolver->setAllowedTypes([
-            'redirect_uri' => ['string', 'null', 'callable'],
-            'uri_scheme' => ['string', 'callable'],
-            'label' => ['null', 'string', 'callable'],
-        ]);
+        if ($this->actionOptionsResolver instanceof OptionsResolverInterface) {
+            $this->actionOptionsResolver->setAllowedTypes(
+                [
+                    'redirect_uri' => ['string', 'null', 'callable'],
+                    'uri_scheme' => ['string', 'callable'],
+                    'label' => ['null', 'string', 'callable'],
+                ]
+            );
+        } else {
+            $this->actionOptionsResolver->setAllowedTypes('redirect_uri', ['string', 'null', 'callable']);
+            $this->actionOptionsResolver->setAllowedTypes('uri_scheme', ['string', 'callable']);
+            $this->actionOptionsResolver->setAllowedTypes('label', ['null', 'string', 'callable']);
+        }
     }
 }

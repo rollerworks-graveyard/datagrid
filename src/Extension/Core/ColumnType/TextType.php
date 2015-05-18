@@ -16,6 +16,7 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TextType extends AbstractColumnType
 {
@@ -60,15 +61,24 @@ class TextType extends AbstractColumnType
             'empty_value' => null,
         ]);
 
-        $resolver->setAllowedTypes([
-            'trim' => 'bool',
-            'value_glue' => ['string', 'null'],
-            'value_format' => [
-                'string',
-                'callable',
-                'null',
-            ],
-            'empty_value' => ['string', 'null'],
-        ]);
+        if ($resolver instanceof OptionsResolverInterface) {
+            $resolver->setAllowedTypes(
+                [
+                    'trim' => 'bool',
+                    'value_glue' => ['string', 'null'],
+                    'value_format' => [
+                        'string',
+                        'callable',
+                        'null',
+                    ],
+                    'empty_value' => ['string', 'null'],
+                ]
+            );
+        } else {
+            $resolver->setAllowedTypes('trim', 'bool');
+            $resolver->setAllowedTypes('value_glue', ['string', 'null']);
+            $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
+            $resolver->setAllowedTypes('empty_value', ['string', 'null']);
+        }
     }
 }

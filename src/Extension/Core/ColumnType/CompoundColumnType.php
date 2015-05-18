@@ -18,6 +18,7 @@ use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\CompoundColumn
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * CompoundColumn allows multiple sub-columns for advanced view building.
@@ -78,17 +79,23 @@ class CompoundColumnType extends AbstractColumnType
             },
         ]);
 
-        $resolver->setAllowedTypes([
-            'label' => 'string',
-            'field_mapping' => 'array',
-            'columns' => 'array',
-            'value_glue' => ['string', 'null'],
-            'value_format' => [
-                'string',
-                'callable',
-                'null',
-            ],
-        ]);
+        if ($resolver instanceof OptionsResolverInterface) {
+            $resolver->setAllowedTypes(
+                [
+                    'label' => 'string',
+                    'field_mapping' => 'array',
+                    'columns' => 'array',
+                    'value_glue' => ['string', 'null'],
+                    'value_format' => ['string', 'callable', 'null'],
+                ]
+            );
+        } else {
+            $resolver->setAllowedTypes('label', 'string');
+            $resolver->setAllowedTypes('field_mapping', 'array');
+            $resolver->setAllowedTypes('columns', 'array');
+            $resolver->setAllowedTypes('value_glue', ['string', 'null']);
+            $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
+        }
     }
 
     /**
