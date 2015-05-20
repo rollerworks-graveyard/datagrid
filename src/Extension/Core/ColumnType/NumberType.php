@@ -15,6 +15,7 @@ use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NumberType extends AbstractColumnType
 {
@@ -50,16 +51,33 @@ class NumberType extends AbstractColumnType
             'rounding_mode' => \NumberFormatter::ROUND_HALFUP,
         ]);
 
-        $resolver->setAllowedValues([
-            'rounding_mode' => [
-                \NumberFormatter::ROUND_FLOOR,
-                \NumberFormatter::ROUND_DOWN,
-                \NumberFormatter::ROUND_HALFDOWN,
-                \NumberFormatter::ROUND_HALFEVEN,
-                \NumberFormatter::ROUND_HALFUP,
-                \NumberFormatter::ROUND_UP,
-                \NumberFormatter::ROUND_CEILING,
-            ],
-        ]);
+        if ($resolver instanceof OptionsResolverInterface) {
+            $resolver->setAllowedValues(
+                [
+                    'rounding_mode' => [
+                        \NumberFormatter::ROUND_FLOOR,
+                        \NumberFormatter::ROUND_DOWN,
+                        \NumberFormatter::ROUND_HALFDOWN,
+                        \NumberFormatter::ROUND_HALFEVEN,
+                        \NumberFormatter::ROUND_HALFUP,
+                        \NumberFormatter::ROUND_UP,
+                        \NumberFormatter::ROUND_CEILING,
+                    ],
+                ]
+            );
+        } else {
+            $resolver->setAllowedValues(
+                'rounding_mode',
+                [
+                    \NumberFormatter::ROUND_FLOOR,
+                    \NumberFormatter::ROUND_DOWN,
+                    \NumberFormatter::ROUND_HALFDOWN,
+                    \NumberFormatter::ROUND_HALFEVEN,
+                    \NumberFormatter::ROUND_HALFUP,
+                    \NumberFormatter::ROUND_UP,
+                    \NumberFormatter::ROUND_CEILING,
+                ]
+            );
+        }
     }
 }
