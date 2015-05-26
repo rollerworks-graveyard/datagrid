@@ -1,5 +1,5 @@
 RollerworksDatagrid
-====================
+===================
 
 RollerworksDatagrid provides you with a powerful datagrid system
 for your PHP applications.
