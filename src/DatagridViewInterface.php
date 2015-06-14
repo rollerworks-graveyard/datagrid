@@ -94,4 +94,30 @@ interface DatagridViewInterface extends \Iterator, \Countable, \ArrayAccess
      * @param HeaderView $column
      */
     public function replaceColumn(HeaderView $column);
+
+    /**
+     * Set view variable.
+     *
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function setVar($key, $value);
+
+    /**
+     * Get a variable value by key.
+     *
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getVar($key, $default = null);
+
+    /**
+     * Get all the variables assigned to this view.
+     *
+     * @return mixed[]
+     */
+    public function getVars();
+
 }

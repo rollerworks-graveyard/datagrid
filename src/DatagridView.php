@@ -55,6 +55,11 @@ class DatagridView implements DatagridViewInterface
     private $rowset;
 
     /**
+     * @var mixed[]
+     */
+    private $vars = [];
+
+    /**
      * Constructs.
      *
      * Should be called only from Datagrid::createView() method.
@@ -344,6 +349,44 @@ class DatagridView implements DatagridViewInterface
      */
     public function offsetUnset($offset)
     {
+    }
+
+    /**
+     * Set view variable.
+     *
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function setVar($key, $value)
+    {
+        $this->vars[$key] = $value;
+    }
+
+    /**
+     * Get a variable value by key.
+     *
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getVar($key, $default = null)
+    {
+        if (array_key_exists($key, $this->vars)) {
+            return $this->vars[$key];
+        }
+
+        return $default;
+    }
+
+    /**
+     * Get all the variables assigned to this view.
+     *
+     * @return mixed[]
+     */
+    public function getVars()
+    {
+        return $this->vars;
     }
 
     /**
