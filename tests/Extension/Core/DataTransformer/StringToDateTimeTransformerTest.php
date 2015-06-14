@@ -57,15 +57,11 @@ class StringToDateTimeTransformerTest extends DateTimeTestCase
             ['G:i:s', '16:05:06', '1970-01-01 16:05:06 UTC'],
             ['g:i:s a', '4:05:06 pm', '1970-01-01 16:05:06 UTC'],
             ['h:i:s a', '04:05:06 pm', '1970-01-01 16:05:06 UTC'],
+            ['Y-z', '2010-33', '2010-02-03 00:00:00 UTC'],
 
             // seconds since unix
             ['U', '1265213106', '2010-02-03 16:05:06 UTC'],
         ];
-
-        // This test will fail < 5.3.9 - see https://bugs.php.net/51994
-        if (version_compare(phpversion(), '5.3.9', '>=')) {
-            $data[] = ['Y-z', '2010-33', '2010-02-03 00:00:00 UTC'];
-        }
 
         return $data;
     }
@@ -73,25 +69,9 @@ class StringToDateTimeTransformerTest extends DateTimeTestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testTransformUsingPipe($format, $input, $output)
+    public function testTransform($format, $input, $output)
     {
-        if (version_compare(phpversion(), '5.3.7', '<')) {
-            $this->markTestSkipped('Pipe usage requires PHP 5.3.7 or newer.');
-        }
-
-        $transformer = new StringToDateTimeTransformer('UTC', 'UTC', $format, true);
-
-        $output = new \DateTime($output);
-
-        $this->assertDateTimeEquals($output, $transformer->transform($input));
-    }
-
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testTransformWithoutUsingPipe($format, $input, $output)
-    {
-        $transformer = new StringToDateTimeTransformer('UTC', 'UTC', $format, false);
+        $transformer = new StringToDateTimeTransformer('UTC', 'UTC', $format.'|');
 
         $output = new \DateTime($output);
 
