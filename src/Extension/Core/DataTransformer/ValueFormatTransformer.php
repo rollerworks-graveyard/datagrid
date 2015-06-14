@@ -59,18 +59,21 @@ class ValueFormatTransformer implements DataTransformerInterface
     public function transform($value)
     {
         $value = $this->populateValue($value, $this->emptyValue);
+
         if (is_array($value) && null !== $this->glue && null === $this->format) {
             $value = implode($this->glue, $value);
         }
 
         if (null !== $this->format) {
             $format = $this->format;
+            $formatCallable = is_callable($format);
 
             if (is_array($value)) {
                 if (null !== $this->glue) {
                     $formattedValues = [];
+
                     foreach ($value as $val) {
-                        if ($format instanceof \Closure || (is_object($format) && method_exists($format, '__invoke'))) {
+                        if ($formatCallable) {
                             $formattedValues[] = $format($val);
                         } else {
                             $formattedValues[] = sprintf($format, $val);
@@ -79,14 +82,14 @@ class ValueFormatTransformer implements DataTransformerInterface
 
                     $value = implode($this->glue, $formattedValues);
                 } else {
-                    if ($format instanceof \Closure || (is_object($format) && method_exists($format, '__invoke'))) {
+                    if ($formatCallable) {
                         $value = $format($value);
                     } else {
                         $value = vsprintf($format, $value);
                     }
                 }
             } else {
-                if ($format instanceof \Closure || (is_object($format) && method_exists($format, '__invoke'))) {
+                if ($formatCallable) {
                     $value = $format($value);
                 } else {
                     $value = sprintf($format, $value);
@@ -124,11 +127,11 @@ class ValueFormatTransformer implements DataTransformerInterface
 
         foreach ($emptyValue as $field => $value) {
             if (!in_array($field, $mappingFields, true)) {
-                throw new TransformationFailedException(sprintf('Empty-value of mapping field "%s" doesn\'t exists field mapping.', $field));
+                throw new TransformationFailedException(sprintf('Empty-value of mapping field "%s" doesn\'t exists in field mapping.', $field));
             }
 
             if (!is_string($value)) {
-                throw new TransformationFailedException(sprintf('Empty-value of mapping field "%s" must be a valid string.', $field));
+                throw new TransformationFailedException(sprintf('Empty-value of mapping field "%s" must be a string value.', $field));
             }
         }
     }
@@ -141,15 +144,16 @@ class ValueFormatTransformer implements DataTransformerInterface
      */
     private function populateValue($value, $emptyValue)
     {
+        // Don't use empty() here as 0 is a none-empty value
         if (is_string($emptyValue)) {
-            if (!isset($value) || (is_string($value) && 0 === strlen($value))) {
+            if (!isset($value) || '' === $value) {
                 return $emptyValue;
             }
 
             if (is_array($value)) {
-                foreach ($value as $i => $val) {
-                    if (!isset($val) || (is_string($val) && !strlen($val))) {
-                        $value[$i] = $emptyValue;
+                foreach ($value as $i => &$val) {
+                    if (!isset($val) || '' === $val) {
+                        $val = $emptyValue;
                     }
                 }
             }
@@ -158,16 +162,16 @@ class ValueFormatTransformer implements DataTransformerInterface
         }
 
         /*
-         * If value is simple string and $emptyValue is array there is no way
+         * If the value is a simple string and $emptyValue is array there is no way
          * to guess which value should be used.
          */
         if (!is_array($value)) {
             return (string) $value;
         }
 
-        foreach ($value as $field => $fieldValue) {
-            if (empty($fieldValue)) {
-                $value[$field] = array_key_exists($field, $emptyValue) ? $emptyValue[$field] : '';
+        foreach ($value as $field => &$fieldValue) {
+            if (!isset($val) || '' === $val) {
+                $fieldValue = array_key_exists($field, $emptyValue) ? $emptyValue[$field] : '';
             }
         }
 
