@@ -160,6 +160,29 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->gridView->hasColumn('bar'));
     }
 
+    public function testGetCanGetVariablesWhenNoneWereSet()
+    {
+        $this->assertEquals([], $this->gridView->getVars());
+        $this->assertNull($this->gridView->getVar('foo'));
+        $this->assertEquals('bar', $this->gridView->getVar('foo', 'bar'));
+    }
+
+    public function testGetGetVariablesWhenSet()
+    {
+        $this->gridView->setVar('foo', 'bar');
+        $this->gridView->setVar('name', 'test');
+        $this->gridView->setVar('empty', null);
+
+        $this->assertEquals(['foo' => 'bar', 'name' => 'test', 'empty' => null], $this->gridView->getVars());
+        $this->assertEquals('bar', $this->gridView->getVar('foo'));
+        $this->assertEquals('test', $this->gridView->getVar('name'));
+        $this->assertEquals('test', $this->gridView->getVar('name'));
+        $this->assertNull($this->gridView->getVar('bar'));
+
+        // This ensures null values are checked properly.
+        $this->assertNull($this->gridView->getVar('empty', 'overwrite'));
+    }
+
     public function testCount()
     {
         $this->assertCount(2, $this->gridView);
