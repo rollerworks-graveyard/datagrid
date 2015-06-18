@@ -39,6 +39,7 @@ class ActionTypeTest extends BaseTypeTest
                 'edit' => [
                     'uri_scheme' => '/entity/%d/edit',
                     'label' => 'edit',
+                    'attr' => ['class' => 'i-edit'],
                 ],
                 'delete' => [
                     'uri_scheme' => '/entity/%d/delete',
@@ -51,13 +52,14 @@ class ActionTypeTest extends BaseTypeTest
             'edit' => [
                 'url' => '/entity/42/edit',
                 'label' => 'edit',
-                'value' => 42,
-
+                'attr' => ['class' => 'i-edit'],
+                'value' => [42],
             ],
             'delete' => [
                 'url' => '/entity/42/delete',
                 'label' => 'Remove',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
         ];
 
@@ -74,7 +76,7 @@ class ActionTypeTest extends BaseTypeTest
                 ],
                 'delete' => [
                     'uri_scheme' => function ($name, $label, $value) {
-                        return '/entity/'.$value.'/delete?name='.$name.'&label='.$label;
+                        return '/entity/'.$value[0].'/delete?name='.$name.'&label='.$label;
                     },
                     'label' => 'Remove',
                 ],
@@ -85,12 +87,14 @@ class ActionTypeTest extends BaseTypeTest
             'edit' => [
                 'url' => '/entity/42/edit',
                 'label' => 'edit',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
             'delete' => [
                 'url' => '/entity/42/delete?name=delete&label=Remove',
                 'label' => 'Remove',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
         ];
 
@@ -108,7 +112,7 @@ class ActionTypeTest extends BaseTypeTest
                 'delete' => [
                     'uri_scheme' => '/entity/%d/delete',
                     'label' => function ($name, $value) {
-                        return ucfirst($name).' #'.$value;
+                        return ucfirst($name).' #'.$value[0];
                     },
                 ],
             ],
@@ -118,12 +122,14 @@ class ActionTypeTest extends BaseTypeTest
             'edit' => [
                 'url' => '/entity/42/edit',
                 'label' => 'edit',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
             'delete' => [
                 'url' => '/entity/42/delete',
                 'label' => 'Delete #42',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
         ];
 
@@ -151,12 +157,14 @@ class ActionTypeTest extends BaseTypeTest
             'edit' => [
                 'url' => '/entity/42/edit?redirect_uri=%2Fentity%2Flist',
                 'label' => 'edit',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
             'delete' => [
                 'url' => '/entity/42/delete?ask-confirm=true&redirect_uri=%2Fentity%2Flist',
                 'label' => 'Remove',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
         ];
 
@@ -171,7 +179,7 @@ class ActionTypeTest extends BaseTypeTest
                     'uri_scheme' => '/entity/%d/edit',
                     'label' => 'edit',
                     'redirect_uri' => function ($name, $label, $value) {
-                        return '/entity/list/?value='.$value.'&name='.$name.'&label='.$label;
+                        return '/entity/list/?value='.$value[0].'&name='.$name.'&label='.$label;
                     },
                 ],
                 'delete' => [
@@ -185,12 +193,14 @@ class ActionTypeTest extends BaseTypeTest
             'edit' => [
                 'url' => '/entity/42/edit?redirect_uri=%2Fentity%2Flist%2F%3Fvalue%3D42%26name%3Dedit%26label%3Dedit',
                 'label' => 'edit',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
             'delete' => [
                 'url' => '/entity/42/delete',
                 'label' => 'Remove',
-                'value' => 42,
+                'attr' => [],
+                'value' => [42],
             ],
         ];
 
@@ -218,11 +228,13 @@ class ActionTypeTest extends BaseTypeTest
                 'url' => '/entity/50/edit?name=sheldon',
                 'value' => ['id' => 50, 'name' => 'sheldon'],
                 'label' => 'edit',
+                'attr' => [],
             ],
             'delete' => [
                 'url' => '/entity/50/delete?name=sheldon',
                 'value' => ['id' => 50, 'name' => 'sheldon'],
                 'label' => 'delete',
+                'attr' => [],
             ],
         ];
 

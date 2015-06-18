@@ -51,6 +51,7 @@ class ActionType extends AbstractColumnType
     {
         $return = [];
         $actions = $options['actions'];
+        $mappingValues = is_array($view->value) ? $view->value : [$view->value];
 
         foreach ($actions as $name => $actionOpts) {
             $actionOpts = $this->actionOptionsResolver->resolve((array) $actionOpts);
@@ -58,16 +59,16 @@ class ActionType extends AbstractColumnType
 
             if (null !== $actionOpts['label']) {
                 if (is_object($actionOpts['label'])) {
-                    $actionOpts['label'] = $actionOpts['label']($name, $view->value);
+                    $actionOpts['label'] = $actionOpts['label']($name, $mappingValues);
                 }
             } else {
                 $actionOpts['label'] = $name;
             }
 
             if (is_object($actionOpts['uri_scheme'])) {
-                $url = $actionOpts['uri_scheme']($name, $actionOpts['label'], $view->value);
+                $url = $actionOpts['uri_scheme']($name, $actionOpts['label'], $mappingValues);
             } else {
-                $url = vsprintf($actionOpts['uri_scheme'], $view->value);
+                $url = vsprintf($actionOpts['uri_scheme'], $mappingValues);
             }
 
             if ($actionOpts['redirect_uri']) {
@@ -75,7 +76,7 @@ class ActionType extends AbstractColumnType
                     $actionOpts['redirect_uri'] = $actionOpts['redirect_uri'](
                         $name,
                         $actionOpts['label'],
-                        $view->value
+                        $mappingValues
                     );
                 }
 
@@ -88,7 +89,8 @@ class ActionType extends AbstractColumnType
 
             $return[$name]['url'] = $url;
             $return[$name]['label'] = $actionOpts['label'];
-            $return[$name]['value'] = $view->value;
+            $return[$name]['attr'] = $actionOpts['attr'];
+            $return[$name]['value'] = $mappingValues;
         }
 
         $view->value = $return;
@@ -105,6 +107,7 @@ class ActionType extends AbstractColumnType
             [
                 'redirect_uri' => null,
                 'label' => null,
+                'attr' => [],
             ]
         );
 
@@ -116,12 +119,14 @@ class ActionType extends AbstractColumnType
                     'redirect_uri' => ['string', 'null', 'callable'],
                     'uri_scheme' => ['string', 'callable'],
                     'label' => ['null', 'string', 'callable'],
+                    'attr' => ['array'],
                 ]
             );
         } else {
             $this->actionOptionsResolver->setAllowedTypes('redirect_uri', ['string', 'null', 'callable']);
             $this->actionOptionsResolver->setAllowedTypes('uri_scheme', ['string', 'callable']);
             $this->actionOptionsResolver->setAllowedTypes('label', ['null', 'string', 'callable']);
+            $this->actionOptionsResolver->setAllowedTypes('attr', ['array']);
         }
     }
 }
