@@ -117,7 +117,7 @@ class ValueFormatTransformer implements DataTransformerInterface
      */
     private function validateEmptyValueOption($emptyValue, array $mappingFields)
     {
-        if (is_string($emptyValue)) {
+        if (null === $emptyValue || is_string($emptyValue)) {
             return;
         }
 
