@@ -170,7 +170,7 @@ class ValueFormatTransformer implements DataTransformerInterface
         }
 
         foreach ($value as $field => &$fieldValue) {
-            if (!isset($val) || '' === $val) {
+            if (!isset($fieldValue) || '' === $fieldValue) {
                 $fieldValue = array_key_exists($field, $emptyValue) ? $emptyValue[$field] : '';
             }
         }

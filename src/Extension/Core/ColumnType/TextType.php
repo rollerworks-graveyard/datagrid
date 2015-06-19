@@ -40,7 +40,7 @@ class TextType extends AbstractColumnType
         if (null !== $options['empty_value'] || null !== $options['value_format'] || null !== $options['value_glue']) {
             $column->addViewTransformer(
                new ValueFormatTransformer(
-                   (string) $options['empty_value'],
+                   $options['empty_value'],
                    $options['value_glue'],
                    $options['value_format'],
                    $options['field_mapping']
@@ -71,14 +71,14 @@ class TextType extends AbstractColumnType
                         'callable',
                         'null',
                     ],
-                    'empty_value' => ['string', 'null'],
+                    'empty_value' => ['string', 'array', 'null'],
                 ]
             );
         } else {
             $resolver->setAllowedTypes('trim', 'bool');
             $resolver->setAllowedTypes('value_glue', ['string', 'null']);
             $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
-            $resolver->setAllowedTypes('empty_value', ['string', 'null']);
+            $resolver->setAllowedTypes('empty_value', ['string', 'array', 'null']);
         }
     }
 }
