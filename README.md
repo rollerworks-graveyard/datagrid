@@ -26,7 +26,7 @@ You need at least PHP 5.5, and Intl extension for international support.
 
 For framework integration you may use the following;
 
-* Symfony Bundle (coming soon)
+* Symfony Bundle (available!)
 * Symfony DependencyInjection extension (coming soon)
 * ZendFramework2 Plugin (coming soon)
 * Silex Plugin (coming soon)
@@ -34,7 +34,7 @@ For framework integration you may use the following;
 Features
 --------
 
-The following types are provided out of the box, building your is also
+The following types are provided out of the box, building yours is also
 possible and very straightforward. You can use any type of data
 (including nested sets).
 
@@ -78,14 +78,14 @@ This will build the documentation into the `doc/_build/html` directory.
 
 Further information can be found in The Symfony [documentation format][5] article.
 
-> The Sphinx extensions and theme are installed sing Git submodules
+> The Sphinx extensions and theme are installed under Git submodules
 > and don't need to be downloaded separately.
 
 Versioning
 ----------
 
 For transparency and insight into the release cycle, and for striving
-to maintain backward compatibility, RollerworksSearch is maintained under
+to maintain backwards compatibility, RollerworksSearch is maintained under
 the Semantic Versioning guidelines as much as possible.
 
 Releases will be numbered with the following format:
@@ -94,9 +94,9 @@ Releases will be numbered with the following format:
 
 And constructed with the following guidelines:
 
-* Breaking backward compatibility bumps the major (and resets the minor and patch)
-* New additions without breaking backward compatibility bumps the minor (and resets the patch)
-* Bug fixes and misc changes bumps the patch
+* Breaking backward compatibility bumps the major (and resets the minor and patch) number
+* New additions without breaking backwards compatibility bumps the minor (and resets the patch) number
+* Bug fixes and misc changes bump the patch number
 
 For more information on SemVer, please visit <http://semver.org/>.
 
