@@ -36,13 +36,13 @@ class SingleMappingTransformer implements DataTransformerInterface
 
     public function transform($value)
     {
-        if (!is_array($value) || count($value) != 1 || count($this->mappingFields) != 1) {
+        if (!is_array($value) || 1 !== count($value) || 1 !== count($this->mappingFields)) {
             return $value;
         }
 
         // If there is only one field but is does not exist the value
         // is assumed to be an array-value and not a data-mapping result.
-        if (!isset($value[$this->mappingFields[0]])) {
+        if (!isset($value[key($this->mappingFields)])) {
             return $value;
         }
 

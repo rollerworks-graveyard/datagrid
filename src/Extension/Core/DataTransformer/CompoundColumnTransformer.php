@@ -37,15 +37,28 @@ class CompoundColumnTransformer implements DataTransformerInterface
         $this->columns = $columns;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function transform($value)
     {
         $values = [];
+
         foreach ($this->columns as $name => $column) {
             $values[$name] = [];
 
-            foreach ($column->getOption('field_mapping', []) as $field) {
+            foreach ($column->getOption('field_mapping', []) as $field => $mappingName) {
+                // If the 'field_mapping' is provided for the compound column
+                // we don't want to require duplicating the mappings for each sub-column.
+                //
+                // In practice you can use ['my-key' => 'mapping-path'] for compound
+                // and then only use ['my-key'] for the sub-column(s).
+                if (is_int($field)) {
+                    $field = $mappingName;
+                }
+
                 if (!array_key_exists($field, $value)) {
-                    throw new TransformationFailedException(sprintf('Field "%s" is required by sub-column "%s" does not exist in head-parent column.', $field, $name));
+                    throw new TransformationFailedException(sprintf('Field "%s" is required by sub-column "%s", but does not exist in parent column.', $field, $column));
                 }
 
                 $values[$name][$field] = $value[$field];

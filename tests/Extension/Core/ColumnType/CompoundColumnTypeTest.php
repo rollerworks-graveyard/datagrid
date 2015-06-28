@@ -42,8 +42,8 @@ class CompoundColumnTypeTest extends BaseTypeTest
         ];
 
         $columns = [];
-        $columns[] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
-        $columns[] = $this->factory->createColumn('date', 'datetime', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['birthDate'], 'time_format' => \IntlDateFormatter::NONE]);
+        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age' => 'age']]);
+        $columns['date'] = $this->factory->createColumn('date', 'datetime', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['birthdate' => 'birthDate'], 'time_format' => \IntlDateFormatter::NONE]);
         $options['columns'] = $columns;
 
         $column = $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options);
@@ -57,7 +57,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $datagridView = $this->datagrid->createView();
 
         $view = $column->createCellView($datagridView, $data[1], 1);
-        $this->assertEquals(['6', 'Oct 1, 2007'], $view->value);
+        $this->assertEquals(['age' => '6', 'date' => 'Oct 1, 2007'], $view->value);
     }
 
     public function testWithAutoMappingAndFormatter()
@@ -71,8 +71,8 @@ class CompoundColumnTypeTest extends BaseTypeTest
         ];
 
         $columns = [];
-        $columns[] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
-        $columns[] = $this->factory->createColumn('date', 'datetime', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['birthDate'], 'time_format' => \IntlDateFormatter::NONE]);
+        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age' => 'age']]);
+        $columns['date'] = $this->factory->createColumn('date', 'datetime', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['birthdate' => 'birthDate'], 'time_format' => \IntlDateFormatter::NONE]);
         $options['columns'] = $columns;
 
         $column = $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options);
@@ -100,8 +100,8 @@ class CompoundColumnTypeTest extends BaseTypeTest
         ];
 
         $columns = [];
-        $columns[] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
-        $columns[] = false;
+        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
+        $columns['foo'] = false;
         $options['columns'] = $columns;
 
         $this->setExpectedException(
@@ -122,8 +122,8 @@ class CompoundColumnTypeTest extends BaseTypeTest
         ];
 
         $columns = [];
-        $columns[] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
-        $columns[] = false;
+        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
+        $columns['foo'] = false;
         $options['columns'] = $columns;
 
         $this->setExpectedException(

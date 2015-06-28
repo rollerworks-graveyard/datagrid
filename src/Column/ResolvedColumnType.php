@@ -237,7 +237,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
                 continue;
             }
 
-            $values[is_int($mappingName) ? $field : $mappingName] = $dataMapper->getData($field, $object);
+            $values[$mappingName] = $dataMapper->getData($field, $object);
         }
 
         if ($useTransformers) {

@@ -220,7 +220,7 @@ class ActionTypeTest extends BaseTypeTest
                     'label' => 'delete',
                 ],
             ],
-            'field_mapping' => ['id', 'name'],
+            'field_mapping' => ['id' => 'id', 'name' => 'name'],
         ];
 
         $expected = [
