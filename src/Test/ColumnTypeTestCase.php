@@ -32,9 +32,9 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
         $this->datagrid = $this->factory->createDatagrid('grid');
     }
 
-    protected function assertCellValueEquals($expectedValue, $data, array $options = [], $idx = 1)
+    protected function assertCellValueEquals($expectedValue, $data, array $options = [], array $viewAttributes = null, $idx = 1)
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, array_merge(['label' => 'My label', 'field_mapping' => ['key']], $options));
+        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, array_merge(['label' => 'My label', 'field_mapping' => ['key' => 'key']], $options));
 
         if (!is_array($data)) {
             $object = new \stdClass();
@@ -46,7 +46,14 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
         $datagridView = $this->datagrid->createView();
 
         $view = $column->createCellView($datagridView, $data[$idx], $idx);
+
         $this->assertEquals($expectedValue, $view->value);
+
+        if (null !== $viewAttributes) {
+            $viewAttributes['row'] = 1;
+
+            $this->assertEquals($viewAttributes, $view->attributes);
+        }
     }
 
     protected function assertCellValueNotEquals($expectedValue, $data, array $options = [], $idx = 1)

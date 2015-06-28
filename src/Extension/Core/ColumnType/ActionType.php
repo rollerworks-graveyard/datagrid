@@ -14,6 +14,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
 use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -23,19 +24,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ActionType extends AbstractColumnType
 {
-    /**
-     * @var OptionsResolver
-     */
-    private $actionOptionsResolver;
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->actionOptionsResolver = new OptionsResolver();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -49,51 +37,42 @@ class ActionType extends AbstractColumnType
      */
     public function buildCellView(CellView $view, ColumnInterface $column, array $options)
     {
-        $return = [];
-        $actions = $options['actions'];
-        $mappingValues = is_array($view->value) ? $view->value : [$view->value];
+        $mappingValues = $view->value;
 
-        foreach ($actions as $name => $actionOpts) {
-            $actionOpts = $this->actionOptionsResolver->resolve((array) $actionOpts);
-            $return[$name] = [];
-
-            if (null !== $actionOpts['label']) {
-                if (is_object($actionOpts['label'])) {
-                    $actionOpts['label'] = $actionOpts['label']($name, $mappingValues);
-                }
-            } else {
-                $actionOpts['label'] = $name;
-            }
-
-            if (is_object($actionOpts['uri_scheme'])) {
-                $url = $actionOpts['uri_scheme']($name, $actionOpts['label'], $mappingValues);
-            } else {
-                $url = vsprintf($actionOpts['uri_scheme'], $mappingValues);
-            }
-
-            if ($actionOpts['redirect_uri']) {
-                if (is_object($actionOpts['redirect_uri'])) {
-                    $actionOpts['redirect_uri'] = $actionOpts['redirect_uri'](
-                        $name,
-                        $actionOpts['label'],
-                        $mappingValues
-                    );
-                }
-
-                if (false !== strpos($url, '?')) {
-                    $url .= '&redirect_uri='.urlencode($actionOpts['redirect_uri']);
-                } else {
-                    $url .= '?redirect_uri='.urlencode($actionOpts['redirect_uri']);
-                }
-            }
-
-            $return[$name]['url'] = $url;
-            $return[$name]['label'] = $actionOpts['label'];
-            $return[$name]['attr'] = $actionOpts['attr'];
-            $return[$name]['value'] = $mappingValues;
+        if (is_object($options['content'])) {
+            $options['content'] = $options['content']($mappingValues);
         }
 
-        $view->value = $return;
+        if (null !== $options['url']) {
+            $url = $options['url'];
+        } else {
+            if (null === $options['uri_scheme']) {
+                throw new \InvalidArgumentException('Action needs an "url" or "uri_scheme" but none is provided.');
+            }
+
+            if (is_object($options['uri_scheme'])) {
+                $url = $options['uri_scheme']($mappingValues);
+            } else {
+                $url = strtr($options['uri_scheme'], $this->wrapValues($mappingValues));
+            }
+        }
+
+        if (null !== $options['redirect_uri']) {
+            if (is_object($options['redirect_uri'])) {
+                $options['redirect_uri'] = $options['redirect_uri']($mappingValues);
+            }
+
+            if (false !== strpos($url, '?')) {
+                $url .= '&redirect_uri='.urlencode($options['redirect_uri']);
+            } else {
+                $url .= '?redirect_uri='.urlencode($options['redirect_uri']);
+            }
+        }
+
+        $view->attributes['url'] = $url;
+        $view->attributes['content'] = $options['content'];
+        $view->attributes['attr'] = $options['attr'];
+        $view->attributes['url_attr'] = $options['url_attr'];
     }
 
     /**
@@ -101,32 +80,52 @@ class ActionType extends AbstractColumnType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['actions']);
-
-        $this->actionOptionsResolver->setDefaults(
+        $resolver->setDefaults(
             [
                 'redirect_uri' => null,
-                'label' => null,
+                'content' => null,
                 'attr' => [],
+                'url_attr' => [],
+                'url' => null,
+                'uri_scheme' => null,
+
+                // Remove requirement for label
+                'label' => function (Options $options) {
+                    return $options['content'];
+                },
+
+                // This value should not be changed
+                'field_mapping_single' => false,
             ]
         );
 
-        $this->actionOptionsResolver->setRequired(['uri_scheme']);
-
-        if ($this->actionOptionsResolver instanceof OptionsResolverInterface) {
-            $this->actionOptionsResolver->setAllowedTypes(
+        if ($resolver instanceof OptionsResolverInterface) {
+            $resolver->setAllowedTypes(
                 [
                     'redirect_uri' => ['string', 'null', 'callable'],
                     'uri_scheme' => ['string', 'callable'],
-                    'label' => ['null', 'string', 'callable'],
+                    'content' => ['null', 'string', 'callable'],
                     'attr' => ['array'],
+                    'url_attr' => ['array'],
                 ]
             );
         } else {
-            $this->actionOptionsResolver->setAllowedTypes('redirect_uri', ['string', 'null', 'callable']);
-            $this->actionOptionsResolver->setAllowedTypes('uri_scheme', ['string', 'callable']);
-            $this->actionOptionsResolver->setAllowedTypes('label', ['null', 'string', 'callable']);
-            $this->actionOptionsResolver->setAllowedTypes('attr', ['array']);
+            $resolver->setAllowedTypes('redirect_uri', ['string', 'null', 'callable']);
+            $resolver->setAllowedTypes('uri_scheme', ['string', 'callable']);
+            $resolver->setAllowedTypes('content', ['null', 'string', 'callable']);
+            $resolver->setAllowedTypes('attr', ['array']);
+            $resolver->setAllowedTypes('url_attr', ['array']);
         }
+    }
+
+    private static function wrapValues(array $values)
+    {
+        $return = [];
+
+        foreach ($values as $key => $value) {
+            $return['{'.$key.'}'] = $value;
+        }
+
+        return $return;
     }
 }
