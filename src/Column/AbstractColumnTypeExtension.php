@@ -16,26 +16,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscaps.net>
  */
-abstract class ColumnAbstractTypeExtension implements ColumnTypeExtensionInterface
+abstract class AbstractColumnTypeExtension implements ColumnTypeExtensionInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function buildColumn(ColumnInterface $column)
+    public function buildColumn(ColumnInterface $column, array $options)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildHeaderView(ColumnInterface $column, HeaderView $view)
+    public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildCellView(ColumnInterface $column, CellView $view)
+    public function buildCellView(CellView $view, ColumnInterface $column, array $options)
     {
     }
 
