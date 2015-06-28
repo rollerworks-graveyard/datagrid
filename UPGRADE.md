@@ -3,6 +3,57 @@ UPGRADE
 
 ## Upgrade FROM 0.4 to 0.5
 
+ * The of methods signature of `buildColumn()`, `buildHeaderView()` and `buildCellView()`
+   on the `Rollerworks\Component\Datagrid\Column\ColumnTypeExtensionInterface` was changed
+   to be consistent with the `Rollerworks\Component\Datagrid\Column\ColumnTypeInterface`.
+   
+   Before:
+   
+   ```php
+   /**
+    * @param ColumnInterface $column
+    */
+   public function buildColumn(ColumnInterface $column);
+
+   /**
+    * @param ColumnInterface $column
+    * @param HeaderView      $view
+    */
+   public function buildHeaderView(ColumnInterface $column, HeaderView $view);
+
+   /**
+   * @param ColumnInterface $column
+   * @param CellView        $view
+   */
+   public function buildCellView(ColumnInterface $column, CellView $view);
+   ```
+   
+   After:
+   
+   ```php
+   /**
+    * @param ColumnInterface $column
+    * @param array           $options
+    */
+   public function buildColumn(ColumnInterface $column, array $options);
+   
+   /**
+    * @param HeaderView      $view
+    * @param ColumnInterface $column
+    * @param array           $options
+    */
+   public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options);
+   
+   /**
+    * @param CellView        $view
+    * @param ColumnInterface $column
+    * @param array           $options
+    */
+   public function buildCellView(CellView $view, ColumnInterface $column, array $options);
+   ```
+
+## Upgrade FROM 0.4 to 0.5
+
 ### Field mapping configuration
 
  * The "field_mapping" option now only accepts an associative array,
