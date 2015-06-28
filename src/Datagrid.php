@@ -18,6 +18,7 @@ use Rollerworks\Component\Datagrid\Exception\DatagridException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Default Datagrid implementation.
@@ -102,6 +103,16 @@ class Datagrid implements DatagridInterface
     public function addEventListener($eventName, callable $listener, $priority = 0)
     {
         $this->dispatcher->addListener($eventName, $listener, $priority);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->dispatcher->addSubscriber($subscriber);
 
         return $this;
     }

@@ -14,6 +14,7 @@ namespace Rollerworks\Component\Datagrid;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -141,9 +142,17 @@ interface DatagridInterface
     public function addEventListener($eventName, callable $listener, $priority = 0);
 
     /**
+     * Adds an EventSubscriber. The subscriber is asked for all the events it is
+     * interested in and added as a listener for these events.
+     *
+     * @param EventSubscriberInterface $subscriber The subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber);
+
+    /**
      * Returns the data-set of the datagrid.
      *
-     * @param bool $original returns the data unprocessed.
+     * @param bool $original returns the data unprocessed
      *
      * @return array|\Traversable
      */
