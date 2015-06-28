@@ -20,20 +20,23 @@ interface ColumnTypeExtensionInterface
 {
     /**
      * @param ColumnInterface $column
+     * @param array           $options
      */
-    public function buildColumn(ColumnInterface $column);
+    public function buildColumn(ColumnInterface $column, array $options);
 
     /**
-     * @param ColumnInterface $column
      * @param HeaderView      $view
+     * @param ColumnInterface $column
+     * @param array           $options
      */
-    public function buildHeaderView(ColumnInterface $column, HeaderView $view);
+    public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options);
 
     /**
-     * @param ColumnInterface $column
      * @param CellView        $view
+     * @param ColumnInterface $column
+     * @param array           $options
      */
-    public function buildCellView(ColumnInterface $column, CellView $view);
+    public function buildCellView(CellView $view, ColumnInterface $column, array $options);
 
     /**
      * Configures the default options for this type.

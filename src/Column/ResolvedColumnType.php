@@ -190,7 +190,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
         $this->innerType->buildHeaderView($view, $column, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            $extension->buildHeaderView($column, $view);
+            $extension->buildHeaderView($view, $column, $options);
         }
     }
 
@@ -210,7 +210,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
         $this->innerType->buildCellView($view, $column, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            $extension->buildCellView($column, $view);
+            $extension->buildCellView($view, $column, $options);
         }
     }
 
