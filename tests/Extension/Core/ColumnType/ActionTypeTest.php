@@ -20,7 +20,16 @@ class ActionTypeTest extends BaseTypeTest
 
     public function testPassLabelToView()
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['key'], 'actions' => ['edit' => ['uri_scheme' => '/entity/%d/edit']]]);
+        $column = $this->factory->createColumn(
+            'edit',
+            $this->getTestedType(),
+            $this->datagrid,
+            [
+                'content' => 'My label',
+                'field_mapping' => ['key'],
+                'uri_scheme' => '/entity/{key}/edit',
+            ]
+        );
 
         $object = new \stdClass();
         $object->key = ' foo ';
@@ -32,217 +41,140 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertEquals('My label', $view->label);
     }
 
-    public function testActions()
+    public function testActionWithAttr()
     {
         $options = [
-            'actions' => [
-                'edit' => [
-                    'uri_scheme' => '/entity/%d/edit',
-                    'label' => 'edit',
-                    'attr' => ['class' => 'i-edit'],
-                ],
-                'delete' => [
-                    'uri_scheme' => '/entity/%d/delete',
-                    'label' => 'Remove',
-                ],
-            ],
+            'uri_scheme' => '/entity/{key}/edit',
+            'content' => 'edit',
+            'attr' => ['class' => 'i-edit'],
+            'url_attr' => ['data-new-window' => true],
         ];
 
-        $expected = [
-            'edit' => [
-                'url' => '/entity/42/edit',
-                'label' => 'edit',
-                'attr' => ['class' => 'i-edit'],
-                'value' => [42],
-            ],
-            'delete' => [
-                'url' => '/entity/42/delete',
-                'label' => 'Remove',
-                'attr' => [],
-                'value' => [42],
-            ],
+        $expectedAttributesAttributes = [
+            'url' => '/entity/42/edit',
+            'content' => 'edit',
+            'attr' => ['class' => 'i-edit'],
+            'url_attr' => ['data-new-window' => true],
         ];
 
-        $this->assertCellValueEquals($expected, 42, $options);
+        $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributesAttributes);
     }
 
     public function testActionsWithUriAsClosure()
     {
         $options = [
-            'actions' => [
-                'edit' => [
-                    'uri_scheme' => '/entity/%d/edit',
-                    'label' => 'edit',
-                ],
-                'delete' => [
-                    'uri_scheme' => function ($name, $label, $value) {
-                        return '/entity/'.$value[0].'/delete?name='.$name.'&label='.$label;
-                    },
-                    'label' => 'Remove',
-                ],
-            ],
+            'content' => 'Delete',
+            'uri_scheme' => function ($values) {
+                return '/entity/'.$values['key'].'/delete';
+            },
         ];
 
-        $expected = [
-            'edit' => [
-                'url' => '/entity/42/edit',
-                'label' => 'edit',
-                'attr' => [],
-                'value' => [42],
-            ],
-            'delete' => [
-                'url' => '/entity/42/delete?name=delete&label=Remove',
-                'label' => 'Remove',
-                'attr' => [],
-                'value' => [42],
-            ],
+        $expectedAttributes = [
+            'url' => '/entity/42/delete',
+            'content' => 'Delete',
+            'attr' => [],
+            'url_attr' => [],
         ];
 
-        $this->assertCellValueEquals($expected, 42, $options);
+        $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
-    public function testActionsWithLabelAsClosure()
+    public function testActionsWithContentAsClosure()
     {
         $options = [
-            'actions' => [
-                'edit' => [
-                    'uri_scheme' => '/entity/%d/edit',
-                    'label' => 'edit',
-                ],
-                'delete' => [
-                    'uri_scheme' => '/entity/%d/delete',
-                    'label' => function ($name, $value) {
-                        return ucfirst($name).' #'.$value[0];
-                    },
-                ],
-            ],
+            'uri_scheme' => '/entity/{key}/delete',
+            'content' => function ($values) {
+                return 'Delete #'.$values['key'];
+            },
         ];
 
-        $expected = [
-            'edit' => [
-                'url' => '/entity/42/edit',
-                'label' => 'edit',
-                'attr' => [],
-                'value' => [42],
-            ],
-            'delete' => [
-                'url' => '/entity/42/delete',
-                'label' => 'Delete #42',
-                'attr' => [],
-                'value' => [42],
-            ],
+        $expectedAttributes = [
+            'content' => 'Delete #42',
+            'url' => '/entity/42/delete',
+            'attr' => [],
+            'url_attr' => [],
         ];
 
-        $this->assertCellValueEquals($expected, 42, $options);
+        $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
     public function testActionsWithRedirectUri()
     {
         $options = [
-            'actions' => [
-                'edit' => [
-                    'uri_scheme' => '/entity/%d/edit',
-                    'label' => 'edit',
-                    'redirect_uri' => '/entity/list',
-                ],
-                'delete' => [
-                    'uri_scheme' => '/entity/%d/delete?ask-confirm=true',
-                    'label' => 'Remove',
-                    'redirect_uri' => '/entity/list',
-                ],
-            ],
+            'uri_scheme' => '/entity/{key}/edit',
+            'content' => 'edit',
+            'redirect_uri' => '/entity/list',
         ];
 
-        $expected = [
-            'edit' => [
-                'url' => '/entity/42/edit?redirect_uri=%2Fentity%2Flist',
-                'label' => 'edit',
-                'attr' => [],
-                'value' => [42],
-            ],
-            'delete' => [
-                'url' => '/entity/42/delete?ask-confirm=true&redirect_uri=%2Fentity%2Flist',
-                'label' => 'Remove',
-                'attr' => [],
-                'value' => [42],
-            ],
+        $expectedAttributes = [
+            'url' => '/entity/42/edit?redirect_uri=%2Fentity%2Flist',
+            'content' => 'edit',
+            'attr' => [],
+            'url_attr' => [],
         ];
 
-        $this->assertCellValueEquals($expected, 42, $options);
+        $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
+    }
+
+    public function testActionsWithRedirectUriWithExistingQueryStringInUrl()
+    {
+        $options = [
+            'uri_scheme' => '/entity/{key}/edit?foo=bar',
+            'content' => 'delete',
+            'redirect_uri' => '/entity/list?filter=something',
+        ];
+
+        $expectedAttributes = [
+            'url' => '/entity/42/edit?foo=bar&redirect_uri=%2Fentity%2Flist%3Ffilter%3Dsomething',
+            'content' => 'delete',
+            'attr' => [],
+            'url_attr' => [],
+        ];
+
+        $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
     public function testActionsWithRedirectUriAsClosure()
     {
         $options = [
-            'actions' => [
-                'edit' => [
-                    'uri_scheme' => '/entity/%d/edit',
-                    'label' => 'edit',
-                    'redirect_uri' => function ($name, $label, $value) {
-                        return '/entity/list/?value='.$value[0].'&name='.$name.'&label='.$label;
-                    },
-                ],
-                'delete' => [
-                    'uri_scheme' => '/entity/%d/delete',
-                    'label' => 'Remove',
-                ],
-            ],
+            'uri_scheme' => '/entity/{key}/edit',
+            'content' => 'edit',
+            'redirect_uri' => function ($values) {
+                return '/entity/list/?last-entity='.$values['key'];
+            },
         ];
 
-        $expected = [
-            'edit' => [
-                'url' => '/entity/42/edit?redirect_uri=%2Fentity%2Flist%2F%3Fvalue%3D42%26name%3Dedit%26label%3Dedit',
-                'label' => 'edit',
-                'attr' => [],
-                'value' => [42],
-            ],
-            'delete' => [
-                'url' => '/entity/42/delete',
-                'label' => 'Remove',
-                'attr' => [],
-                'value' => [42],
-            ],
+        $expectedAttributes = [
+            'url' => '/entity/42/edit?redirect_uri=%2Fentity%2Flist%2F%3Flast-entity%3D42',
+            'content' => 'edit',
+            'attr' => [],
+            'url_attr' => [],
         ];
 
-        $this->assertCellValueEquals($expected, 42, $options);
+        $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
     public function testActionsWithMultipleFields()
     {
         $options = [
-            'actions' => [
-                'edit' => [
-                    'uri_scheme' => '/entity/%d/edit?name=%s',
-                    'label' => 'edit',
-                ],
-                'delete' => [
-                    'uri_scheme' => '/entity/%d/delete?name=%s',
-                    'label' => 'delete',
-                ],
-            ],
-            'field_mapping' => ['id' => 'id', 'name' => 'name'],
+            'uri_scheme' => '/entity/{id}/edit?name={username}',
+            'content' => 'edit',
+            'field_mapping' => ['id' => 'id', 'username' => 'name'],
         ];
 
-        $expected = [
-            'edit' => [
-                'url' => '/entity/50/edit?name=sheldon',
-                'value' => ['id' => 50, 'name' => 'sheldon'],
-                'label' => 'edit',
-                'attr' => [],
-            ],
-            'delete' => [
-                'url' => '/entity/50/delete?name=sheldon',
-                'value' => ['id' => 50, 'name' => 'sheldon'],
-                'label' => 'delete',
-                'attr' => [],
-            ],
+        $expectedAttributes = [
+            'url' => '/entity/50/edit?name=sheldon',
+            'content' => 'edit',
+            'attr' => [],
+            'url_attr' => [],
         ];
 
         $object = new \stdClass();
         $object->id = 50;
         $object->name = 'sheldon';
+
         $data = [1 => $object];
 
-        $this->assertCellValueEquals($expected, $data, $options);
+        $this->assertCellValueEquals(['id' => 50, 'username' => 'sheldon'], $data, $options, $expectedAttributes);
     }
 }

@@ -53,23 +53,35 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
             )
         );
         $datagrid->addColumn($this->factory->createColumn('group', 'text', $datagrid, ['label' => 'group', 'field_mapping' => ['group']]));
+
         $datagrid->addColumn(
             $this->factory->createColumn(
                 'actions',
-                'action',
+                'compound_column',
                 $datagrid,
                 [
-                    'label' => 'actions',
-                    'field_mapping' => ['id'],
-                    'actions' => [
-                        'modify' => [
-                            'label' => 'Modify',
-                            'uri_scheme' => 'entity/%d/modify',
-                        ],
-                        'delete' => [
-                            'label' => 'Delete',
-                            'uri_scheme' => 'entity/%d/delete',
-                        ],
+                    'label' => 'Actions',
+                    'columns' => [
+                        'modify' => $this->factory->createColumn(
+                            'modify',
+                            'action',
+                            $datagrid,
+                            [
+                                'label' => 'Modify',
+                                'field_mapping' => ['id' => 'id'],
+                                'uri_scheme' => 'entity/{id}/modify',
+                            ]
+                        ),
+                        'delete' => $this->factory->createColumn(
+                            'delete',
+                            'action',
+                            $datagrid,
+                            [
+                                'label' => 'Delete',
+                                'field_mapping' => ['id' => 'id'],
+                                'uri_scheme' => 'entity/{id}/delete',
+                            ]
+                        ),
                     ]
                 ]
             )
@@ -84,7 +96,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 'email' => 'me@example.com',
                 'regdate' => new \DateTime(),
                 'last_modified' => new \DateTime(),
-                'status' => rand(0, 1),
+                'status' => mt_rand(0, 1),
                 'group' => 'Default'
             ];
         }
