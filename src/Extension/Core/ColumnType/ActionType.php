@@ -37,7 +37,7 @@ class ActionType extends AbstractColumnType
      */
     public function buildCellView(CellView $view, ColumnInterface $column, array $options)
     {
-        $mappingValues = is_array($view->value) ? $view->value : [$view->value];
+        $mappingValues = $view->value;
 
         if (is_object($options['content'])) {
             $options['content'] = $options['content']($mappingValues);
@@ -53,9 +53,7 @@ class ActionType extends AbstractColumnType
             if (is_object($options['uri_scheme'])) {
                 $url = $options['uri_scheme']($mappingValues);
             } else {
-                $values = $this->wrapValues($mappingValues);
-
-                $url = strtr($options['uri_scheme'], $values);
+                $url = strtr($options['uri_scheme'], $this->wrapValues($mappingValues));
             }
         }
 
