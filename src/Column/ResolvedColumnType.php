@@ -229,7 +229,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
 
         $values = [];
 
-        foreach ($column->getOption('field_mapping') as $field) {
+        foreach ($column->getOption('field_mapping') as $mappingName => $field) {
 
             // Ignore null and boolean as these fields-names are always illegal
             // CompoundColumnType sometimes has one key with a boolean value
@@ -237,7 +237,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
                 continue;
             }
 
-            $values[$field] = $dataMapper->getData($field, $object);
+            $values[is_int($mappingName) ? $field : $mappingName] = $dataMapper->getData($field, $object);
         }
 
         if ($useTransformers) {

@@ -41,7 +41,7 @@ class TextTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $options = [
-            'field_mapping' => ['key', 'key2'],
+            'field_mapping' => ['foo' => 'key', 'key2'],
             'value_format' => ' - %s - ',
             'value_glue' => ',',
         ];
