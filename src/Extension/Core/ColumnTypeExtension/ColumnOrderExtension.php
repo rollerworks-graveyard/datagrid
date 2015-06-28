@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnTypeExtension;
 
-use Rollerworks\Component\Datagrid\Column\ColumnAbstractTypeExtension;
+use Rollerworks\Component\Datagrid\Column\AbstractColumnTypeExtension;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,12 +22,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class ColumnOrderExtension extends ColumnAbstractTypeExtension
+class ColumnOrderExtension extends AbstractColumnTypeExtension
 {
     /**
      * {@inheritdoc}
      */
-    public function buildHeaderView(ColumnInterface $column, HeaderView $view)
+    public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options)
     {
         if (!is_null($order = $column->getOption('display_order'))) {
             $view->setAttribute('display_order', $order);
