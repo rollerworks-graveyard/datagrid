@@ -1,7 +1,7 @@
 UPGRADE
 =======
 
-## Upgrade FROM 0.4 to 0.5
+## Upgrade FROM 0.5 to 0.6
 
  * The of methods signature of `buildColumn()`, `buildHeaderView()` and `buildCellView()`
    on the `Rollerworks\Component\Datagrid\Column\ColumnTypeExtensionInterface` was changed
