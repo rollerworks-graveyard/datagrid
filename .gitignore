@@ -5,3 +5,7 @@
 /vendor/
 /bin/
 /doc/_build
+!/doc/_build/_exts
+!/doc/_build/conf.py
+!/doc/_build/Makefile
+!/doc/_build/make.bat
