@@ -23,13 +23,6 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 class StringToDateTimeTransformer extends BaseDateTimeTransformer
 {
     /**
-     * Format used for generating strings.
-     *
-     * @var string
-     */
-    private $generateFormat;
-
-    /**
      * Format used for parsing strings.
      *
      * Different than the {@link $generateFormat} because formats for parsing
@@ -45,9 +38,9 @@ class StringToDateTimeTransformer extends BaseDateTimeTransformer
      *
      * @see \DateTime::format() for supported formats
      *
-     * @param string  $inputTimezone  The name of the input timezone
-     * @param string  $outputTimezone The name of the output timezone
-     * @param string  $format         The date format
+     * @param string $inputTimezone  The name of the input timezone
+     * @param string $outputTimezone The name of the output timezone
+     * @param string $format         The date format
      *
      * @throws UnexpectedTypeException if a timezone is not a string
      */
@@ -55,7 +48,7 @@ class StringToDateTimeTransformer extends BaseDateTimeTransformer
     {
         parent::__construct($inputTimezone, $outputTimezone);
 
-        $this->generateFormat = $this->parseFormat = $format;
+        $this->parseFormat = $format;
     }
 
     /**

@@ -11,7 +11,6 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
-use Prophecy\Argument;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
 use Rollerworks\Component\Datagrid\Test\DatagridPerformanceTestCase;
 
@@ -48,7 +47,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                     'field_mapping' => ['lastModified'],
                     'value_format' => function ($value) {
                         return $value === 1 ? 'active' : 'deactivated';
-                    }
+                    },
                 ]
             )
         );
@@ -82,7 +81,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                                 'uri_scheme' => 'entity/{id}/delete',
                             ]
                         ),
-                    ]
+                    ],
                 ]
             )
         );
@@ -97,7 +96,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 'regdate' => new \DateTime(),
                 'last_modified' => new \DateTime(),
                 'status' => mt_rand(0, 1),
-                'group' => 'Default'
+                'group' => 'Default',
             ];
         }
 

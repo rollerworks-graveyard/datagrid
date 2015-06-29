@@ -21,8 +21,6 @@ final class DatagridEvents
      *  - Provide data for the datagrid from an external source.
      *
      * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     *
-     * @Event
      */
     const PRE_SET_DATA = 'rollerworks_datagrid.pre_set_data';
 
@@ -33,8 +31,6 @@ final class DatagridEvents
      * It can be used to fetch data after it's set.
      *
      * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     *
-     * @Event
      */
     const POST_SET_DATA = 'rollerworks_datagrid.post_set_data';
 
@@ -45,8 +41,6 @@ final class DatagridEvents
      *  - Change data from the request, before submitting the data to the datagrid.
      *
      * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     *
-     * @Event
      */
     const PRE_BIND_DATA = 'rollerworks_datagrid.pre_bind_data';
 
@@ -57,8 +51,6 @@ final class DatagridEvents
      * It can be used to fetch (updated) data after it's set.
      *
      * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     *
-     * @Event
      */
     const POST_BIND_DATA = 'rollerworks_datagrid.post_bind_data';
 
@@ -71,8 +63,6 @@ final class DatagridEvents
      *  - Handle request data for an editable form that needs the request data.
      *
      * The event listener method receives a Rollerworks\Component\Datagrid\DatagridColumnEvent instance.
-     *
-     * @Event
      */
     const COLUMN_BIND_DATA = 'rollerworks_datagrid_column.pre_bind_data';
 
@@ -84,8 +74,6 @@ final class DatagridEvents
      *  - Provide data for the datagrid from an external source.
      *
      * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     *
-     * @Event
      */
     const PRE_BUILD_VIEW = 'rollerworks_datagrid.pre_build_view';
 
@@ -97,8 +85,6 @@ final class DatagridEvents
      *  - Provide data for the datagrid from an external source.
      *
      * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     *
-     * @Event
      */
     const POST_BUILD_VIEW = 'rollerworks_datagrid.post_build_view';
 }
