@@ -126,7 +126,7 @@ class ValueFormatTransformer implements DataTransformerInterface
         }
 
         foreach ($emptyValue as $field => $value) {
-            if (!in_array($field, $mappingFields, true)) {
+            if (!array_key_exists($field, $mappingFields)) {
                 throw new TransformationFailedException(sprintf('Empty-value of mapping field "%s" doesn\'t exists in field mapping.', $field));
             }
 

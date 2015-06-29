@@ -45,7 +45,7 @@ class ValueFormatTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testTransformEmptyValuePerFieldWithArray()
     {
-        $transformer = new ValueFormatTransformer(['id' => '0', 'name' => 'NV'], ',', null, ['id', 'name']);
+        $transformer = new ValueFormatTransformer(['id' => '0', 'name' => 'NV'], ',', null, ['id' => 'user.id', 'name' => 'name']);
 
         $this->assertEquals('foo', $transformer->transform('foo'));
         $this->assertEquals('', $transformer->transform(null));
