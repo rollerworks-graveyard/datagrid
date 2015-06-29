@@ -22,8 +22,6 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
  */
 class ArrayToDateTimeTransformer extends BaseDateTimeTransformer
 {
-    private $pad;
-
     private $fields;
 
     /**
@@ -36,7 +34,7 @@ class ArrayToDateTimeTransformer extends BaseDateTimeTransformer
      *
      * @throws UnexpectedTypeException if a timezone is not a string
      */
-    public function __construct($inputTimezone = null, $outputTimezone = null, array $fields = null, $pad = false)
+    public function __construct($inputTimezone = null, $outputTimezone = null, array $fields = null)
     {
         parent::__construct($inputTimezone, $outputTimezone);
 
@@ -45,7 +43,6 @@ class ArrayToDateTimeTransformer extends BaseDateTimeTransformer
         }
 
         $this->fields = $fields;
-        $this->pad = (boolean) $pad;
     }
 
     /**

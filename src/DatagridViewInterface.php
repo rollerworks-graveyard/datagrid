@@ -119,5 +119,4 @@ interface DatagridViewInterface extends \Iterator, \Countable, \ArrayAccess
      * @return mixed[]
      */
     public function getVars();
-
 }
