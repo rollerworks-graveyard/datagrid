@@ -219,17 +219,10 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     public function getValue(ColumnInterface $column, $object, $useTransformers = true)
     {
-        if (!$column->hasOption('field_mapping') || !count($column->getOption('field_mapping'))) {
-            throw new DatagridColumnException(
-                sprintf('"field_mapping" option is missing in column "%s"', $this->getName())
-            );
-        }
-
         $dataMapper = $column->getDatagrid()->getDataMapper();
-
         $values = [];
 
-        foreach ($column->getOption('field_mapping') as $mappingName => $field) {
+        foreach ($column->getOption('field_mapping', []) as $mappingName => $field) {
 
             // Ignore null and boolean as these fields-names are always illegal
             // CompoundColumnType sometimes has one key with a boolean value
