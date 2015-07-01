@@ -11,6 +11,9 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Column\CellView;
+use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
+
 class CompoundColumnTypeTest extends BaseTypeTest
 {
     protected function getTestedType()
@@ -32,72 +35,55 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->assertSame('My label', $view->label);
     }
 
-    public function testWithAutoMapping()
+    public function testSubCellsToView()
     {
-        \Locale::setDefault('en');
-
-        $options = [
-            'label' => 'Birthday',
-            'value_glue' => null,
-        ];
-
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age' => 'age']]);
-        $columns['date'] = $this->factory->createColumn('date', 'datetime', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['birthdate' => 'birthDate'], 'time_format' => \IntlDateFormatter::NONE]);
-        $options['columns'] = $columns;
+        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'Age', 'field_mapping' => ['age']]);
+        $columns['name'] = $this->factory->createColumn('name', 'text', $this->datagrid, ['label' => 'Name', 'trim' => true, 'field_mapping' => ['name']]);
 
-        $column = $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options);
+        $column = $this->factory->createColumn(
+            'actions',
+            $this->getTestedType(),
+            $this->datagrid,
+            ['label' => 'My label', 'columns' => $columns]
+        );
 
         $object = new \stdClass();
-        $object->age = 6;
-        $object->birthDate = new \DateTime('2007-10-02', new \DateTimeZone('Europe/Amsterdam'));
-        $data = [1 => $object];
+        $object->key = ' foo ';
+        $object->name = ' sheldon ';
+        $object->age = 42;
+        $this->datagrid->setData([1 => $object]);
 
-        $this->datagrid->setData($data);
         $datagridView = $this->datagrid->createView();
 
-        $view = $column->createCellView($datagridView, $data[1], 1);
-        $this->assertEquals(['age' => '6', 'date' => 'Oct 1, 2007'], $view->value);
+        $view = $column->createCellView($datagridView, $object, 0);
+
+        $this->assertDatagridCell('age', $view);
+        $this->assertDatagridCell('name', $view);
+
+        $this->assertEquals('42', $view->value['age']->value);
+        $this->assertEquals('sheldon', $view->value['name']->value);
+        $this->assertArrayNotHasKey('key', $view->value);
     }
 
-    public function testWithAutoMappingAndFormatter()
+    private function assertDatagridCell($name, CellView $view)
     {
-        \Locale::setDefault('en');
-
-        $options = [
-            'label' => 'Birthday',
-            'value_format' => '%s',
-            'value_glue' => ' / ',
-        ];
-
-        $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age' => 'age']]);
-        $columns['date'] = $this->factory->createColumn('date', 'datetime', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['birthdate' => 'birthDate'], 'time_format' => \IntlDateFormatter::NONE]);
-        $options['columns'] = $columns;
-
-        $column = $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options);
-
-        $object = new \stdClass();
-        $object->age = 6;
-        $object->birthDate = new \DateTime('2007-10-02', new \DateTimeZone('Europe/Amsterdam'));
-        $data = [1 => $object];
-
-        $this->datagrid->setData($data);
-        $datagridView = $this->datagrid->createView();
-
-        $view = $column->createCellView($datagridView, $data[1], 1);
-        $this->assertEquals('6 / Oct 1, 2007', $view->value);
+        $this->assertInternalType('array', $view->value);
+        $this->assertArrayHasKey($name, $view->value);
+        $this->assertInstanceOf(CellView::class, $view->value[$name]);
     }
 
     public function testInvalidColumnGivesException()
     {
-        \Locale::setDefault('en');
-
         $options = [
             'label' => 'Birthday',
-            'value_glue' => null,
-            'field_mapping' => ['age'],
         ];
+
+        $object = new \stdClass();
+        $object->key = ' foo ';
+        $object->name = ' sheldon ';
+        $object->age = 42;
+        $this->datagrid->setData([1 => $object]);
 
         $columns = [];
         $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
@@ -105,32 +91,16 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $options['columns'] = $columns;
 
         $this->setExpectedException(
-             'Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException',
+             UnexpectedTypeException::class,
              'Expected argument of type "Rollerworks\Component\Datagrid\Column\ColumnInterface", "boolean" given'
         );
 
-        $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options);
-    }
+        $datagridView = $this->datagrid->createView();
 
-    public function testWithAutoMappingInvalidColumnGivesException()
-    {
-        \Locale::setDefault('en');
-
-        $options = [
-            'label' => 'Birthday',
-            'value_glue' => null,
-        ];
-
-        $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
-        $columns['foo'] = false;
-        $options['columns'] = $columns;
-
-        $this->setExpectedException(
-             'Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException',
-             'Expected argument of type "Rollerworks\Component\Datagrid\Column\ColumnInterface", "boolean" given'
+        $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options)->createCellView(
+            $datagridView,
+            $object,
+            0
         );
-
-        $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options);
     }
 }
