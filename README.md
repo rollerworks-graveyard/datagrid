@@ -52,6 +52,8 @@ possible and very straightforward. You can use any type of data
 * Number
 * Text
 
+Note: The names of the types to use should all be lower case e.g. DateTime -> `datetime`.
+
 Installation
 ------------
 
