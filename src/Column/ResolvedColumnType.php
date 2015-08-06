@@ -13,7 +13,6 @@ namespace Rollerworks\Component\Datagrid\Column;
 
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
-use Rollerworks\Component\Datagrid\Exception\DatagridColumnException;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
