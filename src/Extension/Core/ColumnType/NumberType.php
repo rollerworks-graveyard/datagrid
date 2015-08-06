@@ -28,7 +28,7 @@ class NumberType extends AbstractColumnType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
@@ -40,7 +40,7 @@ class NumberType extends AbstractColumnType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -59,7 +59,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getType($name)
     {
@@ -90,7 +90,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hasType($name)
     {
@@ -108,7 +108,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExtensions()
     {
