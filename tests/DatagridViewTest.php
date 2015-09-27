@@ -34,9 +34,6 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $type = $this->getMock(ResolvedColumnTypeInterface::class);
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
 
         $datagrid = $this->getMock(DatagridInterface::class);
         $column = $this->getMock(ColumnInterface::class);
@@ -89,9 +86,6 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
     public function testAddColumn()
     {
         $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
 
         $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
         $column->expects($this->any())
@@ -113,9 +107,6 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
     public function testRemoveColumn()
     {
         $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
 
         $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
         $column->expects($this->any())
@@ -138,9 +129,6 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
     public function testClearColumns()
     {
         $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
 
         $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
         $column->expects($this->any())

@@ -68,9 +68,6 @@ class ColumnOrderListenerTest extends \PHPUnit_Framework_TestCase
         $columns = [];
 
         $type = $this->getMock('Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('text'));
 
         foreach ($inputColumns as $name => $order) {
             $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');

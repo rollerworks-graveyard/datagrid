@@ -11,13 +11,14 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\DateTimeType;
 use Symfony\Component\Intl\Util\IntlTestHelper;
 
 class DateTimeTypeTest extends BaseTypeTest
 {
     protected function getTestedType()
     {
-        return 'datetime';
+        return DateTimeType::class;
     }
 
     protected function setUp()

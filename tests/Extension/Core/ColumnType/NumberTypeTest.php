@@ -11,6 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\NumberType;
 use Symfony\Component\Intl\Util\IntlTestHelper;
 
 class NumberTypeTest extends BaseTypeTest
@@ -27,7 +28,7 @@ class NumberTypeTest extends BaseTypeTest
 
     protected function getTestedType()
     {
-        return 'number';
+        return NumberType::class;
     }
 
     public function testDefaultFormatting()
@@ -47,6 +48,10 @@ class NumberTypeTest extends BaseTypeTest
 
     public function testDefaultFormattingWithRounding()
     {
-        $this->assertCellValueEquals('12346', '12345.54321', ['precision' => 0, 'rounding_mode' => \NumberFormatter::ROUND_UP]);
+        $this->assertCellValueEquals(
+            '12346',
+            '12345.54321',
+            ['precision' => 0, 'rounding_mode' => \NumberFormatter::ROUND_UP]
+        );
     }
 }

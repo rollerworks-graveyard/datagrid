@@ -169,7 +169,7 @@ class Datagrid implements DatagridInterface
     public function hasColumnType($type)
     {
         foreach ($this->columns as $column) {
-            if ($column->getType()->getName() === $type) {
+            if ($column->getType()->getInnerType() instanceof $type) {
                 return true;
             }
         }

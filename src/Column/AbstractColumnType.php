@@ -11,6 +11,8 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ColumnType;
+use Rollerworks\Component\Datagrid\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -47,10 +49,23 @@ abstract class AbstractColumnType implements ColumnTypeInterface
     }
 
     /**
+     * Returns the prefix of the template block name for this type.
+     *
+     * The block prefixes default to the underscored short class name with
+     * the "Type" suffix removed (e.g. "DatetimeType" => "datetime").
+     *
+     * @return string The prefix of the template block name
+     */
+    public function getBlockPrefix()
+    {
+        return StringUtil::fqcnToBlockPrefix(get_class($this));
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return 'column';
+        return ColumnType::class;
     }
 }

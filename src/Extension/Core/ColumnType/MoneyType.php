@@ -21,14 +21,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MoneyType extends AbstractColumnType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'money';
-    }
-
     public function buildColumn(ColumnInterface $column, array $options)
     {
         $column

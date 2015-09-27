@@ -81,7 +81,7 @@ class CellView
         $this->column = $column;
         $this->datagrid = $datagrid;
 
-        $this->type = $column->getType()->getName();
+        $this->prefix = $column->getType()->getBlockPrefix();
         $this->name = $column->getName();
     }
 }

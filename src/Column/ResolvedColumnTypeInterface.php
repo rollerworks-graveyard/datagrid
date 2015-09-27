@@ -22,11 +22,11 @@ use Rollerworks\Component\Datagrid\DatagridViewInterface;
 interface ResolvedColumnTypeInterface
 {
     /**
-     * Returns the name of the type.
+     * Returns the prefix of the template block name for this type.
      *
-     * @return string The type name.
+     * @return string The prefix of the template block name.
      */
-    public function getName();
+    public function getBlockPrefix();
 
     /**
      * Returns the parent type.

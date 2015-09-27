@@ -47,14 +47,6 @@ class DateTimeType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'datetime';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildColumn(ColumnInterface $column, array $options)
     {
         $dateFormat = is_int($options['date_format']) ? $options['date_format'] : self::DEFAULT_DATE_FORMAT;

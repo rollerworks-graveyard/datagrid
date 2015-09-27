@@ -19,6 +19,7 @@ use Rollerworks\Component\Datagrid\DatagridBuilderInterface;
 use Rollerworks\Component\Datagrid\DatagridFactory;
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 
 class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,7 +49,7 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
         $this->resolvedTypeFactory = $this->getMock(ResolvedColumnTypeFactoryInterface::class);
         $this->dataMapper = $this->getMock(DataMapperInterface::class);
 
-        $this->factory = new DatagridFactory($this->registry, $this->resolvedTypeFactory, $this->dataMapper);
+        $this->factory = new DatagridFactory($this->registry, $this->dataMapper);
     }
 
     public function testCreateGrid()
@@ -87,10 +88,10 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->registry
             ->expects($this->once())
-            ->method('getType')->with('text')
+            ->method('getType')->with(TextType::class)
             ->will($this->returnValue($type));
 
-        $this->assertEquals($column, $this->factory->createColumn('id', 'text', $grid, ['foo' => 'bar']));
+        $this->assertEquals($column, $this->factory->createColumn('id', TextType::class, $grid, ['foo' => 'bar']));
     }
 
     public function testGetDataMapper()

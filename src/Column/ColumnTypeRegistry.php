@@ -24,7 +24,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     /**
      * Extensions.
      *
-     * @var DatagridExtensionInterface[] An array of FormExtensionInterface
+     * @var DatagridExtensionInterface[]
      */
     private $extensions = [];
 
@@ -63,27 +63,27 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
      */
     public function getType($name)
     {
-        if (!is_string($name)) {
-            throw new UnexpectedTypeException($name, 'string');
-        }
-
         if (!isset($this->types[$name])) {
-            /** @var ColumnTypeInterface $type */
             $type = null;
 
             foreach ($this->extensions as $extension) {
-                /* @var DatagridExtensionInterface $extension */
                 if ($extension->hasColumnType($name)) {
                     $type = $extension->getColumnType($name);
+
                     break;
                 }
             }
 
             if (!$type) {
-                throw new InvalidArgumentException(sprintf('Could not load column type "%s".', $name));
+                // Support fully-qualified class names.
+                if (class_exists($name) && in_array(ColumnTypeInterface::class, class_implements($name), true)) {
+                    $type = new $name();
+                } else {
+                    throw new InvalidArgumentException(sprintf('Could not load type "%s"', $name));
+                }
             }
 
-            $this->resolveAndAddType($type);
+            $this->types[$name] = $this->resolveType($type);
         }
 
         return $this->types[$name];
@@ -123,29 +123,24 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
      *
      * @return ResolvedColumnTypeInterface The resolved type.
      */
-    private function resolveAndAddType(ColumnTypeInterface $type)
+    private function resolveType(ColumnTypeInterface $type)
     {
         $parentType = $type->getParent();
-
-        if ($parentType instanceof ColumnTypeInterface) {
-            $this->resolveAndAddType($parentType);
-            $parentType = $parentType->getName();
-        }
+        $fqcn = get_class($type);
 
         $typeExtensions = [];
 
         foreach ($this->extensions as $extension) {
-            /* @var DatagridExtensionInterface $extension */
-
-            if ($extension->hasColumnTypeExtensions($type->getName())) {
-                $typeExtensions = array_merge(
-                    $typeExtensions, $extension->getColumnTypeExtensions($type->getName())
-                );
-            }
+            $typeExtensions = array_merge(
+                $typeExtensions,
+                $extension->getColumnTypeExtensions($fqcn)
+            );
         }
 
-        $this->types[$type->getName()] = $this->resolvedTypeFactory->createResolvedType(
-            $type, $typeExtensions, $parentType ? $this->getType($parentType) : null
+        return $this->resolvedTypeFactory->createResolvedType(
+            $type,
+            $typeExtensions,
+            $parentType ? $this->getType($parentType) : null
         );
     }
 }

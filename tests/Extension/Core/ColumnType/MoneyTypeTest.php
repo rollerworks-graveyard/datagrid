@@ -11,13 +11,14 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\MoneyType;
 use Symfony\Component\Intl\Util\IntlTestHelper;
 
 class MoneyTypeTest extends BaseTypeTest
 {
     protected function getTestedType()
     {
-        return 'money';
+        return MoneyType::class;
     }
 
     protected function setUp()

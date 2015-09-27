@@ -22,14 +22,6 @@ class NumberType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'number';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildColumn(ColumnInterface $column, array $options)
     {
         $column->addViewTransformer(new NumberToLocalizedStringTransformer(

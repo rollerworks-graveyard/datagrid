@@ -52,14 +52,14 @@ interface ColumnTypeInterface
     public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options);
 
     /**
-     * Get the name of the column type.
+     * Returns the prefix of the template block name for this type.
      *
-     * @return string
+     * @return string The prefix of the template block name.
      */
-    public function getName();
+    public function getBlockPrefix();
 
     /**
-     * Returns the name of the parent type.
+     * Returns the fully-qualified class name of the parent type.
      *
      * @return string|null The name of the parent type if any, null otherwise.
      */

@@ -28,14 +28,6 @@ class CompoundColumnType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'compound_column';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return;

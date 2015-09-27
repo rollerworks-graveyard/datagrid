@@ -24,17 +24,9 @@ class BooleanType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'boolean';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 
     /**
