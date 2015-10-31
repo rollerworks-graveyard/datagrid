@@ -66,6 +66,23 @@ class TextTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(' - foo - , - ? - ', $data, $options);
     }
 
+    public function testEmptyValueOptionSingleField()
+    {
+        $object = new \stdClass();
+        $object->key = 'foo';
+        $object->key2 = null;
+        $data = [1 => $object];
+
+        $options = [
+            'field_mapping' => ['key'],
+            'value_format' => ' - %s - ',
+            'empty_value' => '?',
+            'value_glue' => ',',
+        ];
+
+        $this->assertCellValueEquals(' - foo - ', $data, $options);
+    }
+
     public function testEmptyValueAsArrayOption()
     {
         $object = new \stdClass();

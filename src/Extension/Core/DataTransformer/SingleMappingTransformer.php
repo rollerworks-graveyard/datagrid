@@ -42,7 +42,7 @@ class SingleMappingTransformer implements DataTransformerInterface
 
         // If there is only one field but is does not exist the value
         // is assumed to be an array-value and not a data-mapping result.
-        if (!isset($value[key($this->mappingFields)])) {
+        if (!array_key_exists(key($this->mappingFields), $value)) {
             return $value;
         }
 
