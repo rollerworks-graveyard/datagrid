@@ -24,7 +24,7 @@ cache:
         - $HOME/.composer/cache
 
 install:
-    - export SYMFONY_DEPRECATIONS_HELPER=weak
+    - export SYMFONY_DEPRECATIONS_HELPER=strong
     - if [ "$DEPENDENCIES" == "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
     - if [ "$DEPENDENCIES" != "low" ]; then travis_retry composer update; fi;
     - if [ "$DEPENDENCIES" == "low" ]; then travis_retry composer update --prefer-lowest; fi;

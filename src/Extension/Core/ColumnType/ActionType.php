@@ -16,7 +16,6 @@ use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -91,23 +90,12 @@ class ActionType extends AbstractColumnType
             ]
         );
 
-        if ($resolver instanceof OptionsResolverInterface) {
-            $resolver->setAllowedTypes(
-                [
-                    'redirect_uri' => ['string', 'null', 'callable'],
-                    'uri_scheme' => ['string', 'callable'],
-                    'content' => ['null', 'string', 'callable'],
-                    'attr' => ['array'],
-                    'url_attr' => ['array'],
-                ]
-            );
-        } else {
-            $resolver->setAllowedTypes('redirect_uri', ['string', 'null', 'callable']);
-            $resolver->setAllowedTypes('uri_scheme', ['string', 'callable']);
-            $resolver->setAllowedTypes('content', ['null', 'string', 'callable']);
-            $resolver->setAllowedTypes('attr', ['array']);
-            $resolver->setAllowedTypes('url_attr', ['array']);
-        }
+        $resolver->setAllowedTypes('redirect_uri', ['string', 'null', 'callable']);
+        $resolver->setAllowedTypes('uri_scheme', ['string', 'callable']);
+        $resolver->setAllowedTypes('content', ['null', 'string', 'callable']);
+        $resolver->setAllowedTypes('attr', ['array']);
+        $resolver->setAllowedTypes('url_attr', ['array']);
+
     }
 
     private static function wrapValues(array $values)

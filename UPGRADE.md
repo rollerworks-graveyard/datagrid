@@ -128,6 +128,10 @@ This version contains BC breaking changes, older versions are no longer supporte
    $column = $datagridBuilder->createColumn(MyType::class);
    ```
 
+ * Support for Symfony 2.3 was dropped, the options-resolver requires at
+   minimum Symfony 2.7 now. Symfony 3 is now allowed to be installed, and
+   will be used unless any of your composer.json packages restricts this version.
+
 ## Upgrade FROM 0.5 to 0.6
 
  * The of methods signature of `buildColumn()`, `buildHeaderView()` and `buildCellView()`
