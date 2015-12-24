@@ -19,7 +19,6 @@ use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransforme
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -95,31 +94,14 @@ class ModelType extends AbstractColumnType
         ]);
 
         $resolver->setRequired(['model_fields']);
-
-        if ($resolver instanceof OptionsResolverInterface) {
-            $resolver->setAllowedTypes(
-                [
-                    'model_trim' => 'bool',
-                    'model_value_glue' => ['string', 'null'],
-                    'model_value_format' => ['string', 'callable', 'null'],
-                    'model_fields' => ['array'],
-                    'model_empty_value' => ['string', 'null'],
-                    'trim' => 'bool',
-                    'value_glue' => ['string', 'null'],
-                    'value_format' => ['string', 'callable', 'null'],
-                    'empty_value' => ['string', 'null'],
-                ]
-            );
-        } else {
-            $resolver->setAllowedTypes('model_trim', 'bool');
-            $resolver->setAllowedTypes('model_value_glue', ['string', 'null']);
-            $resolver->setAllowedTypes('model_value_format', ['string', 'callable', 'null']);
-            $resolver->setAllowedTypes('model_fields', ['array']);
-            $resolver->setAllowedTypes('model_empty_value', ['string', 'null']);
-            $resolver->setAllowedTypes('trim', 'bool');
-            $resolver->setAllowedTypes('value_glue', ['string', 'null']);
-            $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
-            $resolver->setAllowedTypes('empty_value', ['string', 'null']);
-        }
+        $resolver->setAllowedTypes('model_trim', 'bool');
+        $resolver->setAllowedTypes('model_value_glue', ['string', 'null']);
+        $resolver->setAllowedTypes('model_value_format', ['string', 'callable', 'null']);
+        $resolver->setAllowedTypes('model_fields', ['array']);
+        $resolver->setAllowedTypes('model_empty_value', ['string', 'null']);
+        $resolver->setAllowedTypes('trim', 'bool');
+        $resolver->setAllowedTypes('value_glue', ['string', 'null']);
+        $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
+        $resolver->setAllowedTypes('empty_value', ['string', 'null']);
     }
 }

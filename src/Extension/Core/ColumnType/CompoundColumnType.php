@@ -16,7 +16,6 @@ use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * CompoundColumn allows multiple sub-columns for advanced view building.
@@ -42,18 +41,8 @@ class CompoundColumnType extends AbstractColumnType
 
         // Not used but required by the ResolvedColumnType
         $resolver->setDefaults(['field_mapping' => []]);
-
-        if ($resolver instanceof OptionsResolverInterface) {
-            $resolver->setAllowedTypes(
-                [
-                    'label' => 'string',
-                    'columns' => 'array',
-                ]
-            );
-        } else {
-            $resolver->setAllowedTypes('label', 'string');
-            $resolver->setAllowedTypes('columns', 'array');
-        }
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('columns', 'array');
     }
 
     /**
