@@ -39,7 +39,7 @@ interface ColumnTypeRegistryInterface
      *
      * @param string $name The name of the type
      *
-     * @return Boolean Whether the type is supported
+     * @return bool Whether the type is supported
      */
     public function hasType($name);
 

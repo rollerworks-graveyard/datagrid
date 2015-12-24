@@ -43,7 +43,7 @@ interface ColumnInterface
      * view to the normalized format.
      *
      * @param DataTransformerInterface $viewTransformer
-     * @param Boolean                  $forcePrepend    if set to true, prepend instead of appending
+     * @param bool                     $forcePrepend    if set to true, prepend instead of appending
      *
      * @return self The configuration object.
      */

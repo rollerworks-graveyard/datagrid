@@ -95,7 +95,6 @@ class ActionType extends AbstractColumnType
         $resolver->setAllowedTypes('content', ['null', 'string', 'callable']);
         $resolver->setAllowedTypes('attr', ['array']);
         $resolver->setAllowedTypes('url_attr', ['array']);
-
     }
 
     private static function wrapValues(array $values)

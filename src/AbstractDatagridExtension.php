@@ -140,7 +140,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
      */
     private function initColumnTypes()
     {
-        $this->columnTypes = array();
+        $this->columnTypes = [];
 
         foreach ($this->loadColumnTypes() as $type) {
             if (!$type instanceof ColumnTypeInterface) {
