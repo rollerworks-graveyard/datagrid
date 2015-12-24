@@ -21,14 +21,6 @@ class BatchType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'batch';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildCellView(CellView $view, ColumnInterface $column, array $options)
     {
         $view->attributes['datagrid_name'] = $column->getDatagrid()->getName();

@@ -13,12 +13,15 @@ namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\CompoundColumnType;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\NumberType;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 
 class CompoundColumnTypeTest extends BaseTypeTest
 {
     protected function getTestedType()
     {
-        return 'compound_column';
+        return CompoundColumnType::class;
     }
 
     public function testPassLabelToView()
@@ -38,8 +41,8 @@ class CompoundColumnTypeTest extends BaseTypeTest
     public function testSubCellsToView()
     {
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'Age', 'field_mapping' => ['age']]);
-        $columns['name'] = $this->factory->createColumn('name', 'text', $this->datagrid, ['label' => 'Name', 'trim' => true, 'field_mapping' => ['name']]);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'Age', 'field_mapping' => ['age']]);
+        $columns['name'] = $this->factory->createColumn('name', TextType::class, $this->datagrid, ['label' => 'Name', 'trim' => true, 'field_mapping' => ['name']]);
 
         $column = $this->factory->createColumn(
             'actions',
@@ -86,7 +89,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->datagrid->setData([1 => $object]);
 
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', 'number', $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
         $columns['foo'] = false;
         $options['columns'] = $columns;
 
@@ -97,7 +100,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
         $datagridView = $this->datagrid->createView();
 
-        $this->factory->createColumn('birthday', 'compound_column', $this->datagrid, $options)->createCellView(
+        $this->factory->createColumn('birthday', CompoundColumnType::class, $this->datagrid, $options)->createCellView(
             $datagridView,
             $object,
             0

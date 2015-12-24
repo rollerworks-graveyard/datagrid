@@ -18,7 +18,9 @@ use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
+use Rollerworks\Component\Datagrid\Util\StringUtil;
 
 class DatagridTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,8 +55,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
                     case 'name':
                        return $object->setName($value);
                 }
-
-                return;
             }));
 
         $this->datagrid = new Datagrid('grid', $this->dataMapper);
@@ -67,10 +67,11 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      *
      * @return ResolvedColumnTypeInterface|\Prophecy\Prophecy\ObjectProphecy
      */
-    private function createColumn($name = 'foo1', $typeName = 'text', $reveal = true)
+    private function createColumn($name = 'foo1', $typeName = TextType::class, $reveal = true)
     {
         $type = $this->prophesize(ResolvedColumnTypeInterface::class);
-        $type->getName()->willReturn($typeName);
+        $type->getInnerType()->willReturn(new $typeName());
+        $type->getBlockPrefix()->willReturn(StringUtil::fqcnToBlockPrefix($typeName));
 
         $column = $this->prophesize(ColumnInterface::class);
         $column->getName()->willReturn($name);
@@ -93,7 +94,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->datagrid->addColumn($this->createColumn());
 
         $this->assertTrue($this->datagrid->hasColumn('foo1'));
-        $this->assertTrue($this->datagrid->hasColumnType('text'));
+        $this->assertTrue($this->datagrid->hasColumnType(TextType::class));
 
         $this->assertFalse($this->datagrid->hasColumn('foo2'));
         $this->assertFalse($this->datagrid->hasColumnType('this_type_cant_exists'));
@@ -122,7 +123,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testSetData()
     {
-        $column = $this->createColumn('foo1', 'text', false);
+        $column = $this->createColumn('foo1', TextType::class, false);
         $column->createHeaderView(Argument::any(), Argument::any())->will(
             function ($args) use ($column) {
                 return new HeaderView($column->reveal(), $args[0], 'foo1');
@@ -183,7 +184,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             ['next', 'data'],
         ];
 
-        $column = $this->createColumn('foo1', 'text', false);
+        $column = $this->createColumn('foo1', TextType::class, false);
 
         $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
         $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
@@ -215,7 +216,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             ['next', 'data'],
         ];
 
-        $column = $this->createColumn('foo1', 'text', false);
+        $column = $this->createColumn('foo1', TextType::class, false);
 
         $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
         $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
@@ -244,7 +245,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateView()
     {
-        $column = $this->createColumn('foo1', 'text', false);
+        $column = $this->createColumn('foo1', TextType::class, false);
         $column->createHeaderView(Argument::any(), Argument::any())->will(
             function ($args) use ($column) {
                 return new HeaderView($column->reveal(), $args[0], 'foo1');

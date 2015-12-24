@@ -11,6 +11,8 @@
 
 namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnTypeExtension;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\CompoundColumnType;
+
 /**
  * Allows to set the compound-column sorting order.
  *
@@ -23,6 +25,6 @@ class CompoundColumnOrderExtension extends ColumnOrderExtension
      */
     public function getExtendedType()
     {
-        return 'compound_column';
+        return CompoundColumnType::class;
     }
 }

@@ -11,6 +11,8 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
+
 class TextTypeTest extends BaseTypeTest
 {
     public function testTrimOption()
@@ -102,6 +104,6 @@ class TextTypeTest extends BaseTypeTest
 
     protected function getTestedType()
     {
-        return 'text';
+        return TextType::class;
     }
 }

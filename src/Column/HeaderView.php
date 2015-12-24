@@ -59,7 +59,7 @@ class HeaderView
         $this->datagrid = $datagrid;
         $this->label = $label;
 
-        $this->type = $column->getType()->getName();
+        $this->prefix = $column->getType()->getBlockPrefix();
         $this->name = $column->getName();
     }
 

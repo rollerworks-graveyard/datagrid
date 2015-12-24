@@ -12,6 +12,9 @@
 namespace Rollerworks\Component\Datagrid\Tests;
 
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\DateTimeType;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\NumberType;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 use Rollerworks\Component\Datagrid\Test\DatagridPerformanceTestCase;
 
 class DatagridPerformanceTest extends DatagridPerformanceTestCase
@@ -32,15 +35,15 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
 
         $datagrid = $this->factory->createDatagrid('test');
 
-        $datagrid->addColumn($this->factory->createColumn('id', 'number', $datagrid, ['label' => '#', 'field_mapping' => ['id']]));
-        $datagrid->addColumn($this->factory->createColumn('name', 'text', $datagrid, ['label' => 'Name', 'field_mapping' => ['name']]));
-        $datagrid->addColumn($this->factory->createColumn('email', 'text', $datagrid, ['label' => 'Email', 'field_mapping' => ['email']]));
-        $datagrid->addColumn($this->factory->createColumn('regdate', 'datetime', $datagrid, ['label' => 'regdate', 'field_mapping' => ['regdate']]));
-        $datagrid->addColumn($this->factory->createColumn('last_modified', 'datetime', $datagrid, ['label' => 'last_modified', 'field_mapping' => ['lastModified']]));
+        $datagrid->addColumn($this->factory->createColumn('id', NumberType::class, $datagrid, ['label' => '#', 'field_mapping' => ['id']]));
+        $datagrid->addColumn($this->factory->createColumn('name', TextType::class, $datagrid, ['label' => 'Name', 'field_mapping' => ['name']]));
+        $datagrid->addColumn($this->factory->createColumn('email', TextType::class, $datagrid, ['label' => 'Email', 'field_mapping' => ['email']]));
+        $datagrid->addColumn($this->factory->createColumn('regdate', DateTimeType::class, $datagrid, ['label' => 'regdate', 'field_mapping' => ['regdate']]));
+        $datagrid->addColumn($this->factory->createColumn('last_modified', DateTimeType::class, $datagrid, ['label' => 'last_modified', 'field_mapping' => ['lastModified']]));
         $datagrid->addColumn(
             $this->factory->createColumn(
                 'status',
-                'text',
+                TextType::class,
                 $datagrid,
                 [
                     'label' => 'last_modified',
@@ -51,7 +54,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 ]
             )
         );
-        $datagrid->addColumn($this->factory->createColumn('group', 'text', $datagrid, ['label' => 'group', 'field_mapping' => ['group']]));
+        $datagrid->addColumn($this->factory->createColumn('group', TextType::class, $datagrid, ['label' => 'group', 'field_mapping' => ['group']]));
 
         $datagrid->addColumn(
             $this->factory->createColumn(

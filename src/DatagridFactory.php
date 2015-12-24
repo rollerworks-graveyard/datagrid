@@ -21,7 +21,6 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- * @author FSi sp. z o.o. <info@fsi.pl>
  */
 class DatagridFactory implements DatagridFactoryInterface
 {
@@ -36,20 +35,15 @@ class DatagridFactory implements DatagridFactoryInterface
     private $typeRegistry;
 
     /**
-     * @var ResolvedColumnTypeFactoryInterface
+     * @param ColumnTypeRegistryInterface $registry
+     * @param DataMapperInterface         $dataMapper
+     *
+     * @internal param ResolvedColumnTypeFactoryInterface $resolvedTypeFactory
      */
-    private $resolvedTypeFactory;
-
-    /**
-     * @param ColumnTypeRegistryInterface        $registry
-     * @param ResolvedColumnTypeFactoryInterface $resolvedTypeFactory
-     * @param DataMapperInterface                $dataMapper
-     */
-    public function __construct(ColumnTypeRegistryInterface $registry, ResolvedColumnTypeFactoryInterface $resolvedTypeFactory, DataMapperInterface $dataMapper)
+    public function __construct(ColumnTypeRegistryInterface $registry, DataMapperInterface $dataMapper)
     {
         $this->dataMapper = $dataMapper;
         $this->typeRegistry = $registry;
-        $this->resolvedTypeFactory = $resolvedTypeFactory;
     }
 
     /**
@@ -73,9 +67,7 @@ class DatagridFactory implements DatagridFactoryInterface
      */
     public function createColumn($name, $type, DatagridInterface $datagrid, array $options = [])
     {
-        $column = $this->createColumnBuilder($name, $datagrid, $type, $options);
-
-        return $column;
+        return $this->createColumnBuilder($name, $datagrid, $type, $options);
     }
 
     /**
@@ -100,20 +92,11 @@ class DatagridFactory implements DatagridFactoryInterface
      */
     private function createColumnBuilder($name, DatagridInterface $datagrid, $type = 'column', array $options = [])
     {
-        if ($type instanceof ColumnTypeInterface) {
-            $type = $this->resolveType($type);
-        } elseif (is_string($type)) {
-            $type = $this->typeRegistry->getType($type);
-        } elseif (!$type instanceof ResolvedColumnTypeInterface) {
-            throw new UnexpectedTypeException(
-                $type,
-                [
-                    'string',
-                    ResolvedColumnTypeInterface::class,
-                    ColumnTypeInterface::class,
-                ]
-            );
+        if (!is_string($type)) {
+            throw new UnexpectedTypeException($type, 'string');
         }
+
+        $type = $this->typeRegistry->getType($type);
 
         $column = $type->createColumn($name, $datagrid, $options);
 
@@ -122,32 +105,5 @@ class DatagridFactory implements DatagridFactoryInterface
         $type->buildType($column, $column->getOptions());
 
         return $column;
-    }
-
-    /**
-     * Wraps a type into a ResolvedColumnTypeInterface implementation and connects
-     * it with its parent type.
-     *
-     * @param ColumnTypeInterface $type The type to resolve
-     *
-     * @return ResolvedColumnTypeInterface The resolved type
-     */
-    private function resolveType(ColumnTypeInterface $type)
-    {
-        $parentType = $type->getParent();
-
-        if ($parentType instanceof ColumnTypeInterface) {
-            $parentType = $this->resolveType($parentType);
-        } elseif (null !== $parentType) {
-            $parentType = $this->typeRegistry->getType($parentType);
-        }
-
-        return $this->resolvedTypeFactory->createResolvedType(
-            $type, // Type extensions are not supported for unregistered type instances,
-            // i.e. type instances that are passed to the DatagridFactory directly,
-            // nor for their parents, if getParent() also returns a type instance.
-            [],
-            $parentType
-        );
     }
 }

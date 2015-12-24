@@ -29,14 +29,6 @@ class ModelType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'model';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildColumn(ColumnInterface $column, array $options)
     {
         if (count($options['field_mapping']) > 2) {

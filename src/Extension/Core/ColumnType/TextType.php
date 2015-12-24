@@ -23,14 +23,6 @@ class TextType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'text';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildColumn(ColumnInterface $column, array $options)
     {
         if ($options['trim']) {

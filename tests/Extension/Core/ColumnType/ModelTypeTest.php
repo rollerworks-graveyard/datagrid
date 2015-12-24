@@ -11,6 +11,8 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ModelType;
+
 class ModelTypeTest extends BaseTypeTest
 {
     public function testPassLabelToView()
@@ -120,6 +122,6 @@ class ModelTypeTest extends BaseTypeTest
 
     protected function getTestedType()
     {
-        return 'model';
+        return ModelType::class;
     }
 }

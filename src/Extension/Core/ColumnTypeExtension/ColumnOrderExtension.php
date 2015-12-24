@@ -14,6 +14,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnTypeExtension;
 use Rollerworks\Component\Datagrid\Column\AbstractColumnTypeExtension;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ColumnType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -39,7 +40,7 @@ class ColumnOrderExtension extends AbstractColumnTypeExtension
      */
     public function getExtendedType()
     {
-        return 'column';
+        return ColumnType::class;
     }
 
     /**

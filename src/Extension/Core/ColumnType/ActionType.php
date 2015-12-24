@@ -27,14 +27,6 @@ class ActionType extends AbstractColumnType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'action';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildCellView(CellView $view, ColumnInterface $column, array $options)
     {
         $mappingValues = $view->value;

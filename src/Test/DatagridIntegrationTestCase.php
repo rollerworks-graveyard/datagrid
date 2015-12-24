@@ -32,7 +32,7 @@ abstract class DatagridIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $extensions = array_merge($extensions, $this->getExtensions());
 
         $typesRegistry = new ColumnTypeRegistry($extensions, $resolvedTypeFactory);
-        $this->factory = new DatagridFactory($typesRegistry, $resolvedTypeFactory, new PropertyAccessorMapper());
+        $this->factory = new DatagridFactory($typesRegistry, new PropertyAccessorMapper());
     }
 
     protected function getExtensions()

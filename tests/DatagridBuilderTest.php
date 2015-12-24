@@ -17,6 +17,8 @@ use Rollerworks\Component\Datagrid\DatagridBuilder;
 use Rollerworks\Component\Datagrid\DatagridFactoryInterface;
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\NumberType;
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 
 final class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -47,12 +49,12 @@ final class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             return $column->reveal();
         };
 
-        $this->factory->createColumn('id', 'number', Argument::any(), [])->will($columnCreator)->shouldBeCalled();
-        $this->factory->createColumn('name', 'text', Argument::any(), ['format' => '%s'])->will($columnCreator)->shouldBeCalled();
+        $this->factory->createColumn('id', NumberType::class, Argument::any(), [])->will($columnCreator)->shouldBeCalled();
+        $this->factory->createColumn('name', TextType::class, Argument::any(), ['format' => '%s'])->will($columnCreator)->shouldBeCalled();
 
         $grid = new DatagridBuilder($this->factory->reveal(), 'grid', $this->dataMapper);
-        $grid->add('id', 'number');
-        $grid->add('name', 'text', ['format' => '%s']);
+        $grid->add('id', NumberType::class);
+        $grid->add('name', TextType::class, ['format' => '%s']);
 
         $this->assertInstanceOf(DatagridInterface::class, $grid->getDatagrid());
     }

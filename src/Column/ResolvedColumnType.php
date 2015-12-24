@@ -55,14 +55,6 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     public function __construct(ColumnTypeInterface $innerType, array $typeExtensions = [], ResolvedColumnTypeInterface $parent = null)
     {
-        if (!preg_match('/^[a-z0-9_]*$/i', $innerType->getName())) {
-            throw new InvalidArgumentException(sprintf(
-                'The "%s" column type name ("%s") is not valid. Names must only contain letters, numbers, and "_".',
-                get_class($innerType),
-                $innerType->getName()
-            ));
-        }
-
         foreach ($typeExtensions as $extension) {
             if (!$extension instanceof ColumnTypeExtensionInterface) {
                 throw new UnexpectedTypeException($extension, 'Rollerworks\Component\Datagrid\Column\ColumnTypeExtensionInterface');
@@ -75,13 +67,11 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     }
 
     /**
-     * Returns the name of the type.
-     *
-     * @return string The type name
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return $this->innerType->getName();
+        return $this->innerType->getBlockPrefix();
     }
 
     /**

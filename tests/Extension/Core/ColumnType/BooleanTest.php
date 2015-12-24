@@ -11,11 +11,13 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\BooleanType;
+
 class BooleanTest extends BaseTypeTest
 {
     protected function getTestedType()
     {
-        return 'boolean';
+        return BooleanType::class;
     }
 
     public function testBasicValue()

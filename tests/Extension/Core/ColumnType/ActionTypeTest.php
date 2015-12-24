@@ -11,11 +11,13 @@
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
 
+use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ActionType;
+
 class ActionTypeTest extends BaseTypeTest
 {
     protected function getTestedType()
     {
-        return 'action';
+        return ActionType::class;
     }
 
     public function testPassLabelToView()

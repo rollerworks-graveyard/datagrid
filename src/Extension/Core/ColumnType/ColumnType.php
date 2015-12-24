@@ -16,6 +16,7 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\SingleMappingTransformer;
+use Rollerworks\Component\Datagrid\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -74,16 +75,17 @@ class ColumnType implements ColumnTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getParent()
     {
-        return 'column';
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the prefix of the template block name for this type.
+     *
+     * @return string The prefix of the template block name.
      */
-    public function getParent()
+    public function getBlockPrefix()
     {
-        return;
+        return StringUtil::fqcnToBlockPrefix(get_class($this));
     }
 }
