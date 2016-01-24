@@ -17,7 +17,17 @@ abstract class BaseTypeTest extends ColumnTypeTestCase
 {
     public function testPassLabelToView()
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['id' => 'key']]);
+        $column = $this->factory->createColumn(
+            'id',
+            $this->getTestedType(),
+            $this->datagrid,
+            [
+                'label' => 'My label',
+                'data_provider' => function ($data) {
+                    return $data['key'];
+                },
+            ]
+        );
 
         $object = new \stdClass();
         $object->key = ' foo ';

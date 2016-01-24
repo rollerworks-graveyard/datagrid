@@ -60,6 +60,11 @@ class Column implements ColumnInterface
     private $dispatcher;
 
     /**
+     * @var callable
+     */
+    private $dataProvider;
+
+    /**
      * Constructor.
      *
      * @param string                      $name
@@ -266,5 +271,25 @@ class Column implements ColumnInterface
             $event = new DatagridColumnEvent($this, ['data' => $data, 'object' => $object, 'index' => $index]);
             $this->dispatcher->dispatch(DatagridEvents::COLUMN_BIND_DATA, $event);
         }
+    }
+
+    /**
+     * Set the data-provider for the column.
+     *
+     * @param callable $dataProvider
+     */
+    public function setDataProvider(callable $dataProvider)
+    {
+        $this->dataProvider = $dataProvider;
+    }
+
+    /**
+     * Get data-provider for this column.
+     *
+     * @return callable
+     */
+    public function getDataProvider()
+    {
+        return $this->dataProvider;
     }
 }

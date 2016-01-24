@@ -17,7 +17,7 @@ class ModelTypeTest extends BaseTypeTest
 {
     public function testPassLabelToView()
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['key'], 'model_fields' => []]);
+        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'model_fields' => []]);
 
         $object = new \stdClass();
         $object->key = ' foo ';
@@ -32,7 +32,7 @@ class ModelTypeTest extends BaseTypeTest
     public function testValueOfModelWithModelFormat()
     {
         $options = [
-            'field_mapping' => ['key2'],
+            'data_provider' => function ($data) { return $data->key2; },
             'model_fields' => ['firstName', 'lastName'],
             'model_value_format' => '%s - %s',
         ];
@@ -52,7 +52,7 @@ class ModelTypeTest extends BaseTypeTest
     public function testValueOfModelWithModelFormatAndFormat()
     {
         $options = [
-            'field_mapping' => ['key2'],
+            'data_provider' => function ($data) { return $data->key2; },
             'model_fields' => ['firstName', 'lastName'],
             'model_value_format' => '%s - %s',
             'value_format' => '%s',
@@ -73,7 +73,7 @@ class ModelTypeTest extends BaseTypeTest
     public function testValueOfListModelWithFormat()
     {
         $options = [
-            'field_mapping' => ['key2'],
+            'data_provider' => function ($data) { return $data->key2; },
             'model_fields' => ['firstName', 'lastName'],
             'model_value_format' => '%s - %s',
             'value_format' => '%s, %s',
@@ -98,7 +98,7 @@ class ModelTypeTest extends BaseTypeTest
     public function testValueOfListModelWithGlue()
     {
         $options = [
-            'field_mapping' => ['key2'],
+            'data_provider' => function ($data) { return $data->key2; },
             'model_fields' => ['firstName', 'lastName'],
             'model_value_format' => '%s - %s',
             'value_glue' => ', ',

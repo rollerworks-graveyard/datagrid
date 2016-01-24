@@ -35,11 +35,11 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
 
         $datagrid = $this->factory->createDatagrid('test');
 
-        $datagrid->addColumn($this->factory->createColumn('id', NumberType::class, $datagrid, ['label' => '#', 'field_mapping' => ['id']]));
-        $datagrid->addColumn($this->factory->createColumn('name', TextType::class, $datagrid, ['label' => 'Name', 'field_mapping' => ['name']]));
-        $datagrid->addColumn($this->factory->createColumn('email', TextType::class, $datagrid, ['label' => 'Email', 'field_mapping' => ['email']]));
-        $datagrid->addColumn($this->factory->createColumn('regdate', DateTimeType::class, $datagrid, ['label' => 'regdate', 'field_mapping' => ['regdate']]));
-        $datagrid->addColumn($this->factory->createColumn('last_modified', DateTimeType::class, $datagrid, ['label' => 'last_modified', 'field_mapping' => ['lastModified']]));
+        $datagrid->addColumn($this->factory->createColumn('id', NumberType::class, $datagrid, ['label' => '#', 'data_provider' => function ($data) { return $data['id']; }]));
+        $datagrid->addColumn($this->factory->createColumn('name', TextType::class, $datagrid, ['label' => 'Name', 'data_provider' => function ($data) { return $data['name']; }]));
+        $datagrid->addColumn($this->factory->createColumn('email', TextType::class, $datagrid, ['label' => 'Email', 'data_provider' => function ($data) { return $data['email']; }]));
+        $datagrid->addColumn($this->factory->createColumn('regdate', DateTimeType::class, $datagrid, ['label' => 'regdate', 'data_provider' => function ($data) { return $data['regdate']; }]));
+        $datagrid->addColumn($this->factory->createColumn('last_modified', DateTimeType::class, $datagrid, ['label' => 'last_modified', 'data_provider' => function ($data) { return $data['lastModified']; }]));
         $datagrid->addColumn(
             $this->factory->createColumn(
                 'status',
@@ -47,14 +47,14 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 $datagrid,
                 [
                     'label' => 'last_modified',
-                    'field_mapping' => ['lastModified'],
+                    'data_provider' => function ($data) { return $data['lastModified']; },
                     'value_format' => function ($value) {
                         return $value === 1 ? 'active' : 'deactivated';
                     },
                 ]
             )
         );
-        $datagrid->addColumn($this->factory->createColumn('group', TextType::class, $datagrid, ['label' => 'group', 'field_mapping' => ['group']]));
+        $datagrid->addColumn($this->factory->createColumn('group', TextType::class, $datagrid, ['label' => 'group', 'data_provider' => function ($data) { return $data['group']; }]));
 
         $datagrid->addColumn(
             $this->factory->createColumn(
@@ -62,6 +62,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 'compound_column',
                 $datagrid,
                 [
+                    'data_provider' => function ($data) { return $data; },
                     'label' => 'Actions',
                     'columns' => [
                         'modify' => $this->factory->createColumn(
@@ -70,7 +71,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                             $datagrid,
                             [
                                 'label' => 'Modify',
-                                'field_mapping' => ['id' => 'id'],
+                                'data_provider' => function ($data) { return $data['id']; },
                                 'uri_scheme' => 'entity/{id}/modify',
                             ]
                         ),
@@ -80,7 +81,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                             $datagrid,
                             [
                                 'label' => 'Delete',
-                                'field_mapping' => ['id' => 'id'],
+                                'data_provider' => function ($data) { return $data['id']; },
                                 'uri_scheme' => 'entity/{id}/delete',
                             ]
                         ),

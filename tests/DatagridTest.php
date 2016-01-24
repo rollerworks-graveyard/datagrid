@@ -17,7 +17,6 @@ use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
@@ -25,39 +24,13 @@ use Rollerworks\Component\Datagrid\Util\StringUtil;
 class DatagridTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $dataMapper;
-
-    /**
      * @var Datagrid
      */
     private $datagrid;
 
     protected function setUp()
     {
-        $this->dataMapper = $this->getMock(DataMapperInterface::class);
-        $this->dataMapper->expects($this->any())
-            ->method('getData')
-            ->will($this->returnCallback(function ($field, Entity $object) {
-                switch ($field) {
-                    case 'name':
-                        return $object->getName();
-                }
-
-                return;
-            }));
-
-        $this->dataMapper->expects($this->any())
-            ->method('setData')
-            ->will($this->returnCallback(function ($field, Entity $object, $value) {
-                switch ($field) {
-                    case 'name':
-                       return $object->setName($value);
-                }
-            }));
-
-        $this->datagrid = new Datagrid('grid', $this->dataMapper);
+        $this->datagrid = new Datagrid('grid');
     }
 
     /**
@@ -114,11 +87,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->datagrid->hasColumn('foo1'));
         $this->assertTrue($this->datagrid->hasColumn('foo2'));
-    }
-
-    public function testGetDataMapper()
-    {
-        $this->assertInstanceOf(DataMapperInterface::class, $this->datagrid->getDataMapper());
     }
 
     public function testSetData()

@@ -12,10 +12,10 @@
 namespace Rollerworks\Component\Datagrid\Extension\Core\DataTransformer;
 
 use Doctrine\Common\Collections\Collection;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\DataTransformerInterface;
-use Rollerworks\Component\Datagrid\Exception\DataMappingException;
 use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 
 /**
  * Transforms the Model to an array.
@@ -25,10 +25,6 @@ use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
  */
 class ModelToArrayTransformer implements DataTransformerInterface
 {
-    /**
-     * @var DataMapperInterface
-     */
-    private $dataMapper;
 
     /**
      * @var string[]
@@ -36,15 +32,20 @@ class ModelToArrayTransformer implements DataTransformerInterface
     private $fields;
 
     /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
+    /**
      * Constructor.
      *
-     * @param DataMapperInterface $dataMapper
-     * @param array               $fields
+     * @param PropertyAccessor $propertyAccessor
+     * @param array            $fields
      */
-    public function __construct(DataMapperInterface $dataMapper, array $fields)
+    public function __construct(PropertyAccessor $propertyAccessor, array $fields)
     {
-        $this->dataMapper = $dataMapper;
         $this->fields = $fields;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
@@ -63,20 +64,20 @@ class ModelToArrayTransformer implements DataTransformerInterface
             if (is_array($value)) {
                 foreach ($value as $object) {
                     foreach ($this->fields as $field) {
-                        $objectValues[$field] = $this->dataMapper->getData($field, $object);
+                        $objectValues[$field] = $this->propertyAccessor->getValue($object, $field);
                     }
 
                     $values[] = $objectValues;
                 }
             } else {
                 foreach ($this->fields as $field) {
-                    $objectValues[$field] = null !== $value ? $this->dataMapper->getData($field, $value) : null;
+                    $objectValues[$field] = null !== $value ? $this->propertyAccessor->getValue($value, $field) : null;
                 }
 
                 $values[] = $objectValues;
             }
-        } catch (DataMappingException $e) {
-            throw new TransformationFailedException('Unable to perform transformation due to DataMapper error.', 0, $e);
+        } catch (ExceptionInterface $e) {
+            throw new TransformationFailedException('Unable to perform transformation due to PropertyAccessor error.', 0, $e);
         }
 
         return $values;

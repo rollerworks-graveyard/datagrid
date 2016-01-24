@@ -13,7 +13,6 @@ namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
@@ -48,9 +47,8 @@ final class DatagridBuilder implements DatagridBuilderInterface
     /**
      * @param DatagridFactoryInterface $factory
      * @param string                   $name
-     * @param DataMapperInterface      $dataMapper
      */
-    public function __construct(DatagridFactoryInterface $factory, $name, DataMapperInterface $dataMapper = null)
+    public function __construct(DatagridFactoryInterface $factory, $name)
     {
         $this->factory = $factory;
         $this->name = $name;

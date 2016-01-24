@@ -26,7 +26,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
     public function testPassLabelToView()
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['key'], 'columns' => []]);
+        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'columns' => []]);
 
         $object = new \stdClass();
         $object->key = ' foo ';
@@ -41,8 +41,8 @@ class CompoundColumnTypeTest extends BaseTypeTest
     public function testSubCellsToView()
     {
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'Age', 'field_mapping' => ['age']]);
-        $columns['name'] = $this->factory->createColumn('name', TextType::class, $this->datagrid, ['label' => 'Name', 'trim' => true, 'field_mapping' => ['name']]);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'Age']);
+        $columns['name'] = $this->factory->createColumn('name', TextType::class, $this->datagrid, ['label' => 'Name', 'trim' => true]);
 
         $column = $this->factory->createColumn(
             'actions',
@@ -89,7 +89,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->datagrid->setData([1 => $object]);
 
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'My label', 'field_mapping' => ['age']]);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'My label']);
         $columns['foo'] = false;
         $options['columns'] = $columns;
 

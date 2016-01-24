@@ -208,19 +208,8 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     public function getValue(ColumnInterface $column, $object, $useTransformers = true)
     {
-        $dataMapper = $column->getDatagrid()->getDataMapper();
-        $values = [];
-
-        foreach ($column->getOption('field_mapping', []) as $mappingName => $field) {
-
-            // Ignore null and boolean as these fields-names are always illegal
-            // CompoundColumnType sometimes has one key with a boolean value
-            if (null === $field || is_bool($field)) {
-                continue;
-            }
-
-            $values[$mappingName] = $dataMapper->getData($field, $object);
-        }
+        $dataProvider = $column->getDataProvider();
+        $values = $dataProvider($object);
 
         if ($useTransformers) {
             $values = $this->normToView($column, $values);

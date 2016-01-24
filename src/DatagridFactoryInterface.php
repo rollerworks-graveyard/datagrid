@@ -12,7 +12,6 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -44,16 +43,8 @@ interface DatagridFactoryInterface
      * Create a new DatagridBuilderInterface instance.
      *
      * @param string              $name
-     * @param DataMapperInterface $dataMapper
      *
-     * @return DatagridInterface
+     * @return DatagridBuilderInterface
      */
-    public function createDatagridBuilder($name, DataMapperInterface $dataMapper = null);
-
-    /**
-     * Get the Datagrid DataMapper.
-     *
-     * @return DataMapperInterface
-     */
-    public function getDataMapper();
+    public function createDatagridBuilder($name);
 }

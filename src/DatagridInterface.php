@@ -12,7 +12,6 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -28,13 +27,6 @@ interface DatagridInterface
      * @return string
      */
     public function getName();
-
-    /**
-     * Returns data mapper of the datagrid.
-     *
-     * @return DataMapperInterface
-     */
-    public function getDataMapper();
 
     /**
      * Add new a column to the datagrid.

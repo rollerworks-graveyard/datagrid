@@ -12,6 +12,7 @@
 namespace Rollerworks\Component\Datagrid\Extension\Core;
 
 use Rollerworks\Component\Datagrid\AbstractDatagridExtension;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -23,15 +24,17 @@ class CoreExtension extends AbstractDatagridExtension
      */
     protected function loadColumnTypes()
     {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
         return [
-            new ColumnType\ColumnType(),
+            new ColumnType\ColumnType($propertyAccessor),
             new ColumnType\CompoundColumnType(),
 
             new ColumnType\ActionType(),
             new ColumnType\BatchType(),
             new ColumnType\BooleanType(),
             new ColumnType\DateTimeType(),
-            new ColumnType\ModelType(),
+            new ColumnType\ModelType($propertyAccessor),
             new ColumnType\MoneyType(),
             new ColumnType\NumberType(),
             new ColumnType\TextType(),

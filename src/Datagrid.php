@@ -12,7 +12,6 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\DatagridException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
@@ -55,14 +54,6 @@ class Datagrid implements DatagridInterface
     ];
 
     /**
-     * DataMapper used by all columns to retrieve
-     * data from rowset objects.
-     *
-     * @var DataMapperInterface
-     */
-    private $dataMapper;
-
-    /**
      * Datagrid columns.
      *
      * @var ColumnInterface[]
@@ -79,14 +70,12 @@ class Datagrid implements DatagridInterface
     /**
      * Constructor.
      *
-     * @param string              $name
-     * @param DataMapperInterface $dataMapper
+     * @param string $name
      */
-    public function __construct($name, $dataMapper = null)
+    public function __construct($name)
     {
         $this->name = $name;
         $this->dispatcher = new EventDispatcher();
-        $this->dataMapper = $dataMapper;
     }
 
     /**
@@ -199,14 +188,6 @@ class Datagrid implements DatagridInterface
         $this->columns = [];
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataMapper()
-    {
-        return $this->dataMapper;
     }
 
     /**

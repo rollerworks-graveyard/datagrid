@@ -34,7 +34,20 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
 
     protected function assertCellValueEquals($expectedValue, $data, array $options = [], array $viewAttributes = null, $idx = 1)
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, array_merge(['label' => 'My label', 'field_mapping' => ['key' => 'key']], $options));
+        $column = $this->factory->createColumn(
+            'id',
+            $this->getTestedType(),
+            $this->datagrid,
+            array_merge(
+                [
+                    'label' => 'My label',
+                    'data_provider' => !is_array($data) ? function ($data) {
+                        return $data->key;
+                    } : null,
+                ],
+                $options
+            )
+        );
 
         if (!is_array($data)) {
             $object = new \stdClass();
@@ -58,11 +71,25 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
 
     protected function assertCellValueNotEquals($expectedValue, $data, array $options = [], $idx = 1)
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, array_merge(['label' => 'My label', 'field_mapping' => ['key']], $options));
+        $column = $this->factory->createColumn(
+            'id',
+            $this->getTestedType(),
+            $this->datagrid,
+            array_merge(
+                [
+                    'label' => 'My label',
+                    'data_provider' => !is_array($data) ? function ($data) {
+                        return $data->key;
+                    } : null,
+                ],
+                $options
+            )
+        );
 
         if (!is_array($data)) {
             $object = new \stdClass();
             $object->key = $data;
+
             $data = [$idx => $object];
         }
 

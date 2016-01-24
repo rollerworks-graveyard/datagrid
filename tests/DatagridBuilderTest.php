@@ -16,7 +16,6 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\DatagridBuilder;
 use Rollerworks\Component\Datagrid\DatagridFactoryInterface;
 use Rollerworks\Component\Datagrid\DatagridInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\NumberType;
 use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 
@@ -34,7 +33,6 @@ final class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->dataMapper = $this->prophesize(DataMapperInterface::class)->reveal();
         $this->factory = $this->prophesize(DatagridFactoryInterface::class);
     }
 
@@ -52,7 +50,7 @@ final class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->factory->createColumn('id', NumberType::class, Argument::any(), [])->will($columnCreator)->shouldBeCalled();
         $this->factory->createColumn('name', TextType::class, Argument::any(), ['format' => '%s'])->will($columnCreator)->shouldBeCalled();
 
-        $grid = new DatagridBuilder($this->factory->reveal(), 'grid', $this->dataMapper);
+        $grid = new DatagridBuilder($this->factory->reveal(), 'grid');
         $grid->add('id', NumberType::class);
         $grid->add('name', TextType::class, ['format' => '%s']);
 

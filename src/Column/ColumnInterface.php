@@ -130,4 +130,18 @@ interface ColumnInterface
      * @param int|string $index
      */
     public function bindData($data, $object, $index);
+
+    /**
+     * Set the data-provider for the column.
+     *
+     * @param callable $dataProvider
+     */
+    public function setDataProvider(callable $dataProvider);
+
+    /**
+     * Get data-provider for this column.
+     *
+     * @return callable
+     */
+    public function getDataProvider();
 }

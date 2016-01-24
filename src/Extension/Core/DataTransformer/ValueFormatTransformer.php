@@ -40,13 +40,12 @@ class ValueFormatTransformer implements DataTransformerInterface
      * @param string|array         $emptyValue
      * @param null|string          $glue
      * @param null|string|callback $format
-     * @param string[]             $mappingFields
      *
      * @throws UnexpectedTypeException
      */
-    public function __construct($emptyValue = '', $glue = null, $format = null, array $mappingFields = [])
+    public function __construct($emptyValue = '', $glue = null, $format = null)
     {
-        $this->validateEmptyValueOption($emptyValue, $mappingFields);
+        $this->validateEmptyValueOption($emptyValue);
 
         $this->emptyValue = $emptyValue;
         $this->glue = $glue;
@@ -110,12 +109,11 @@ class ValueFormatTransformer implements DataTransformerInterface
 
     /**
      * @param string|array $emptyValue
-     * @param array        $mappingFields
      *
      * @throws UnexpectedTypeException
      * @throws TransformationFailedException
      */
-    private function validateEmptyValueOption($emptyValue, array $mappingFields)
+    private function validateEmptyValueOption($emptyValue)
     {
         if (null === $emptyValue || is_string($emptyValue)) {
             return;
@@ -126,10 +124,6 @@ class ValueFormatTransformer implements DataTransformerInterface
         }
 
         foreach ($emptyValue as $field => $value) {
-            if (!array_key_exists($field, $mappingFields)) {
-                throw new TransformationFailedException(sprintf('Empty-value of mapping field "%s" doesn\'t exists in field mapping.', $field));
-            }
-
             if (!is_string($value)) {
                 throw new TransformationFailedException(sprintf('Empty-value of mapping field "%s" must be a string value.', $field));
             }

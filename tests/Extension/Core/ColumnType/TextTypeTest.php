@@ -43,7 +43,7 @@ class TextTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $options = [
-            'field_mapping' => ['foo' => 'key', 'key2'],
+            'data_provider' => function ($data) { return (array) $data; },
             'value_format' => ' - %s - ',
             'value_glue' => ',',
         ];
@@ -59,7 +59,7 @@ class TextTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $options = [
-            'field_mapping' => ['key', 'key2'],
+            'data_provider' => function ($data) { return (array) $data; },
             'value_format' => ' - %s - ',
             'empty_value' => '?',
             'value_glue' => ',',
@@ -71,12 +71,11 @@ class TextTypeTest extends BaseTypeTest
     public function testEmptyValueOptionSingleField()
     {
         $object = new \stdClass();
-        $object->key = 'foo';
+        $object->id = 'foo';
         $object->key2 = null;
         $data = [1 => $object];
 
         $options = [
-            'field_mapping' => ['key'],
             'value_format' => ' - %s - ',
             'empty_value' => '?',
             'value_glue' => ',',
@@ -93,7 +92,7 @@ class TextTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $options = [
-            'field_mapping' => ['key' => 'key', 'key2' => 'key2'],
+            'data_provider' => function ($data) { return (array) $data; },
             'value_format' => ' - %s - ',
             'empty_value' => ['key' => '?1', 'key2' => '?2'],
             'value_glue' => ',',
