@@ -42,7 +42,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
     {
         $columns = [];
         $columns['age'] = $this->factory->createColumn('age', NumberType::class, ['label' => 'Age']);
-        $columns['name'] = $this->factory->createColumn('name', TextType::class, ['label' => 'Name', 'trim' => true]);
+        $columns['name'] = $this->factory->createColumn('name', TextType::class, ['label' => 'Name']);
 
         $column = $this->factory->createColumn(
             'actions',
@@ -64,7 +64,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->assertDatagridCell('name', $view);
 
         $this->assertEquals('42', $view->value['age']->value);
-        $this->assertEquals('sheldon', $view->value['name']->value);
+        $this->assertEquals(' sheldon ', $view->value['name']->value);
         $this->assertArrayNotHasKey('key', $view->value);
     }
 
