@@ -1,9 +1,28 @@
 UPGRADE
 =======
 
-## Upgrade FROM 0.6 to 0.7
+## Upgrade FROM 0.7 to 0.8
 
 This version contains BC breaking changes, older versions are no longer supported.
+
+ * Data binding support is removed. Instead you need process any data before setting data
+   on the Datagrid.
+
+   All related methods and constants are removed.
+
+ * Support for Symfony 2.3 was dropped, the options-resolver requires at
+   minimum Symfony 2.7 now. Symfony 3 is now allowed to be installed, and
+   will be used unless any of your composer.json packages restricts this version.
+
+### Columns
+
+ * A Column instance is no longer linked to a Datagrid instance.
+   You can still use the Datagrid information when building the Header and Cell view of a column.
+
+   This was done to remove the circular dependency between the datagrid and it's columns,
+   making it possible to create a Datagrid instance as an immutable object.
+
+ * A Column will no longer dispatch any events. The EventDispatcher requirement is removed.
 
  * Type names were removed. Instead of referencing types by name, you should reference
    them by their fully-qualified class name (FQCN) instead. With PHP 5.5 or later, you can
@@ -12,15 +31,15 @@ This version contains BC breaking changes, older versions are no longer supporte
    Before:
 
    ```php
-   $datagridBuilder->add('name', 'name', ['label' => 'Name');
+   $datagridBuilder->add('name', 'name', ['label' => 'Name']);
    ```
 
    After:
 
    ```php
-   use \Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
+   use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 
-   $datagridBuilder->add('name', TextType::class, ['label' => 'Name');
+   $datagridBuilder->add('name', TextType::class, ['label' => 'Name']);
    ```
 
    As a further consequence, the method `ColumnTypeInterface::getName()` was
@@ -74,7 +93,7 @@ This version contains BC breaking changes, older versions are no longer supporte
    After:
 
    ```php
-   use \Rollerworks\Component\Datagrid\Extension\Core\ColumnType\CoumnType;
+   use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\CoumnType;
 
    class MyTypeExtension extends AbstractColumnTypeExtension
    {
@@ -119,18 +138,58 @@ This version contains BC breaking changes, older versions are no longer supporte
    Before:
 
    ```php
-   $column = $datagridBuilder->createColumn(new MyType());
+   $column = $datagridBuilder->createColumn('name', new MyType());
    ```
 
    After:
 
    ```php
-   $column = $datagridBuilder->createColumn(MyType::class);
+   $column = $datagridBuilder->createColumn('name', MyType::class);
    ```
 
- * Support for Symfony 2.3 was dropped, the options-resolver requires at
-   minimum Symfony 2.7 now. Symfony 3 is now allowed to be installed, and
-   will be used unless any of your composer.json packages restricts this version.
+ * The DataMapper is removed in favor of an easier and faster solution.
+   Instead of setting a DataMapper you set a data-provider callable on the column.
+
+   Before:
+
+   ```php
+   $registry = ...;
+   $dataProvider = ...;
+   $datagrid = ...;
+
+   $datagridFactory = new DatagridFactory($registry, $dataProvider);
+   $datagridFactory->createColumn('name', TextType::class, $datagrid, ['label' => 'Name', 'field_mapping' => ['name' => 'name']]);
+   ```
+
+   After:
+
+   ```php
+   $registry = ...;
+
+   $datagridFactory = new DatagridFactory($registry);
+   $datagridFactory->createColumn(
+       'name',
+       TextType::class,
+       ['label' => 'Name', 'data_provider' => function ($data) { $data->getName(); }]
+   );
+   ```
+
+   **Note:** If your column-type doesn't have the `ColumnType` as it's parent
+   you need to call `setDataProvider()` in your custom column-type.
+
+   **Tip:**
+
+   > If you don't provide a value for 'data_provider', the `ColumnType` will try to create a data-provider.
+   > This only works when the the property-path name equals to the column-name.
+   > So when your column is named "name", eg. a public property "name", method named getName()
+   > or magic `__get()` method must exist on the row's data-source for this work.
+   >
+   > ```php
+   > $registry = ...;
+   >
+   > $datagridFactory = new DatagridFactory($registry);
+   > $datagridFactory->createColumn('name', TextType::class, ['label' => 'Name']);
+   > ```
 
 ## Upgrade FROM 0.5 to 0.6
 
