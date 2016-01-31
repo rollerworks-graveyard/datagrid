@@ -35,38 +35,6 @@ final class DatagridEvents
     const POST_SET_DATA = 'rollerworks_datagrid.post_set_data';
 
     /**
-     * The PRE_BIND_DATA event is dispatched at the beginning of the Datagrid::bindData() method.
-     *
-     * It can be used to:
-     *  - Change data from the request, before submitting the data to the datagrid.
-     *
-     * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     */
-    const PRE_BIND_DATA = 'rollerworks_datagrid.pre_bind_data';
-
-    /**
-     * The POST_BIND_DATA event is dispatched after the Datagrid::bindData() method
-     * once the data is updated and the values are filtered.
-     *
-     * It can be used to fetch (updated) data after it's set.
-     *
-     * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     */
-    const POST_BIND_DATA = 'rollerworks_datagrid.post_bind_data';
-
-    /**
-     * The COLUMN_BIND_DATA event is dispatched for each column on the datagrid
-     * after the Datagrid::bindData() method.
-     *
-     * It can be used to:
-     *  - Update the data on a single column
-     *  - Handle request data for an editable form that needs the request data.
-     *
-     * The event listener method receives a Rollerworks\Component\Datagrid\DatagridColumnEvent instance.
-     */
-    const COLUMN_BIND_DATA = 'rollerworks_datagrid_column.pre_bind_data';
-
-    /**
      * The PRE_BUILD_VIEW event is dispatched at the beginning of the Datagrid::setData() method.
      *
      * It can be used to:

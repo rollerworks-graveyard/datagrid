@@ -14,18 +14,9 @@ namespace Rollerworks\Component\Datagrid;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- * @author FSi sp. z o.o. <info@fsi.pl>
- */
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net> */
 interface DatagridViewInterface extends \Iterator, \Countable, \ArrayAccess
 {
-    /**
-     * Returns Datagrid the view bound to.
-     *
-     * @return DatagridInterface
-     */
-    public function getDatagrid();
-
     /**
      * Returns the Datagrid name.
      *

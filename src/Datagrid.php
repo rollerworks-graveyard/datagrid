@@ -230,38 +230,6 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function bindData($data)
-    {
-        $event = new DatagridEvent($this, $data);
-        $this->dispatcher->dispatch(DatagridEvents::PRE_BIND_DATA, $event);
-
-        $data = $event->getData();
-
-        if (!is_array($data) && !$data instanceof \ArrayIterator) {
-            throw new UnexpectedTypeException($data, ['array', 'ArrayIterator']);
-        }
-
-        foreach ($data as $index => $values) {
-            if (!isset($this->rowset[$index])) {
-                unset($data[$index]);
-
-                continue;
-            }
-
-            $object = $this->rowset[$index];
-
-            foreach ($this->columns as $column) {
-                $column->bindData($values, $object, $index);
-            }
-        }
-
-        $event = new DatagridEvent($this, $data);
-        $this->dispatcher->dispatch(DatagridEvents::POST_BIND_DATA, $event);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function createView()
     {
         $event = new DatagridEvent($this, null);

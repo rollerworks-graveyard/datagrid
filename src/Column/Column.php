@@ -50,11 +50,6 @@ class Column implements ColumnInterface
     private $viewTransformers = [];
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
      * @var callable
      */
     private $dataProvider;
@@ -64,7 +59,6 @@ class Column implements ColumnInterface
      *
      * @param string                      $name
      * @param ResolvedColumnTypeInterface $type
-     * @param EventDispatcherInterface    $dispatcher
      * @param array                       $options
      *
      * @throws \InvalidArgumentException when the name is invalid
@@ -72,7 +66,6 @@ class Column implements ColumnInterface
     public function __construct(
         $name,
         ResolvedColumnTypeInterface $type,
-        EventDispatcherInterface $dispatcher,
         array $options = []
     ) {
         if ('' === $name) {
@@ -89,7 +82,6 @@ class Column implements ColumnInterface
         $this->type = $type;
         $this->options = $options;
         $this->locked = false;
-        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -146,42 +138,6 @@ class Column implements ColumnInterface
     public function getViewTransformers()
     {
         return $this->viewTransformers;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addEventListener($eventName, $listener, $priority = 0)
-    {
-        if ($this->locked) {
-            throw new BadMethodCallException('Column setter methods cannot be accessed anymore once the data is locked.');
-        }
-
-        $this->dispatcher->addListener($eventName, $listener, $priority);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber)
-    {
-        if ($this->locked) {
-            throw new BadMethodCallException('Column setter methods cannot be accessed anymore once the data is locked.');
-        }
-
-        $this->dispatcher->addSubscriber($subscriber);
-
-        return $this;
-    }
-
-    /**
-     * @return EventDispatcherInterface
-     */
-    public function getEventDispatcher()
-    {
-        return $this->dispatcher;
     }
 
     /**
@@ -245,17 +201,6 @@ class Column implements ColumnInterface
         $this->type->buildCellView($view, $this, $this->options);
 
         return $view;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function bindData($data, $object, $index)
-    {
-        if ($this->dispatcher->hasListeners(DatagridEvents::COLUMN_BIND_DATA)) {
-            $event = new DatagridColumnEvent($this, ['data' => $data, 'object' => $object, 'index' => $index]);
-            $this->dispatcher->dispatch(DatagridEvents::COLUMN_BIND_DATA, $event);
-        }
     }
 
     /**

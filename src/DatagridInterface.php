@@ -101,25 +101,12 @@ interface DatagridInterface
     /**
      * Set data collection of the datagrid.
      *
-     * This method should only be called once, to update the data on the
-     * datagrid use the bindDate() method instead.
-     *
      * Data must be passed as an array or object that implements the
      * \ArrayAccess, \Countable and \IteratorAggregate interfaces.
      *
      * @param array|\Traversable $data
      */
     public function setData($data);
-
-    /**
-     * Bind the the datagrid date set an external input.
-     *
-     * This can be used to make cells editable or update
-     * the current datagrid with new data.
-     *
-     * @param array|\Traversable $data
-     */
-    public function bindData($data);
 
     /**
      * Adds an event listener that listens on the specified events.

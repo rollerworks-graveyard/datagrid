@@ -253,7 +253,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     protected function newColumn($name, array $options)
     {
-        return new Column($name, $this, new EventDispatcher(), $options);
+        return new Column($name, $this, $options);
     }
 
     /**
