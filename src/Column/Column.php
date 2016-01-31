@@ -50,11 +50,6 @@ class Column implements ColumnInterface
     private $viewTransformers = [];
 
     /**
-     * @var DatagridInterface
-     */
-    private $datagrid;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $dispatcher;
@@ -78,7 +73,6 @@ class Column implements ColumnInterface
         $name,
         ResolvedColumnTypeInterface $type,
         EventDispatcherInterface $dispatcher,
-        DatagridInterface $datagrid,
         array $options = []
     ) {
         if ('' === $name) {
@@ -96,7 +90,6 @@ class Column implements ColumnInterface
         $this->options = $options;
         $this->locked = false;
         $this->dispatcher = $dispatcher;
-        $this->datagrid = $datagrid;
     }
 
     /**
@@ -189,14 +182,6 @@ class Column implements ColumnInterface
     public function getEventDispatcher()
     {
         return $this->dispatcher;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDatagrid()
-    {
-        return $this->datagrid;
     }
 
     /**

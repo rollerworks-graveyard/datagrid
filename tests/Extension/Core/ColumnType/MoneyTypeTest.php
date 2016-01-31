@@ -59,8 +59,8 @@ class MoneyTypeTest extends BaseTypeTest
     {
         \Locale::setDefault('de_DE');
 
-        $column = $this->factory->createColumn('price', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['price'], 'currency' => 'EUR']);
-        $column2 = $this->factory->createColumn('price2', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['price2'], 'currency' => 'GBP']);
+        $column = $this->factory->createColumn('price', $this->getTestedType(), ['label' => 'My label', 'currency' => 'EUR']);
+        $column2 = $this->factory->createColumn('price2', $this->getTestedType(), ['label' => 'My label', 'currency' => 'GBP']);
 
         $object = new \stdClass();
         $object->price = '1.23';
@@ -81,8 +81,8 @@ class MoneyTypeTest extends BaseTypeTest
     {
         \Locale::setDefault('de_DE');
 
-        $column = $this->factory->createColumn('price', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['price'], 'currency' => 'EUR']);
-        $column2 = $this->factory->createColumn('price2', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'field_mapping' => ['price2', 'currency'], 'input_field' => 'price2', 'currency_field' => 'currency']);
+        $column = $this->factory->createColumn('price', $this->getTestedType(), ['label' => 'My label', 'currency' => 'EUR']);
+        $column2 = $this->factory->createColumn('price2', $this->getTestedType(), ['label' => 'My label', 'input_field' => 'price2', 'currency_field' => 'currency']);
 
         $object = new \stdClass();
         $object->price = '1.23';

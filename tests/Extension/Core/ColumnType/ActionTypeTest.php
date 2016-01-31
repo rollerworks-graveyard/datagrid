@@ -25,7 +25,6 @@ class ActionTypeTest extends BaseTypeTest
         $column = $this->factory->createColumn(
             'edit',
             $this->getTestedType(),
-            $this->datagrid,
             [
                 'content' => 'My label',
                 'data_provider' => function ($data) { return ['key' => $data->key]; },

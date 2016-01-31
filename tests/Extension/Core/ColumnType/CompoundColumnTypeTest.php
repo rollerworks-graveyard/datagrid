@@ -26,7 +26,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
     public function testPassLabelToView()
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'columns' => []]);
+        $column = $this->factory->createColumn('id', $this->getTestedType(), ['label' => 'My label', 'columns' => []]);
 
         $object = new \stdClass();
         $object->key = ' foo ';
@@ -41,13 +41,12 @@ class CompoundColumnTypeTest extends BaseTypeTest
     public function testSubCellsToView()
     {
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'Age']);
-        $columns['name'] = $this->factory->createColumn('name', TextType::class, $this->datagrid, ['label' => 'Name', 'trim' => true]);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class, ['label' => 'Age']);
+        $columns['name'] = $this->factory->createColumn('name', TextType::class, ['label' => 'Name', 'trim' => true]);
 
         $column = $this->factory->createColumn(
             'actions',
             $this->getTestedType(),
-            $this->datagrid,
             ['label' => 'My label', 'columns' => $columns]
         );
 
@@ -89,7 +88,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->datagrid->setData([1 => $object]);
 
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class, $this->datagrid, ['label' => 'My label']);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class, ['label' => 'My label']);
         $columns['foo'] = false;
         $options['columns'] = $columns;
 
@@ -100,7 +99,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
         $datagridView = $this->datagrid->createView();
 
-        $this->factory->createColumn('birthday', CompoundColumnType::class, $this->datagrid, $options)->createCellView(
+        $this->factory->createColumn('birthday', CompoundColumnType::class, $options)->createCellView(
             $datagridView,
             $object,
             0

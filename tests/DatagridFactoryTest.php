@@ -61,8 +61,6 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateColumn()
     {
-        $grid = $this->factory->createDatagrid('grid');
-
         $type = $this->getMock(ResolvedColumnTypeInterface::class);
 
         $column = $this->getMock(ColumnInterface::class);
@@ -72,7 +70,7 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
         $type->expects($this->once())
                 ->method('createColumn')
-                ->with('id', $grid, ['foo' => 'bar'])
+                ->with('id', ['foo' => 'bar'])
                 ->will($this->returnValue($column));
 
         $type->expects($this->once())
@@ -84,6 +82,6 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getType')->with(TextType::class)
             ->will($this->returnValue($type));
 
-        $this->assertEquals($column, $this->factory->createColumn('id', TextType::class, $grid, ['foo' => 'bar']));
+        $this->assertEquals($column, $this->factory->createColumn('id', TextType::class, ['foo' => 'bar']));
     }
 }

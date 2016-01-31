@@ -47,8 +47,8 @@ final class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             return $column->reveal();
         };
 
-        $this->factory->createColumn('id', NumberType::class, Argument::any(), [])->will($columnCreator)->shouldBeCalled();
-        $this->factory->createColumn('name', TextType::class, Argument::any(), ['format' => '%s'])->will($columnCreator)->shouldBeCalled();
+        $this->factory->createColumn('id', NumberType::class, [])->will($columnCreator)->shouldBeCalled();
+        $this->factory->createColumn('name', TextType::class, ['format' => '%s'])->will($columnCreator)->shouldBeCalled();
 
         $grid = new DatagridBuilder($this->factory->reveal(), 'grid');
         $grid->add('id', NumberType::class);

@@ -37,7 +37,6 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
         $column = $this->factory->createColumn(
             'id',
             $this->getTestedType(),
-            $this->datagrid,
             array_merge(
                 [
                     'label' => 'My label',
@@ -74,7 +73,6 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
         $column = $this->factory->createColumn(
             'id',
             $this->getTestedType(),
-            $this->datagrid,
             array_merge(
                 [
                     'label' => 'My label',

@@ -17,7 +17,7 @@ class ModelTypeTest extends BaseTypeTest
 {
     public function testPassLabelToView()
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), $this->datagrid, ['label' => 'My label', 'model_fields' => []]);
+        $column = $this->factory->createColumn('id', $this->getTestedType(), ['label' => 'My label', 'model_fields' => []]);
 
         $object = new \stdClass();
         $object->key = ' foo ';

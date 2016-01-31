@@ -20,7 +20,6 @@ abstract class BaseTypeTest extends ColumnTypeTestCase
         $column = $this->factory->createColumn(
             'id',
             $this->getTestedType(),
-            $this->datagrid,
             [
                 'label' => 'My label',
                 'data_provider' => function ($data) {

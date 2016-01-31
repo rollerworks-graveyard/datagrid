@@ -21,14 +21,13 @@ interface DatagridFactoryInterface
     /**
      * Create a new ColumnInterface instance.
      *
-     * @param string            $name
-     * @param string            $type
-     * @param DatagridInterface $datagrid
-     * @param array             $options
+     * @param string $name
+     * @param string $type
+     * @param array  $options
      *
      * @return ColumnInterface
      */
-    public function createColumn($name, $type, DatagridInterface $datagrid, array $options = []);
+    public function createColumn($name, $type, array $options = []);
 
     /**
      * Create a new DatagridInterface instance with a unique name.

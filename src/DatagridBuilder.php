@@ -153,7 +153,6 @@ final class DatagridBuilder implements DatagridBuilderInterface
             $this->columns[$name] = $this->factory->createColumn(
                 $name,
                 $column['type'],
-                $datagrid,
                 $column['options']
             );
 

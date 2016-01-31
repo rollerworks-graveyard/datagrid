@@ -53,24 +53,23 @@ class DatagridFactory implements DatagridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createColumn($name, $type, DatagridInterface $datagrid, array $options = [])
+    public function createColumn($name, $type, array $options = [])
     {
-        return $this->createColumnBuilder($name, $datagrid, $type, $options);
+        return $this->createColumnBuilder($name, $type, $options);
     }
 
     /**
      * Creates a new {@link Rollerworks\Component\Datagrid\Column\Column} instance.
      *
-     * @param string            $name
-     * @param DatagridInterface $datagrid
-     * @param string            $type
-     * @param array             $options
+     * @param string $name
+     * @param string $type
+     * @param array  $options
      *
      * @throws UnexpectedTypeException
      *
      * @return Column
      */
-    private function createColumnBuilder($name, DatagridInterface $datagrid, $type = 'column', array $options = [])
+    private function createColumnBuilder($name, $type = 'column', array $options = [])
     {
         if (!is_string($type)) {
             throw new UnexpectedTypeException($type, 'string');
@@ -78,7 +77,7 @@ class DatagridFactory implements DatagridFactoryInterface
 
         $type = $this->typeRegistry->getType($type);
 
-        $column = $type->createColumn($name, $datagrid, $options);
+        $column = $type->createColumn($name, $options);
 
         // Explicitly call buildType() in order to be able to override either
         // createColumn() or buildType() in the resolved column type

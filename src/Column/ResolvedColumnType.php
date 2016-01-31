@@ -130,15 +130,14 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      * Returns a new ColumnInterface instance.
      *
      * @param string            $name
-     * @param DatagridInterface $datagrid
      * @param array             $options
      *
      * @return ColumnInterface
      */
-    public function createColumn($name, DatagridInterface $datagrid, array $options = [])
+    public function createColumn($name, array $options = [])
     {
         $options = $this->getOptionsResolver()->resolve($options);
-        $builder = $this->newColumn($name, $datagrid, $options);
+        $builder = $this->newColumn($name, $options);
 
         return $builder;
     }
@@ -247,15 +246,14 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      *
      * Override this method if you want to customize the Column class.
      *
-     * @param string            $name     The name of the column
-     * @param DatagridInterface $datagrid The name of the column
-     * @param array             $options  The builder options
+     * @param string $name    The name of the column
+     * @param array  $options The builder options
      *
      * @return Column The new field instance
      */
-    protected function newColumn($name, DatagridInterface $datagrid, array $options)
+    protected function newColumn($name, array $options)
     {
-        return new Column($name, $this, new EventDispatcher(), $datagrid, $options);
+        return new Column($name, $this, new EventDispatcher(), $options);
     }
 
     /**

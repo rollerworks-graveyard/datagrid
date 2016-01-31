@@ -74,13 +74,6 @@ interface ColumnInterface
     public function addEventListener($eventName, $listener, $priority = 0);
 
     /**
-     * Returns the Datagrid the column is registered in.
-     *
-     * @return DatagridInterface
-     */
-    public function getDatagrid();
-
-    /**
      * Returns all options passed during the construction of the column.
      *
      * @return array The passed options.

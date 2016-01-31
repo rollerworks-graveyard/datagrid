@@ -23,7 +23,7 @@ class BatchType extends AbstractColumnType
      */
     public function buildCellView(CellView $view, ColumnInterface $column, array $options)
     {
-        $view->attributes['datagrid_name'] = $column->getDatagrid()->getName();
+        $view->attributes['datagrid_name'] = $view->datagrid->getName();
     }
 
     /**
@@ -31,6 +31,6 @@ class BatchType extends AbstractColumnType
      */
     public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options)
     {
-        $view->attributes['datagrid_name'] = $column->getDatagrid()->getName();
+        $view->attributes['datagrid_name'] = $view->datagrid->getName();
     }
 }
