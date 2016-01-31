@@ -15,22 +15,44 @@ use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
-use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\SingleMappingTransformer;
+use Rollerworks\Component\Datagrid\Exception\DataProviderException;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class ColumnType implements ColumnTypeInterface
 {
+    /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
+    /**
+     * ColumnType constructor.
+     *
+     * @param PropertyAccessor|null $propertyAccessor
+     */
+    public function __construct(PropertyAccessor $propertyAccessor = null)
+    {
+        if (null === $propertyAccessor) {
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        }
+
+        $this->propertyAccessor = $propertyAccessor;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['field_mapping', 'label']);
-        $resolver->setDefaults(['field_mapping_single' => true]);
+        $resolver->setRequired(['label']);
+        $resolver->setDefaults(['data_provider' => null]);
+
         $resolver->setAllowedTypes('label', 'string');
-        $resolver->setAllowedTypes('field_mapping', 'array');
-        $resolver->setAllowedTypes('field_mapping_single', 'bool');
+        $resolver->setAllowedTypes('data_provider', ['callable', 'null']);
     }
 
     /**
@@ -38,11 +60,13 @@ class ColumnType implements ColumnTypeInterface
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        // Its save to use this as an array-value is always ignored
-        // And the transformer always receives all mapping fields
-        if (true === $options['field_mapping_single']) {
-            $column->addViewTransformer(new SingleMappingTransformer($options['field_mapping']));
+        $dataProvider = $options['data_provider'];
+
+        if (null === $dataProvider) {
+            $dataProvider = $this->createDataProvider($column);
         }
+
+        $column->setDataProvider($dataProvider);
     }
 
     /**
@@ -74,5 +98,24 @@ class ColumnType implements ColumnTypeInterface
     public function getBlockPrefix()
     {
         return StringUtil::fqcnToBlockPrefix(get_class($this));
+    }
+
+    private function createDataProvider(ColumnInterface $column)
+    {
+        return function ($data) use ($column) {
+            $path = null;
+
+            if (null === $path) {
+                $name = $column->getName();
+
+                if (!$this->propertyAccessor->isReadable($data, $path = new PropertyPath(sprintf('[%s]', $name))) &&
+                    !$this->propertyAccessor->isReadable($data, $path = new PropertyPath($name))
+                ) {
+                    throw DataProviderException::autoAccessorUnableToGetValue($column->getName());
+                }
+            }
+
+            return $this->propertyAccessor->getValue($data, $path);
+        };
     }
 }

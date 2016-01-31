@@ -19,6 +19,8 @@ use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransforme
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -26,14 +28,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ModelType extends AbstractColumnType
 {
     /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
+    /**
+     * ColumnType constructor.
+     *
+     * @param PropertyAccessor|null $propertyAccessor
+     */
+    public function __construct(PropertyAccessor $propertyAccessor = null)
+    {
+        if (null === $propertyAccessor) {
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        }
+
+        $this->propertyAccessor = $propertyAccessor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        if (count($options['field_mapping']) > 2) {
-            throw new InvalidOptionsException('Column Type "model" does not support multiple fields mapping, use the "compound_column" to solve this.');
-        }
-
         $nestedTransformer = new NestedListTransformer();
 
         if ($options['trim']) {
@@ -55,7 +72,7 @@ class ModelType extends AbstractColumnType
             $isFormatted = true;
         }
 
-        $column->addViewTransformer(new ModelToArrayTransformer($column->getDatagrid()->getDataMapper(), $options['model_fields']));
+        $column->addViewTransformer(new ModelToArrayTransformer($this->propertyAccessor, $options['model_fields']));
         $column->addViewTransformer($nestedTransformer);
 
         // Only perform the final formatting when the model is transformed

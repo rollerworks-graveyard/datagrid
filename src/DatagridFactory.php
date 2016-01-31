@@ -13,8 +13,6 @@ namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\Column;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
-use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
@@ -22,10 +20,6 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
  */
 class DatagridFactory implements DatagridFactoryInterface
 {
-    /**
-     * @var DataMapperInterface
-     */
-    private $dataMapper;
 
     /**
      * @var ColumnTypeRegistryInterface
@@ -34,13 +28,9 @@ class DatagridFactory implements DatagridFactoryInterface
 
     /**
      * @param ColumnTypeRegistryInterface $registry
-     * @param DataMapperInterface         $dataMapper
-     *
-     * @internal param ResolvedColumnTypeFactoryInterface $resolvedTypeFactory
      */
-    public function __construct(ColumnTypeRegistryInterface $registry, DataMapperInterface $dataMapper)
+    public function __construct(ColumnTypeRegistryInterface $registry)
     {
-        $this->dataMapper = $dataMapper;
         $this->typeRegistry = $registry;
     }
 
@@ -49,46 +39,37 @@ class DatagridFactory implements DatagridFactoryInterface
      */
     public function createDatagrid($name)
     {
-        return new Datagrid($name, $this->dataMapper);
+        return new Datagrid($name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createDatagridBuilder($name, DataMapperInterface $dataMapper = null)
+    public function createDatagridBuilder($name)
     {
-        return new DatagridBuilder($this, $name, $dataMapper ?: $this->dataMapper);
+        return new DatagridBuilder($this, $name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createColumn($name, $type, DatagridInterface $datagrid, array $options = [])
+    public function createColumn($name, $type, array $options = [])
     {
-        return $this->createColumnBuilder($name, $datagrid, $type, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataMapper()
-    {
-        return $this->dataMapper;
+        return $this->createColumnBuilder($name, $type, $options);
     }
 
     /**
      * Creates a new {@link Rollerworks\Component\Datagrid\Column\Column} instance.
      *
-     * @param string            $name
-     * @param DatagridInterface $datagrid
-     * @param string            $type
-     * @param array             $options
+     * @param string $name
+     * @param string $type
+     * @param array  $options
      *
      * @throws UnexpectedTypeException
      *
      * @return Column
      */
-    private function createColumnBuilder($name, DatagridInterface $datagrid, $type = 'column', array $options = [])
+    private function createColumnBuilder($name, $type = 'column', array $options = [])
     {
         if (!is_string($type)) {
             throw new UnexpectedTypeException($type, 'string');
@@ -96,7 +77,7 @@ class DatagridFactory implements DatagridFactoryInterface
 
         $type = $this->typeRegistry->getType($type);
 
-        $column = $type->createColumn($name, $datagrid, $options);
+        $column = $type->createColumn($name, $options);
 
         // Explicitly call buildType() in order to be able to override either
         // createColumn() or buildType() in the resolved column type

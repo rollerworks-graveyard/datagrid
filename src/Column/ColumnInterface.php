@@ -64,23 +64,6 @@ interface ColumnInterface
     public function getViewTransformers();
 
     /**
-     * Adds an event listener that listens on the specified events.
-     *
-     * @param string   $eventName The event to listen on
-     * @param callable $listener  The listener
-     * @param int      $priority  The higher this value, the earlier an event
-     *                            listener will be triggered in the chain (defaults to 0)
-     */
-    public function addEventListener($eventName, $listener, $priority = 0);
-
-    /**
-     * Returns the Datagrid the column is registered in.
-     *
-     * @return DatagridInterface
-     */
-    public function getDatagrid();
-
-    /**
      * Returns all options passed during the construction of the column.
      *
      * @return array The passed options.
@@ -123,11 +106,16 @@ interface ColumnInterface
     public function createCellView(DatagridViewInterface $datagrid, $object, $index);
 
     /**
-     * Binds data into object using DataMapper object.
+     * Set the data-provider for the column.
      *
-     * @param mixed      $data
-     * @param object     $object
-     * @param int|string $index
+     * @param callable $dataProvider
      */
-    public function bindData($data, $object, $index);
+    public function setDataProvider(callable $dataProvider);
+
+    /**
+     * Get data-provider for this column.
+     *
+     * @return callable
+     */
+    public function getDataProvider();
 }

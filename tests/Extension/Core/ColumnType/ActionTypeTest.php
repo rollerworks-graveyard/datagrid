@@ -25,10 +25,9 @@ class ActionTypeTest extends BaseTypeTest
         $column = $this->factory->createColumn(
             'edit',
             $this->getTestedType(),
-            $this->datagrid,
             [
                 'content' => 'My label',
-                'field_mapping' => ['key'],
+                'data_provider' => function ($data) { return ['key' => $data->key]; },
                 'uri_scheme' => '/entity/{key}/edit',
             ]
         );
@@ -48,6 +47,7 @@ class ActionTypeTest extends BaseTypeTest
         $options = [
             'uri_scheme' => '/entity/{key}/edit',
             'content' => 'edit',
+            'data_provider' => function ($data) { return ['key' => $data->key]; },
             'attr' => ['class' => 'i-edit'],
             'url_attr' => ['data-new-window' => true],
         ];
@@ -66,6 +66,7 @@ class ActionTypeTest extends BaseTypeTest
     {
         $options = [
             'content' => 'Delete',
+            'data_provider' => function ($data) { return ['key' => $data->key]; },
             'uri_scheme' => function ($values) {
                 return '/entity/'.$values['key'].'/delete';
             },
@@ -85,6 +86,7 @@ class ActionTypeTest extends BaseTypeTest
     {
         $options = [
             'uri_scheme' => '/entity/{key}/delete',
+            'data_provider' => function ($data) { return ['key' => $data->key]; },
             'content' => function ($values) {
                 return 'Delete #'.$values['key'];
             },
@@ -105,6 +107,7 @@ class ActionTypeTest extends BaseTypeTest
         $options = [
             'uri_scheme' => '/entity/{key}/edit',
             'content' => 'edit',
+            'data_provider' => function ($data) { return ['key' => $data->key]; },
             'redirect_uri' => '/entity/list',
         ];
 
@@ -123,6 +126,7 @@ class ActionTypeTest extends BaseTypeTest
         $options = [
             'uri_scheme' => '/entity/{key}/edit?foo=bar',
             'content' => 'delete',
+            'data_provider' => function ($data) { return ['key' => $data->key]; },
             'redirect_uri' => '/entity/list?filter=something',
         ];
 
@@ -141,6 +145,7 @@ class ActionTypeTest extends BaseTypeTest
         $options = [
             'uri_scheme' => '/entity/{key}/edit',
             'content' => 'edit',
+            'data_provider' => function ($data) { return ['key' => $data->key]; },
             'redirect_uri' => function ($values) {
                 return '/entity/list/?last-entity='.$values['key'];
             },
@@ -161,7 +166,7 @@ class ActionTypeTest extends BaseTypeTest
         $options = [
             'uri_scheme' => '/entity/{id}/edit?name={username}',
             'content' => 'edit',
-            'field_mapping' => ['id' => 'id', 'username' => 'name'],
+            'data_provider' => function ($data) { return ['id' => $data->id, 'username' => $data->name]; },
         ];
 
         $expectedAttributes = [

@@ -52,13 +52,12 @@ interface ResolvedColumnTypeInterface
     /**
      * Returns a new ColumnInterface instance.
      *
-     * @param string            $name
-     * @param DatagridInterface $datagrid
-     * @param array             $options
+     * @param string $name
+     * @param array  $options
      *
      * @return ColumnInterface
      */
-    public function createColumn($name, DatagridInterface $datagrid, array $options = []);
+    public function createColumn($name, array $options = []);
 
     /**
      * This configures the {@link ColumnInterface} instance.

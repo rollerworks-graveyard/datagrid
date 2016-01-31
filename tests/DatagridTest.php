@@ -17,7 +17,6 @@ use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
@@ -25,39 +24,13 @@ use Rollerworks\Component\Datagrid\Util\StringUtil;
 class DatagridTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $dataMapper;
-
-    /**
      * @var Datagrid
      */
     private $datagrid;
 
     protected function setUp()
     {
-        $this->dataMapper = $this->getMock(DataMapperInterface::class);
-        $this->dataMapper->expects($this->any())
-            ->method('getData')
-            ->will($this->returnCallback(function ($field, Entity $object) {
-                switch ($field) {
-                    case 'name':
-                        return $object->getName();
-                }
-
-                return;
-            }));
-
-        $this->dataMapper->expects($this->any())
-            ->method('setData')
-            ->will($this->returnCallback(function ($field, Entity $object, $value) {
-                switch ($field) {
-                    case 'name':
-                       return $object->setName($value);
-                }
-            }));
-
-        $this->datagrid = new Datagrid('grid', $this->dataMapper);
+        $this->datagrid = new Datagrid('grid');
     }
 
     /**
@@ -116,11 +89,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->datagrid->hasColumn('foo2'));
     }
 
-    public function testGetDataMapper()
-    {
-        $this->assertInstanceOf(DataMapperInterface::class, $this->datagrid->getDataMapper());
-    }
-
     public function testSetData()
     {
         $column = $this->createColumn('foo1', TextType::class, false);
@@ -170,77 +138,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(array_keys($gridData), $keys);
-    }
-
-    public function testBindArrayData()
-    {
-        $gridData = [
-            new Entity('entity1'),
-            new Entity('entity2'),
-        ];
-
-        $bindData = [
-            ['some', 'data'],
-            ['next', 'data'],
-        ];
-
-        $column = $this->createColumn('foo1', TextType::class, false);
-
-        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
-        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
-
-        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
-        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
-
-        $this->datagrid->addColumn($column->reveal());
-
-        $this->datagrid->setData($gridData);
-        $this->datagrid->bindData($bindData);
-
-        // The binding of data will NOT update the datagrid itself.
-        // Updating is done by Event listeners listening for (POST|PRE)_BIND_DATA
-
-        $this->assertEquals($gridData, $this->datagrid->getData());
-    }
-
-    public function testBindDataExtraRowsAreIgnored()
-    {
-        $gridData = [
-            new Entity('entity1'),
-            new Entity('entity2'),
-        ];
-
-        $bindData = [
-            ['some', 'data'],
-            ['next', 'data'],
-            ['next', 'data'],
-        ];
-
-        $column = $this->createColumn('foo1', TextType::class, false);
-
-        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
-        $column->bindData($bindData[0], $gridData[0], 0)->shouldBeCalled();
-
-        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
-        $column->bindData($bindData[1], $gridData[1], 1)->shouldBeCalled();
-
-        $this->datagrid->addColumn($column->reveal());
-
-        $this->datagrid->setData($gridData);
-        $this->datagrid->bindData($bindData);
-
-        // The binding of data will NOT update the datagrid itself.
-        // Updating is done by Event listeners listening for (POST|PRE)_BIND_DATA
-
-        $this->assertEquals($gridData, $this->datagrid->getData());
-    }
-
-    /**
-     * @expectedException \Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException
-     */
-    public function testCannotBindWithInvalidData()
-    {
-        $this->datagrid->bindData(false);
     }
 
     public function testCreateView()

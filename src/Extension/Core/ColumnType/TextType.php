@@ -34,8 +34,7 @@ class TextType extends AbstractColumnType
                new ValueFormatTransformer(
                    $options['empty_value'],
                    $options['value_glue'],
-                   $options['value_format'],
-                   $options['field_mapping']
+                   $options['value_format']
                )
             );
         }
@@ -53,24 +52,9 @@ class TextType extends AbstractColumnType
             'empty_value' => null,
         ]);
 
-        if ($resolver instanceof OptionsResolverInterface) {
-            $resolver->setAllowedTypes(
-                [
-                    'trim' => 'bool',
-                    'value_glue' => ['string', 'null'],
-                    'value_format' => [
-                        'string',
-                        'callable',
-                        'null',
-                    ],
-                    'empty_value' => ['string', 'array', 'null'],
-                ]
-            );
-        } else {
-            $resolver->setAllowedTypes('trim', 'bool');
-            $resolver->setAllowedTypes('value_glue', ['string', 'null']);
-            $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
-            $resolver->setAllowedTypes('empty_value', ['string', 'array', 'null']);
-        }
+        $resolver->setAllowedTypes('trim', 'bool');
+        $resolver->setAllowedTypes('value_glue', ['string', 'null']);
+        $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
+        $resolver->setAllowedTypes('empty_value', ['string', 'array', 'null']);
     }
 }

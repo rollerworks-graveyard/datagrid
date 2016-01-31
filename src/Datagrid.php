@@ -12,7 +12,6 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\DatagridException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
@@ -55,14 +54,6 @@ class Datagrid implements DatagridInterface
     ];
 
     /**
-     * DataMapper used by all columns to retrieve
-     * data from rowset objects.
-     *
-     * @var DataMapperInterface
-     */
-    private $dataMapper;
-
-    /**
      * Datagrid columns.
      *
      * @var ColumnInterface[]
@@ -79,14 +70,12 @@ class Datagrid implements DatagridInterface
     /**
      * Constructor.
      *
-     * @param string              $name
-     * @param DataMapperInterface $dataMapper
+     * @param string $name
      */
-    public function __construct($name, $dataMapper = null)
+    public function __construct($name)
     {
         $this->name = $name;
         $this->dispatcher = new EventDispatcher();
-        $this->dataMapper = $dataMapper;
     }
 
     /**
@@ -204,14 +193,6 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function getDataMapper()
-    {
-        return $this->dataMapper;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setData($data)
     {
         $this->data['original'] = $data;
@@ -244,38 +225,6 @@ class Datagrid implements DatagridInterface
         }
 
         return $this->data['processed'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function bindData($data)
-    {
-        $event = new DatagridEvent($this, $data);
-        $this->dispatcher->dispatch(DatagridEvents::PRE_BIND_DATA, $event);
-
-        $data = $event->getData();
-
-        if (!is_array($data) && !$data instanceof \ArrayIterator) {
-            throw new UnexpectedTypeException($data, ['array', 'ArrayIterator']);
-        }
-
-        foreach ($data as $index => $values) {
-            if (!isset($this->rowset[$index])) {
-                unset($data[$index]);
-
-                continue;
-            }
-
-            $object = $this->rowset[$index];
-
-            foreach ($this->columns as $column) {
-                $column->bindData($values, $object, $index);
-            }
-        }
-
-        $event = new DatagridEvent($this, $data);
-        $this->dispatcher->dispatch(DatagridEvents::POST_BIND_DATA, $event);
     }
 
     /**

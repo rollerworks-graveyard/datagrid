@@ -40,9 +40,17 @@ class CompoundColumnType extends AbstractColumnType
         $resolver->setRequired(['label', 'columns']);
 
         // Not used but required by the ResolvedColumnType
-        $resolver->setDefaults(['field_mapping' => []]);
         $resolver->setAllowedTypes('label', 'string');
         $resolver->setAllowedTypes('columns', 'array');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildColumn(ColumnInterface $column, array $options)
+    {
+        // Simple pass all $data to the sub-columns;
+        $column->setDataProvider(function ($data) { return $data; });
     }
 
     /**

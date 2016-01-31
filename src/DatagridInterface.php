@@ -12,7 +12,6 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -28,13 +27,6 @@ interface DatagridInterface
      * @return string
      */
     public function getName();
-
-    /**
-     * Returns data mapper of the datagrid.
-     *
-     * @return DataMapperInterface
-     */
-    public function getDataMapper();
 
     /**
      * Add new a column to the datagrid.
@@ -109,25 +101,12 @@ interface DatagridInterface
     /**
      * Set data collection of the datagrid.
      *
-     * This method should only be called once, to update the data on the
-     * datagrid use the bindDate() method instead.
-     *
      * Data must be passed as an array or object that implements the
      * \ArrayAccess, \Countable and \IteratorAggregate interfaces.
      *
      * @param array|\Traversable $data
      */
     public function setData($data);
-
-    /**
-     * Bind the the datagrid date set an external input.
-     *
-     * This can be used to make cells editable or update
-     * the current datagrid with new data.
-     *
-     * @param array|\Traversable $data
-     */
-    public function bindData($data);
 
     /**
      * Adds an event listener that listens on the specified events.

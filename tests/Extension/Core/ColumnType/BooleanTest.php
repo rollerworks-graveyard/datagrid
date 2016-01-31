@@ -25,6 +25,7 @@ class BooleanTest extends BaseTypeTest
         $options = [
             'true_value' => 'true',
             'false_value' => 'false',
+            'data_provider' => function ($data) { return (array) $data; },
         ];
 
         $this->assertCellValueEquals('true', true, $options);
@@ -36,7 +37,7 @@ class BooleanTest extends BaseTypeTest
         $options = [
             'true_value' => 'true',
             'false_value' => 'false',
-            'field_mapping' => ['key', 'key2'],
+            'data_provider' => function ($data) { return (array) $data; },
         ];
 
         $object = new \stdClass();
@@ -52,7 +53,7 @@ class BooleanTest extends BaseTypeTest
         $options = [
             'true_value' => 'true',
             'false_value' => 'false',
-            'field_mapping' => ['key', 'key2', 'key3'],
+            'data_provider' => function ($data) { return (array) $data; },
         ];
 
         $object = new \stdClass();
@@ -70,7 +71,7 @@ class BooleanTest extends BaseTypeTest
         $options = [
             'true_value' => 'true',
             'false_value' => 'false',
-            'field_mapping' => ['key', 'key2'],
+            'data_provider' => function ($data) { return (array) $data; },
         ];
 
         $object = new \stdClass();
@@ -87,7 +88,7 @@ class BooleanTest extends BaseTypeTest
         $options = [
             'true_value' => 'true',
             'false_value' => 'false',
-            'field_mapping' => ['key', 'key2', 'key3', 'key4'],
+            'data_provider' => function ($data) { return (array) $data; },
         ];
 
         $object = new \stdClass();

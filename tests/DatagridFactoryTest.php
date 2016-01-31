@@ -18,7 +18,6 @@ use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\DatagridBuilderInterface;
 use Rollerworks\Component\Datagrid\DatagridFactory;
 use Rollerworks\Component\Datagrid\DatagridInterface;
-use Rollerworks\Component\Datagrid\DataMapper\DataMapperInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 
 class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
@@ -36,20 +35,14 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private $dataMapper;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
     private $resolvedTypeFactory;
 
     protected function setUp()
     {
         $this->registry = $this->getMock(ColumnTypeRegistryInterface::class);
         $this->resolvedTypeFactory = $this->getMock(ResolvedColumnTypeFactoryInterface::class);
-        $this->dataMapper = $this->getMock(DataMapperInterface::class);
 
-        $this->factory = new DatagridFactory($this->registry, $this->dataMapper);
+        $this->factory = new DatagridFactory($this->registry);
     }
 
     public function testCreateGrid()
@@ -68,8 +61,6 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateColumn()
     {
-        $grid = $this->factory->createDatagrid('grid');
-
         $type = $this->getMock(ResolvedColumnTypeInterface::class);
 
         $column = $this->getMock(ColumnInterface::class);
@@ -79,7 +70,7 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
         $type->expects($this->once())
                 ->method('createColumn')
-                ->with('id', $grid, ['foo' => 'bar'])
+                ->with('id', ['foo' => 'bar'])
                 ->will($this->returnValue($column));
 
         $type->expects($this->once())
@@ -91,11 +82,6 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getType')->with(TextType::class)
             ->will($this->returnValue($type));
 
-        $this->assertEquals($column, $this->factory->createColumn('id', TextType::class, $grid, ['foo' => 'bar']));
-    }
-
-    public function testGetDataMapper()
-    {
-        $this->assertInstanceOf(DataMapperInterface::class, $this->factory->getDataMapper());
+        $this->assertEquals($column, $this->factory->createColumn('id', TextType::class, ['foo' => 'bar']));
     }
 }
