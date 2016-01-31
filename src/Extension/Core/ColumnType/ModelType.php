@@ -53,10 +53,6 @@ class ModelType extends AbstractColumnType
     {
         $nestedTransformer = new NestedListTransformer();
 
-        if ($options['trim']) {
-            $nestedTransformer->addTransformer(new TrimTransformer());
-        }
-
         $isFormatted = false;
 
         if (null !== $options['model_empty_value'] || null !== $options['model_value_format'] || null !== $options['model_value_glue']) {
@@ -77,10 +73,6 @@ class ModelType extends AbstractColumnType
 
         // Only perform the final formatting when the model is transformed
         if ($isFormatted) {
-            if ($options['trim']) {
-                $column->addViewTransformer(new TrimTransformer());
-            }
-
             if (null !== $options['empty_value'] || null !== $options['value_format'] || null !== $options['value_glue']) {
                 $column->addViewTransformer(
                    new ValueFormatTransformer(
@@ -99,24 +91,20 @@ class ModelType extends AbstractColumnType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'model_trim' => false,
             'model_value_glue' => null,
             'model_value_format' => null,
             'model_empty_value' => null,
 
-            'trim' => false,
             'value_glue' => null,
             'value_format' => null,
             'empty_value' => null,
         ]);
 
         $resolver->setRequired(['model_fields']);
-        $resolver->setAllowedTypes('model_trim', 'bool');
         $resolver->setAllowedTypes('model_value_glue', ['string', 'null']);
         $resolver->setAllowedTypes('model_value_format', ['string', 'callable', 'null']);
         $resolver->setAllowedTypes('model_fields', ['array']);
         $resolver->setAllowedTypes('model_empty_value', ['string', 'null']);
-        $resolver->setAllowedTypes('trim', 'bool');
         $resolver->setAllowedTypes('value_glue', ['string', 'null']);
         $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
         $resolver->setAllowedTypes('empty_value', ['string', 'null']);

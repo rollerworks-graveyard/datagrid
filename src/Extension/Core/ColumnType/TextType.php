@@ -25,10 +25,6 @@ class TextType extends AbstractColumnType
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        if ($options['trim']) {
-            $column->addViewTransformer(new TrimTransformer());
-        }
-
         if (null !== $options['empty_value'] || null !== $options['value_format'] || null !== $options['value_glue']) {
             $column->addViewTransformer(
                new ValueFormatTransformer(
@@ -46,13 +42,11 @@ class TextType extends AbstractColumnType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'trim' => false,
             'value_glue' => null,
             'value_format' => null,
             'empty_value' => null,
         ]);
 
-        $resolver->setAllowedTypes('trim', 'bool');
         $resolver->setAllowedTypes('value_glue', ['string', 'null']);
         $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
         $resolver->setAllowedTypes('empty_value', ['string', 'array', 'null']);
