@@ -92,7 +92,7 @@ class EntityMapper
 
     public function setReady($ready)
     {
-        $this->ready = (boolean) $ready;
+        $this->ready = (bool) $ready;
     }
 
     public function isReady()
@@ -102,7 +102,7 @@ class EntityMapper
 
     public function setProtectedReady($ready)
     {
-        $this->protected_ready = (boolean) $ready;
+        $this->protected_ready = (bool) $ready;
     }
 
     protected function isProtectedReady()

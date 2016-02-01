@@ -79,7 +79,6 @@ final class EmptyValueTransformer implements DataTransformerInterface
 
                 $val = $emptyValue;
             }
-
         }
 
         return $value;

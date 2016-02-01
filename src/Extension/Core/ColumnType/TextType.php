@@ -14,10 +14,8 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
 use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\EmptyValueTransformer;
-use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TextType extends AbstractColumnType
 {

@@ -53,7 +53,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 ]
             )
         );
-        $datagrid->addColumn($this->factory->createColumn('group', TextType::class, ['label' => 'group', ]));
+        $datagrid->addColumn($this->factory->createColumn('group', TextType::class, ['label' => 'group']));
 
         $datagrid->addColumn(
             $this->factory->createColumn(
