@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
+namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\CompoundColumnType;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\NumberType;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 
 class CompoundColumnTypeTest extends BaseTypeTest
 {

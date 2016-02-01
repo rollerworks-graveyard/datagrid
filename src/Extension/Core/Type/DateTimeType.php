@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
+namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
-use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
+use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ArrayToDateTimeTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\DateTimeToLocalizedStringTransformer;
@@ -27,7 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
  */
-class DateTimeType extends AbstractColumnType
+class DateTimeType extends AbstractType
 {
     const DEFAULT_DATE_FORMAT = \IntlDateFormatter::MEDIUM;
     const DEFAULT_TIME_FORMAT = \IntlDateFormatter::MEDIUM;

@@ -12,9 +12,9 @@
 namespace Rollerworks\Component\Datagrid\Tests;
 
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\DateTimeType;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\NumberType;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\DateTimeType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 use Rollerworks\Component\Datagrid\Test\DatagridPerformanceTestCase;
 
 class DatagridPerformanceTest extends DatagridPerformanceTestCase

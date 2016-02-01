@@ -22,32 +22,32 @@ class CoreExtension extends AbstractDatagridExtension
     /**
      * {@inheritdoc}
      */
-    protected function loadColumnTypes()
+    protected function loadTypes()
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         return [
-            new ColumnType\ColumnType($propertyAccessor),
-            new ColumnType\CompoundColumnType(),
+            new Type\ColumnType($propertyAccessor),
+            new Type\CompoundColumnType(),
 
-            new ColumnType\ActionType(),
-            new ColumnType\BatchType(),
-            new ColumnType\BooleanType(),
-            new ColumnType\DateTimeType(),
-            new ColumnType\MoneyType(),
-            new ColumnType\NumberType(),
-            new ColumnType\TextType(),
+            new Type\ActionType(),
+            new Type\BatchType(),
+            new Type\BooleanType(),
+            new Type\DateTimeType(),
+            new Type\MoneyType(),
+            new Type\NumberType(),
+            new Type\TextType(),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function loadColumnTypesExtensions()
+    protected function loadTypesExtensions()
     {
         return [
-            new ColumnTypeExtension\ColumnOrderExtension(),
-            new ColumnTypeExtension\CompoundColumnOrderExtension(),
+            new TypeExtension\ColumnOrderExtension(),
+            new TypeExtension\CompoundColumnOrderExtension(),
         ];
     }
 

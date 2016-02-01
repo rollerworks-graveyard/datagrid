@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscaps.net>
  */
-abstract class AbstractColumnTypeExtension implements ColumnTypeExtensionInterface
+abstract class AbstractTypeExtension implements ColumnTypeExtensionInterface
 {
     /**
      * {@inheritdoc}

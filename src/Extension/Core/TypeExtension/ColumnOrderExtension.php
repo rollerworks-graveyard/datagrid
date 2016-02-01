@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnTypeExtension;
+namespace Rollerworks\Component\Datagrid\Extension\Core\TypeExtension;
 
-use Rollerworks\Component\Datagrid\Column\AbstractColumnTypeExtension;
+use Rollerworks\Component\Datagrid\Column\AbstractTypeExtension;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ColumnType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class ColumnOrderExtension extends AbstractColumnTypeExtension
+class ColumnOrderExtension extends AbstractTypeExtension
 {
     /**
      * {@inheritdoc}

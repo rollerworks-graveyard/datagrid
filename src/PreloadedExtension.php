@@ -44,7 +44,7 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumnType($name)
+    public function getType($name)
     {
         if (!isset($this->columnTypes[$name])) {
             throw new InvalidArgumentException(
@@ -58,7 +58,7 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasColumnType($name)
+    public function hasType($name)
     {
         return isset($this->columnTypes[$name]);
     }
@@ -66,7 +66,7 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumnTypeExtensions($name)
+    public function getTypeExtensions($name)
     {
         return isset($this->typeColumnExtensions[$name]) ? $this->typeColumnExtensions[$name] : [];
     }
@@ -74,7 +74,7 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasColumnTypeExtensions($name)
+    public function hasTypeExtensions($name)
     {
         return !empty($this->typeColumnExtensions[$name]);
     }

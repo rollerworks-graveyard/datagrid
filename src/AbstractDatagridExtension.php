@@ -26,65 +26,65 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
      *
      * @var array
      */
-    private $columnTypesExtensions;
+    private $typesExtensions;
 
     /**
      * All column types provided by extension.
      *
      * @var array
      */
-    private $columnTypes;
+    private $types;
 
     /**
      * {@inheritdoc}
      */
-    public function getColumnType($type)
+    public function getType($type)
     {
-        if (null === $this->columnTypes) {
+        if (null === $this->types) {
             $this->initColumnTypes();
         }
 
-        if (!isset($this->columnTypes[$type])) {
+        if (!isset($this->types[$type])) {
             throw new InvalidArgumentException(sprintf('Column type "%s" can not be loaded by this extension.', $type));
         }
 
-        return $this->columnTypes[$type];
+        return $this->types[$type];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasColumnType($type)
+    public function hasType($type)
     {
-        if (null === $this->columnTypes) {
+        if (null === $this->types) {
             $this->initColumnTypes();
         }
 
-        return isset($this->columnTypes[$type]);
+        return isset($this->types[$type]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasColumnTypeExtensions($type)
+    public function hasTypeExtensions($type)
     {
-        if (null === $this->columnTypesExtensions) {
-            $this->initColumnTypesExtensions();
+        if (null === $this->typesExtensions) {
+            $this->initTypesExtensions();
         }
 
-        return isset($this->columnTypesExtensions[$type]);
+        return isset($this->typesExtensions[$type]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getColumnTypeExtensions($type)
+    public function getTypeExtensions($type)
     {
-        if (null === $this->columnTypesExtensions) {
-            $this->initColumnTypesExtensions();
+        if (null === $this->typesExtensions) {
+            $this->initTypesExtensions();
         }
 
-        return isset($this->columnTypesExtensions[$type]) ? $this->columnTypesExtensions[$type] : [];
+        return isset($this->typesExtensions[$type]) ? $this->typesExtensions[$type] : [];
     }
 
     /**
@@ -103,7 +103,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
      *
      * @codeCoverageIgnore
      */
-    protected function loadColumnTypes()
+    protected function loadTypes()
     {
         return [];
     }
@@ -123,14 +123,14 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
 
     /**
      * If extension needs to provide new column types this function
-     * should be overloaded in child class and return array of DatagridColumnTypeInterface
+     * should be overloaded in child class and return array of ColumnTypeInterface
      * instances.
      *
      * @return array
      *
      * @codeCoverageIgnore
      */
-    protected function loadColumnTypesExtensions()
+    protected function loadTypesExtensions()
     {
         return [];
     }
@@ -140,32 +140,32 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
      */
     private function initColumnTypes()
     {
-        $this->columnTypes = [];
+        $this->types = [];
 
-        foreach ($this->loadColumnTypes() as $type) {
+        foreach ($this->loadTypes() as $type) {
             if (!$type instanceof ColumnTypeInterface) {
                 throw new UnexpectedTypeException($type, ColumnTypeInterface::class);
             }
 
-            $this->columnTypes[get_class($type)] = $type;
+            $this->types[get_class($type)] = $type;
         }
     }
 
     /**
      * @throws UnexpectedTypeException
      */
-    private function initColumnTypesExtensions()
+    private function initTypesExtensions()
     {
-        $this->columnTypesExtensions = [];
+        $this->typesExtensions = [];
 
-        foreach ($this->loadColumnTypesExtensions() as $extension) {
+        foreach ($this->loadTypesExtensions() as $extension) {
             if (!$extension instanceof ColumnTypeExtensionInterface) {
                 throw new UnexpectedTypeException($extension, ColumnTypeExtensionInterface::class);
             }
 
             $type = $extension->getExtendedType();
 
-            $this->columnTypesExtensions[$type][] = $extension;
+            $this->typesExtensions[$type][] = $extension;
         }
     }
 }

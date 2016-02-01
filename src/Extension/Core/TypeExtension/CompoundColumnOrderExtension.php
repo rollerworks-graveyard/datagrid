@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnTypeExtension;
+namespace Rollerworks\Component\Datagrid\Extension\Core\TypeExtension;
 
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\CompoundColumnType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 
 /**
  * Allows to set the compound-column sorting order.
