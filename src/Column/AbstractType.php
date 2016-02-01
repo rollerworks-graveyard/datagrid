@@ -11,14 +11,14 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ColumnType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-abstract class AbstractColumnType implements ColumnTypeInterface
+abstract class AbstractType implements ColumnTypeInterface
 {
     /**
      * {@inheritdoc}

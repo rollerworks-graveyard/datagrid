@@ -3,7 +3,8 @@ UPGRADE
 
 ## Upgrade FROM 0.7 to 0.8
 
-This version contains BC breaking changes, older versions are no longer supported.
+This version contains some major BC breaking changes and introduces improvements
+and clean-ups.
 
  * Data binding support is removed. Instead you need process any data before setting data
    on the Datagrid.
@@ -15,6 +16,24 @@ This version contains BC breaking changes, older versions are no longer supporte
    will be used unless any of your composer.json packages restricts this version.
 
 ### Columns
+
+ * The `Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType` namespace is
+   renamed to `Rollerworks\Component\Datagrid\Tests\Extension\Core\Type`.
+
+ * The `Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnTypeExtension` namespace is
+   renamed to `Rollerworks\Component\Datagrid\Tests\Extension\Core\TypeExtension`.
+
+ * Class `Rollerworks\Component\Datagrid\Column\AbstractColumnTypeExtension` is renamed to
+   `Rollerworks\Component\Datagrid\Column\AbstractTypeExtension`.
+
+ * Class `Rollerworks\Component\Datagrid\Column\AbstractColumnType` is renamed to
+   `Rollerworks\Component\Datagrid\Column\AbstractType`.
+
+ * Methods of the `Rollerworks\Component\Datagrid\AbstractDatagridExtension` class and
+   `Rollerworks\Component\Datagrid\DatagridExtensionInterface` no longer contain the word `Column`.
+   For example `getColumnType` becomes to `getType`, `loadColumnTypes` becomes `loadTypes`.
+
+   *The reason behind this is redundancy, there are no other types in the datagrid then column types.*
 
  * A Column instance is no longer linked to a Datagrid instance.
    You can still use the Datagrid information when building the Header and Cell view of a column.
@@ -37,7 +56,7 @@ This version contains BC breaking changes, older versions are no longer supporte
    After:
 
    ```php
-   use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
+   use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 
    $datagridBuilder->add('name', TextType::class, ['label' => 'Name']);
    ```
@@ -63,7 +82,7 @@ This version contains BC breaking changes, older versions are no longer supporte
    After:
 
    ```php
-   class UserProfileType extends AbstractColumnType
+   class UserProfileType extends AbstractType
    {
        public function getBlockPrefix()
        {
@@ -76,7 +95,7 @@ This version contains BC breaking changes, older versions are no longer supporte
    without "Type" suffix in underscore notation (here: "user_profile").
 
    Type extension should return the fully-qualified class name of the extended
-   type from `ColumnTypeExtensionInterface::getExtendedType()` now.
+   type from `TypeExtensionInterface::getExtendedType()` now.
 
    Before:
 
@@ -93,9 +112,9 @@ This version contains BC breaking changes, older versions are no longer supporte
    After:
 
    ```php
-   use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\CoumnType;
+   use Rollerworks\Component\Datagrid\Extension\Core\Type\CoumnType;
 
-   class MyTypeExtension extends AbstractColumnTypeExtension
+   class MyTypeExtension extends AbstractTypeExtension
    {
        public function getExtendedType()
        {
@@ -122,7 +141,7 @@ This version contains BC breaking changes, older versions are no longer supporte
    After:
 
    ```php
-   class MyType extends AbstractColumnType
+   class MyType extends AbstractType
    {
        public function getParent()
        {
@@ -192,7 +211,7 @@ This version contains BC breaking changes, older versions are no longer supporte
    > ```
 
  * `Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ModelType` is removed.
-    Instead you can use the `Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextTypeType` with multiple
+    Instead you can use the `Rollerworks\Component\Datagrid\Extension\Core\Type\TextTypeType` with multiple
     fields returned by the "data_provider" and the "value_format" option set to a callback.
     And no "glue" set, the "value_format" as callback will receive all the fields allowing to fully customize
     the returned format.

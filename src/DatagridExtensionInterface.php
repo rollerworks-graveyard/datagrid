@@ -34,7 +34,7 @@ interface DatagridExtensionInterface
      *
      * @return bool
      */
-    public function hasColumnType($type);
+    public function hasType($type);
 
     /**
      * Get column type.
@@ -45,7 +45,7 @@ interface DatagridExtensionInterface
      *
      * @return ColumnTypeInterface
      */
-    public function getColumnType($type);
+    public function getType($type);
 
     /**
      * Check if extension has any column type extension for column of $type.
@@ -54,7 +54,7 @@ interface DatagridExtensionInterface
      *
      * @return bool
      */
-    public function hasColumnTypeExtensions($type);
+    public function hasTypeExtensions($type);
 
     /**
      * Return extensions for column type provided by this data grid extension.
@@ -63,5 +63,5 @@ interface DatagridExtensionInterface
      *
      * @return ColumnTypeExtensionInterface[]
      */
-    public function getColumnTypeExtensions($type);
+    public function getTypeExtensions($type);
 }

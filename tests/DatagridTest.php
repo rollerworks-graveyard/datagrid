@@ -17,7 +17,7 @@ use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
 

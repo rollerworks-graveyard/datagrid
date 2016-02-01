@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
+namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
-use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
+use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author FSi sp. z o.o. <info@fsi.pl>
  */
-class ActionType extends AbstractColumnType
+class ActionType extends AbstractType
 {
     /**
      * {@inheritdoc}

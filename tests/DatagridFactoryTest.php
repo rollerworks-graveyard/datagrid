@@ -18,7 +18,7 @@ use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\DatagridBuilderInterface;
 use Rollerworks\Component\Datagrid\DatagridFactory;
 use Rollerworks\Component\Datagrid\DatagridInterface;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 
 class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 {

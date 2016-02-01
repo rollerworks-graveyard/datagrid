@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
+namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
-use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
+use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
@@ -22,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class CompoundColumnType extends AbstractColumnType
+class CompoundColumnType extends AbstractType
 {
     /**
      * {@inheritdoc}

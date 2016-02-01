@@ -67,8 +67,8 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
             $type = null;
 
             foreach ($this->extensions as $extension) {
-                if ($extension->hasColumnType($name)) {
-                    $type = $extension->getColumnType($name);
+                if ($extension->hasType($name)) {
+                    $type = $extension->getType($name);
 
                     break;
                 }
@@ -133,7 +133,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
         foreach ($this->extensions as $extension) {
             $typeExtensions = array_merge(
                 $typeExtensions,
-                $extension->getColumnTypeExtensions($fqcn)
+                $extension->getTypeExtensions($fqcn)
             );
         }
 

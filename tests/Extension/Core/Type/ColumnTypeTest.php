@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType;
+namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Exception\DataProviderException;
-use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ColumnType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
 
 class ColumnTypeTest extends BaseTypeTest
 {

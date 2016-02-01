@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
+namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
-use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
+use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NumberType extends AbstractColumnType
+class NumberType extends AbstractType
 {
     /**
      * {@inheritdoc}
