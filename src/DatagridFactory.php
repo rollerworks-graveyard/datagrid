@@ -20,7 +20,6 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
  */
 class DatagridFactory implements DatagridFactoryInterface
 {
-
     /**
      * @var ColumnTypeRegistryInterface
      */

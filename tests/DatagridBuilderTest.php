@@ -11,7 +11,6 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
-use Prophecy\Argument;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\DatagridBuilder;
 use Rollerworks\Component\Datagrid\DatagridFactoryInterface;

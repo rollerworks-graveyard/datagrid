@@ -11,11 +11,9 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -129,8 +127,8 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * Returns a new ColumnInterface instance.
      *
-     * @param string            $name
-     * @param array             $options
+     * @param string $name
+     * @param array  $options
      *
      * @return ColumnInterface
      */

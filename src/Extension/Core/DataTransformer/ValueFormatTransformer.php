@@ -13,7 +13,6 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\DataTransformer;
 
 use Rollerworks\Component\Datagrid\DataTransformerInterface;
 use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -59,7 +58,6 @@ class ValueFormatTransformer implements DataTransformerInterface
 
             return (string) $value;
         }
-
 
         if (!is_array($value)) {
             $format = $this->format;

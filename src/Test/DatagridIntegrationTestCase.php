@@ -14,7 +14,6 @@ namespace Rollerworks\Component\Datagrid\Test;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistry;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactory;
 use Rollerworks\Component\Datagrid\DatagridFactory;
-use Rollerworks\Component\Datagrid\DataMapper\PropertyAccessorMapper;
 use Rollerworks\Component\Datagrid\Extension\Core\CoreExtension;
 
 abstract class DatagridIntegrationTestCase extends \PHPUnit_Framework_TestCase

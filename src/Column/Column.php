@@ -11,13 +11,9 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridEvents;
-use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
 use Rollerworks\Component\Datagrid\DataTransformerInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>

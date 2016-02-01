@@ -41,7 +41,7 @@ interface DatagridFactoryInterface
     /**
      * Create a new DatagridBuilderInterface instance.
      *
-     * @param string              $name
+     * @param string $name
      *
      * @return DatagridBuilderInterface
      */

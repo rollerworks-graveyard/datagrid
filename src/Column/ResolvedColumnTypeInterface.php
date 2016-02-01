@@ -11,7 +11,6 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridViewInterface;
 
 /**
