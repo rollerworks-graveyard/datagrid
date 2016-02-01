@@ -191,6 +191,24 @@ This version contains BC breaking changes, older versions are no longer supporte
    > $datagridFactory->createColumn('name', TextType::class, ['label' => 'Name']);
    > ```
 
+ * `Rollerworks\Component\Datagrid\Extension\Core\ColumnType\ModelType` is removed.
+    Instead you can use the `Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextTypeType` with multiple
+    fields returned by the "data_provider" and the "value_format" option set to a callback.
+    And no "glue" set, the "value_format" as callback will receive all the fields allowing to fully customize
+    the returned format.
+
+    Or create a custom type to handle the value returned by your data_provider.
+
+ * The following transformer where removed as they are no longer needed:
+
+    * `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransformer`
+    * `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\SingleMappingTransformer`
+    * `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\NestedListTransformer`
+    * `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ModelToArrayTransformer`
+
+ * The empty value handling of the `TextTransformer` has moved to its own Transformer
+   `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\EmptyValueTransformer`.
+
 ## Upgrade FROM 0.5 to 0.6
 
  * The of methods signature of `buildColumn()`, `buildHeaderView()` and `buildCellView()`

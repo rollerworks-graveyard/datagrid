@@ -15,24 +15,9 @@ use Rollerworks\Component\Datagrid\Extension\Core\ColumnType\TextType;
 
 class TextTypeTest extends BaseTypeTest
 {
-    public function testTrimOption()
-    {
-        $this->assertCellValueEquals('foo', 'foo', ['trim' => true]);
-    }
-
     public function testFormatOption()
     {
         $this->assertCellValueEquals(' - foo - ', 'foo', ['value_format' => ' - %s - ']);
-    }
-
-    public function testFormatAndTrimOption()
-    {
-        $options = [
-            'trim' => true,
-            'value_format' => ' -%s- ',
-        ];
-
-        $this->assertCellValueEquals(' -foo- ', ' foo ', $options);
     }
 
     public function testFormatOptionWithArray()

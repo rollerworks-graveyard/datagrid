@@ -25,41 +25,12 @@ class ValueFormatTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testTransformEmptyValue()
     {
-        $transformer = new ValueFormatTransformer('-');
+        $transformer = new ValueFormatTransformer();
 
         $this->assertEquals('foo', $transformer->transform('foo'));
         $this->assertEquals(' bar', $transformer->transform(' bar'));
-        $this->assertEquals('-', $transformer->transform(null));
-        $this->assertEquals('-', $transformer->transform(''));
-    }
-
-    public function testTransformEmptyValueWithArray()
-    {
-        $transformer = new ValueFormatTransformer('-', ',');
-
-        $this->assertEquals('foo', $transformer->transform('foo'));
-        $this->assertEquals('-', $transformer->transform(null));
-        $this->assertEquals('-', $transformer->transform(''));
-        $this->assertEquals('-,-', $transformer->transform(['id' => '', 'name' => null]));
-    }
-
-    public function testTransformEmptyValuePerFieldWithArray()
-    {
-        $transformer = new ValueFormatTransformer(['id' => '0', 'name' => 'NV'], ',', null, ['id' => 'user.id', 'name' => 'name']);
-
-        $this->assertEquals('foo', $transformer->transform('foo'));
         $this->assertEquals('', $transformer->transform(null));
         $this->assertEquals('', $transformer->transform(''));
-        $this->assertEquals('0,NV', $transformer->transform(['id' => '', 'name' => null]));
-    }
-
-    public function testTransformEmptyValueWithArrayAndFormatter()
-    {
-        $transformer = new ValueFormatTransformer('-', null, '%s/%s');
-
-        // Don't test none-array values as mixing these is not supported
-        $this->assertEquals('1/who', $transformer->transform(['id' => '1', 'name' => 'who']));
-        $this->assertEquals('-/-', $transformer->transform(['id' => '', 'name' => null]));
     }
 
     public function testTransformWithFormatter()
@@ -68,42 +39,38 @@ class ValueFormatTransformerTest extends \PHPUnit_Framework_TestCase
             return $values['id'].'/%/'.$values['name'];
         };
 
-        $transformer = new ValueFormatTransformer('-', null, $format, ['id', 'name']);
+        $transformer = new ValueFormatTransformer(null, $format);
 
         // Don't test none-array values as mixing these is not supported
         $this->assertEquals('1/%/who', $transformer->transform(['id' => '1', 'name' => 'who']));
-        $this->assertEquals('-/%/-', $transformer->transform(['id' => '', 'name' => null]));
     }
 
-    public function testTransformWithFormatterAndArray()
+    public function testTransformWithFormatterArrayValue()
     {
         $format = function ($field) {
             return '{{ '.$field.' }}';
         };
 
-        $transformer = new ValueFormatTransformer('-', null, $format);
+        $transformer = new ValueFormatTransformer(null, $format);
 
         $this->assertEquals('{{ name }}', $transformer->transform('name'));
-        $this->assertEquals('{{ - }}', $transformer->transform(null));
     }
 
-    public function testTransformWithFormatterAndArrayAndGlue()
+    public function testTransformWithFormatterArrayValueAndGlue()
     {
-        $transformer = new ValueFormatTransformer('-', ', ', '{{ %s }}');
+        $transformer = new ValueFormatTransformer(', ', '{{ %s }}');
 
         $this->assertEquals('{{ 1 }}, {{ who }}', $transformer->transform(['id' => '1', 'name' => 'who']));
-        $this->assertEquals('{{ - }}, {{ - }}', $transformer->transform(['id' => '', 'name' => null]));
     }
 
-    public function testTransformWithClosureFormatterAndArrayAndGlue()
+    public function testTransformWithClosureFormatterArrayValueAndGlue()
     {
         $format = function ($field) {
             return '{{ '.$field.' }}';
         };
 
-        $transformer = new ValueFormatTransformer('-', ', ', $format);
+        $transformer = new ValueFormatTransformer(', ', $format);
 
         $this->assertEquals('{{ 1 }}, {{ who }}', $transformer->transform(['id' => '1', 'name' => 'who']));
-        $this->assertEquals('{{ - }}, {{ - }}', $transformer->transform(['id' => '', 'name' => null]));
     }
 }

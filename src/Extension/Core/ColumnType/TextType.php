@@ -13,6 +13,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\ColumnType;
 
 use Rollerworks\Component\Datagrid\Column\AbstractColumnType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\EmptyValueTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TrimTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,18 +26,12 @@ class TextType extends AbstractColumnType
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        if ($options['trim']) {
-            $column->addViewTransformer(new TrimTransformer());
+        if ($options['empty_value']) {
+            $column->addViewTransformer(new EmptyValueTransformer($options['empty_value']));
         }
 
-        if (null !== $options['empty_value'] || null !== $options['value_format'] || null !== $options['value_glue']) {
-            $column->addViewTransformer(
-               new ValueFormatTransformer(
-                   $options['empty_value'],
-                   $options['value_glue'],
-                   $options['value_format']
-               )
-            );
+        if (null !== $options['value_format'] || null !== $options['value_glue']) {
+            $column->addViewTransformer(new ValueFormatTransformer($options['value_glue'], $options['value_format']));
         }
     }
 
@@ -46,13 +41,11 @@ class TextType extends AbstractColumnType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'trim' => false,
             'value_glue' => null,
             'value_format' => null,
             'empty_value' => null,
         ]);
 
-        $resolver->setAllowedTypes('trim', 'bool');
         $resolver->setAllowedTypes('value_glue', ['string', 'null']);
         $resolver->setAllowedTypes('value_format', ['string', 'callable', 'null']);
         $resolver->setAllowedTypes('empty_value', ['string', 'array', 'null']);

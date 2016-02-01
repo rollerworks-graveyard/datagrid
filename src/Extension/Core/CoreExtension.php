@@ -34,7 +34,6 @@ class CoreExtension extends AbstractDatagridExtension
             new ColumnType\BatchType(),
             new ColumnType\BooleanType(),
             new ColumnType\DateTimeType(),
-            new ColumnType\ModelType($propertyAccessor),
             new ColumnType\MoneyType(),
             new ColumnType\NumberType(),
             new ColumnType\TextType(),
