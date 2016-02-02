@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 
 /**
  * A wrapper for a field type and its extensions.
@@ -72,22 +72,22 @@ interface ResolvedColumnTypeInterface
     /**
      * Creates a new header view for a column of this type.
      *
-     * @param ColumnInterface       $column
-     * @param DatagridViewInterface $datagrid
+     * @param ColumnInterface $column
+     * @param DatagridView    $datagrid
      *
      * @return HeaderView
      */
-    public function createHeaderView(ColumnInterface $column, DatagridViewInterface $datagrid);
+    public function createHeaderView(ColumnInterface $column, DatagridView $datagrid);
 
     /**
      * Creates a new cell view for a column of this type.
      *
-     * @param ColumnInterface       $column
-     * @param DatagridViewInterface $datagrid
+     * @param ColumnInterface $column
+     * @param DatagridView    $datagrid
      *
      * @return CellView
      */
-    public function createCellView(ColumnInterface $column, DatagridViewInterface $datagrid);
+    public function createCellView(ColumnInterface $column, DatagridView $datagrid);
 
     /**
      * Configures a header view for the type hierarchy.

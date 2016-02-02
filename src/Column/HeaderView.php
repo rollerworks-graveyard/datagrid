@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -24,17 +24,12 @@ class HeaderView
     public $label;
 
     /**
-     * @var ColumnInterface
-     */
-    public $column;
-
-    /**
      * @var array
      */
     public $attributes = [];
 
     /**
-     * @var DatagridViewInterface
+     * @var DatagridView
      */
     public $datagrid;
 
@@ -49,18 +44,16 @@ class HeaderView
     public $type;
 
     /**
-     * @param ColumnInterface       $column
-     * @param DatagridViewInterface $datagrid
-     * @param string                $label
+     * @param ColumnInterface $column
+     * @param DatagridView    $datagrid
+     * @param string          $label
      */
-    public function __construct(ColumnInterface $column, DatagridViewInterface $datagrid, $label)
+    public function __construct(ColumnInterface $column, DatagridView $datagrid, $label)
     {
-        $this->column = $column;
         $this->datagrid = $datagrid;
-        $this->label = $label;
-
         $this->prefix = $column->getType()->getBlockPrefix();
         $this->name = $column->getName();
+        $this->label = $label;
     }
 
     public function setAttribute($name, $value)

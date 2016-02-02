@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\DataTransformerInterface;
 
 /**
@@ -87,20 +87,20 @@ interface ColumnInterface
     public function hasOption($name);
 
     /**
-     * @param DatagridViewInterface $datagrid
+     * @param DatagridView $datagrid
      *
      * @return HeaderView
      */
-    public function createHeaderView(DatagridViewInterface $datagrid);
+    public function createHeaderView(DatagridView $datagrid);
 
     /**
-     * @param DatagridViewInterface $datagrid
-     * @param object                $object
-     * @param int|string            $index
+     * @param DatagridView $datagrid
+     * @param object       $object
+     * @param int|string   $index
      *
      * @return CellView
      */
-    public function createCellView(DatagridViewInterface $datagrid, $object, $index);
+    public function createCellView(DatagridView $datagrid, $object, $index);
 
     /**
      * Set the data-provider for the column.

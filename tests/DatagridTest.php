@@ -12,11 +12,12 @@
 namespace Rollerworks\Component\Datagrid\Tests;
 
 use Prophecy\Argument;
+use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
@@ -36,11 +37,10 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $name
      * @param string $typeName
-     * @param bool   $reveal
      *
-     * @return ResolvedColumnTypeInterface|\Prophecy\Prophecy\ObjectProphecy
+     * @return ColumnInterface
      */
-    private function createColumn($name = 'foo1', $typeName = TextType::class, $reveal = true)
+    private function createColumn($name = 'foo1', $typeName = TextType::class)
     {
         $type = $this->prophesize(ResolvedColumnTypeInterface::class);
         $type->getInnerType()->willReturn(new $typeName());
@@ -50,9 +50,19 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $column->getName()->willReturn($name);
         $column->getType()->willReturn($type->reveal());
 
-        if (!$reveal) {
-            return $column;
-        }
+        $column->createHeaderView(Argument::any(), Argument::any())->will(
+            function ($args) use ($name) {
+                /* @var \Prophecy\Prophecy\ObjectProphecy $this */
+                return new HeaderView($this->reveal(), $args[0], $name);
+            }
+        );
+
+        $column->createCellView(Argument::any(), Argument::any(), Argument::any())->will(
+            function ($args) use ($name) {
+                /* @var \Prophecy\Prophecy\ObjectProphecy $this */
+                return new CellView($this->reveal(), $args[0]);
+            }
+        );
 
         return $column->reveal();
     }
@@ -91,65 +101,41 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testSetData()
     {
-        $column = $this->createColumn('foo1', TextType::class, false);
-        $column->createHeaderView(Argument::any(), Argument::any())->will(
-            function ($args) use ($column) {
-                return new HeaderView($column->reveal(), $args[0], 'foo1');
-            }
-        );
+        $column = $this->createColumn('foo1', TextType::class);
 
-        $this->datagrid->addColumn($column->reveal());
+        $this->datagrid->addColumn($column);
 
-        $gridData = [
+        $data = [
             new Entity('entity1'),
             new Entity('entity2'),
         ];
 
-        $this->datagrid->setData($gridData);
-        $this->assertCount(2, $this->datagrid->createView());
+        $this->datagrid->setData($data);
 
-        $gridData = [
+        $this->assertSame($data, $this->datagrid->getData());
+    }
+
+    public function testSetDataWithArrayAsSource()
+    {
+        $column = $this->createColumn('foo1', TextType::class);
+
+        $this->datagrid->addColumn($column);
+
+        $data = [
             ['some', 'data'],
             ['next', 'data'],
         ];
 
-        $this->datagrid->setData($gridData);
-        $this->assertCount(2, $this->datagrid->createView());
-    }
+        $this->datagrid->setData($data);
 
-    public function testSetDataWithArray()
-    {
-        $gridData = [
-            ['one'],
-            ['two'],
-            ['three'],
-            ['four'],
-            ['bazinga!'],
-            ['five'],
-        ];
-
-        $this->datagrid->setData($gridData);
-        $view = $this->datagrid->createView();
-
-        $keys = [];
-
-        foreach ($view as $row) {
-            $keys[] = $row->getIndex();
-        }
-
-        $this->assertEquals(array_keys($gridData), $keys);
+        $this->assertSame($data, $this->datagrid->getData());
     }
 
     public function testCreateView()
     {
-        $column = $this->createColumn('foo1', TextType::class, false);
-        $column->createHeaderView(Argument::any(), Argument::any())->will(
-            function ($args) use ($column) {
-                return new HeaderView($column->reveal(), $args[0], 'foo1');
-            }
-        );
+        $column = $this->createColumn('foo1', TextType::class);
 
-        $this->datagrid->addColumn($column->reveal());
+        $this->datagrid->addColumn($column);
 
         $gridData = [
             new Entity('entity1'),
@@ -158,11 +144,10 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->datagrid->setData($gridData);
 
-        $datagridView = $this->datagrid->createView();
+        $view = $this->datagrid->createView();
 
-        $this->assertInstanceOf(DatagridViewInterface::class, $datagridView);
-
-        $this->assertTrue($datagridView->hasColumn('foo1'));
-        $this->assertFalse($datagridView->hasColumn('foo2'));
+        $this->assertInstanceOf(DatagridView::class, $view);
+        $this->assertTrue($view->hasColumn('foo1'));
+        $this->assertFalse($view->hasColumn('foo2'));
     }
 }

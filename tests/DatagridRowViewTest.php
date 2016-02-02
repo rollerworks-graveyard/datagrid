@@ -11,30 +11,55 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
+use Rollerworks\Component\Datagrid\Column\CellView;
+use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\DatagridRowView;
+use Rollerworks\Component\Datagrid\DatagridView;
 
 class DatagridRowViewTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCreateDatagridRowView()
+    /**
+     * @var DatagridRowView
+     */
+    private $rowView;
+
+    private $datagridView;
+
+    /**
+     * @var
+     */
+    private $cellView;
+
+    private $source;
+
+    protected function setUp()
     {
-        $source = 'SOURCE';
+        $this->source = [0 => new \stdClass()];
+        $this->datagridView = $this->getMockBuilder(DatagridView::class)->disableOriginalConstructor()->getMock();
+        $this->cellView = $this->getMockBuilder(CellView::class)->disableOriginalConstructor()->getMock();
 
-        $datagridView = $this->getMock('Rollerworks\Component\Datagrid\DatagridViewInterface');
-        $cellView = $this->getMock('Rollerworks\Component\Datagrid\Column\CellViewInterface');
+        $column = $this->getMock(ColumnInterface::class);
 
-        $column = $this->getMock('Rollerworks\Component\Datagrid\Column\ColumnInterface');
-        $column->expects($this->atLeastOnce())
-                ->method('createCellView')
-                ->with($datagridView, $source, 0)
-                ->will($this->returnValue($cellView));
+        $column->expects($this->once())
+            ->method('getName')
+            ->willReturn('foo');
+
+        $column->expects($this->once())
+            ->method('createCellView')
+            ->with($this->datagridView, $this->source, 0)
+            ->willReturn($this->cellView);
 
         $columns = [
             'foo' => $column,
         ];
 
-        $gridRow = new DatagridRowView($datagridView, $columns, $source, 0);
+        $this->rowView = new DatagridRowView($this->datagridView, $columns, $this->source, 0);
+    }
 
-        $this->assertSame($gridRow->current(), $cellView);
-        $this->assertSame($gridRow->getSource(), $source);
+    public function testViewArgumentsAreProvidedAndCorrect()
+    {
+        $this->assertSame(0, $this->rowView->index);
+        $this->assertSame($this->source, $this->rowView->source);
+        $this->assertSame($this->datagridView, $this->rowView->datagrid);
     }
 }

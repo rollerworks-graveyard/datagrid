@@ -50,14 +50,4 @@ class CoreExtension extends AbstractDatagridExtension
             new TypeExtension\CompoundColumnOrderExtension(),
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function loadSubscribers()
-    {
-        return [
-            new EventListener\ColumnOrderListener(),
-        ];
-    }
 }

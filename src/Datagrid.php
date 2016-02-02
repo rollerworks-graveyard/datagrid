@@ -207,10 +207,13 @@ class Datagrid implements DatagridInterface
      */
     public function createView()
     {
-        $event = new DatagridEvent($this, null);
-        $this->dispatcher->dispatch(DatagridEvents::PRE_BUILD_VIEW, $event);
+        if (!isset($this->data)) {
+            throw new BadMethodCallException(
+                'setDate() must be called before before you can create a view from the Datagrid.'
+            );
+        }
 
-        $view = new DatagridView($this, $this->columns, new DataRowset($this->data));
+        $view = new DatagridView($this);
 
         $event = new DatagridEvent($this, $view);
         $this->dispatcher->dispatch(DatagridEvents::POST_BUILD_VIEW, $event);

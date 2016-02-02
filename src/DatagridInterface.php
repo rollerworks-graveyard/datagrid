@@ -65,7 +65,7 @@ interface DatagridInterface
     /**
      * Return all registered columns in the datagrid.
      *
-     * @return array
+     * @return ColumnInterface[]
      */
     public function getColumns();
 
@@ -94,7 +94,7 @@ interface DatagridInterface
      * The created DatagridView should be passed to a compatible
      * datagrid rendered.
      *
-     * @return DatagridViewInterface
+     * @return DatagridView
      */
     public function createView();
 

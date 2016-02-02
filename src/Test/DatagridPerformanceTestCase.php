@@ -54,7 +54,7 @@ abstract class DatagridPerformanceTestCase extends DatagridIntegrationTestCase
      */
     public function setMaxRunningTime($maxRunningTime)
     {
-        if (is_int($maxRunningTime) && $maxRunningTime >= 0) {
+        if ($maxRunningTime >= 0) {
             $this->maxRunningTime = $maxRunningTime;
         } else {
             throw new \InvalidArgumentException();

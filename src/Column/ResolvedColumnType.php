@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -143,7 +143,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * {inheritdoc}.
      */
-    public function createHeaderView(ColumnInterface $column, DatagridViewInterface $datagrid)
+    public function createHeaderView(ColumnInterface $column, DatagridView $datagrid)
     {
         $view = new HeaderView($column, $datagrid, $column->getOption('label'));
 
@@ -153,7 +153,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * {inheritdoc}.
      */
-    public function createCellView(ColumnInterface $column, DatagridViewInterface $datagrid)
+    public function createCellView(ColumnInterface $column, DatagridView $datagrid)
     {
         $view = new CellView($column, $datagrid);
 
