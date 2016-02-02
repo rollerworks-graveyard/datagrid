@@ -14,7 +14,7 @@ namespace Rollerworks\Component\Datagrid;
 use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
 
 /**
- * Transforms a value between different representations.
+ * Transforms a value from different representations.
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
@@ -23,10 +23,8 @@ interface DataTransformerInterface
     /**
      * Transforms a value from the original representation to a transformed representation.
      *
-     * This method is called on occasion:
-     *
-     * When data from an input is to be transformed to localized format
-     * or to render a none scalar data value.
+     * This method is called to transform a normalized value to a
+     * view representation eg. a localized or formatted representation.
      *
      * This method must be able to deal with empty values. Usually this will
      * be NULL, but depending on your implementation other empty values are

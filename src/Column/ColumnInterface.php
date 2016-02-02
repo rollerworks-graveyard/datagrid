@@ -38,8 +38,6 @@ interface ColumnInterface
      *
      * The transform method of the transformer is used to convert data from the
      * normalized to the view format.
-     * The reverseTransform method of the transformer is used to convert from the
-     * view to the normalized format.
      *
      * @param DataTransformerInterface $viewTransformer
      * @param bool                     $forcePrepend    if set to true, prepend instead of appending
