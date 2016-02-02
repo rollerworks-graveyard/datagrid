@@ -129,11 +129,9 @@ interface DatagridInterface
     public function addEventSubscriber(EventSubscriberInterface $subscriber);
 
     /**
-     * Returns the data-set of the datagrid.
+     * Returns the data set on the datagrid.
      *
-     * @param bool $original returns the data unprocessed
-     *
-     * @return array|\Traversable
+     * @return array|\Traversable|null Returns null when no data was set.
      */
-    public function getData($original = false);
+    public function getData();
 }

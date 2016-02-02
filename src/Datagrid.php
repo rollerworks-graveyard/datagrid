@@ -39,19 +39,9 @@ class Datagrid implements DatagridInterface
     private $name;
 
     /**
-     * DataCollection used to render the view.
-     *
-     * @var DataRowset
+     * @var array|\Traversable|null
      */
-    private $rowset;
-
-    /**
-     * @var array
-     */
-    private $data = [
-        'original' => null,
-        'processed' => null,
-    ];
+    private $data;
 
     /**
      * Datagrid columns.
@@ -195,22 +185,11 @@ class Datagrid implements DatagridInterface
      */
     public function setData($data)
     {
-        $this->data['original'] = $data;
-
-        $event = new DatagridEvent($this, $data);
-        $this->dispatcher->dispatch(DatagridEvents::PRE_SET_DATA, $event);
-
-        $data = $event->getData();
-
         if (!is_array($data) && !$data instanceof \Traversable) {
             throw new UnexpectedTypeException($data, ['array', 'Traversable']);
         }
 
-        $this->rowset = new DataRowset($data);
-        $this->data['processed'] = $data;
-
-        $event = new DatagridEvent($this, $this->rowset);
-        $this->dispatcher->dispatch(DatagridEvents::POST_SET_DATA, $event);
+        $this->data = $data;
 
         return $this;
     }
@@ -218,13 +197,9 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function getData($original = false)
+    public function getData()
     {
-        if ($original) {
-            return $this->data['original'];
-        }
-
-        return $this->data['processed'];
+        return $this->data;
     }
 
     /**
@@ -235,30 +210,12 @@ class Datagrid implements DatagridInterface
         $event = new DatagridEvent($this, null);
         $this->dispatcher->dispatch(DatagridEvents::PRE_BUILD_VIEW, $event);
 
-        $view = new DatagridView($this, $this->columns, $this->getRowset());
+        $view = new DatagridView($this, $this->columns, new DataRowset($this->data));
 
         $event = new DatagridEvent($this, $view);
         $this->dispatcher->dispatch(DatagridEvents::POST_BUILD_VIEW, $event);
         $view = $event->getData();
 
         return $view;
-    }
-
-    /**
-     * Returns data grid rowset that contains source data.
-     *
-     * @throws BadMethodCallException When getRowset() is called before any date is set.
-     *
-     * @return DataRowset
-     */
-    private function getRowset()
-    {
-        if (!isset($this->rowset)) {
-            throw new BadMethodCallException(
-                'setDate() must be called before before you can create a view from the Datagrid.'
-            );
-        }
-
-        return $this->rowset;
     }
 }

@@ -14,27 +14,6 @@ namespace Rollerworks\Component\Datagrid;
 final class DatagridEvents
 {
     /**
-     * The PRE_SET_DATA event is dispatched at the beginning of the Datagrid::setData() method.
-     *
-     * It can be used to:
-     *  - Change date from a source, before set the data on the datagrid.
-     *  - Provide data for the datagrid from an external source.
-     *
-     * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     */
-    const PRE_SET_DATA = 'rollerworks_datagrid.pre_set_data';
-
-    /**
-     * The POST_SET_DATA event is dispatched after the the Datagrid::setData() method
-     * once the data is set and the DataRowset is created.
-     *
-     * It can be used to fetch data after it's set.
-     *
-     * The event listener method receives a Rollerworks\Component\Datagrid\DataGridEvent instance.
-     */
-    const POST_SET_DATA = 'rollerworks_datagrid.post_set_data';
-
-    /**
      * The PRE_BUILD_VIEW event is dispatched at the beginning of the Datagrid::setData() method.
      *
      * It can be used to:
