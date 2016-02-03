@@ -215,9 +215,8 @@ class Datagrid implements DatagridInterface
 
         $view = new DatagridView($this);
 
-        $event = new DatagridEvent($this, $view);
-        $this->dispatcher->dispatch(DatagridEvents::POST_BUILD_VIEW, $event);
-        $view = $event->getData();
+        $event = new DatagridViewEvent($this, $view);
+        $this->dispatcher->dispatch(DatagridEvents::BUILD_VIEW, $event);
 
         return $view;
     }

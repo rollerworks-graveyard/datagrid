@@ -13,7 +13,7 @@ namespace Rollerworks\Component\Datagrid;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class DatagridEvent extends Event
+class DatagridViewEvent extends Event
 {
     /**
      * @var DatagridInterface
@@ -21,20 +21,20 @@ class DatagridEvent extends Event
     private $datagrid;
 
     /**
-     * @var array|\Traversable
+     * @var DatagridView
      */
-    private $data;
+    private $view;
 
     /**
      * Constructor.
      *
-     * @param DatagridInterface  $datagrid
-     * @param array|\Traversable $data
+     * @param DatagridInterface $datagrid
+     * @param DatagridView      $view
      */
-    public function __construct(DatagridInterface $datagrid, $data)
+    public function __construct(DatagridInterface $datagrid, DatagridView $view)
     {
         $this->datagrid = $datagrid;
-        $this->data = $data;
+        $this->view = $view;
     }
 
     /**
@@ -48,25 +48,10 @@ class DatagridEvent extends Event
     }
 
     /**
-     * Return the data set on the datagrid.
-     *
-     * @return array|\Traversable
+     * @return DatagridView
      */
-    public function getData()
+    public function getView()
     {
-        return $this->data;
-    }
-
-    /**
-     * Set the data set on the datagrid.
-     *
-     * Allows updating data for example if you need
-     * to filter values.
-     *
-     * @param array|\Traversable $data
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
+        return $this->view;
     }
 }
