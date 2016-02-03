@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 
 /**
  * CellView provides the data for rendering the Datagrid cell.
@@ -51,12 +51,12 @@ class CellView
     public $attributes = [];
 
     /**
-     * @var ColumnInterface
+     * @var HeaderView
      */
     public $column;
 
     /**
-     * @var DatagridViewInterface
+     * @var DatagridView
      */
     public $datagrid;
 
@@ -71,17 +71,20 @@ class CellView
     public $type;
 
     /**
+     * @var string
+     */
+    public $prefix;
+
+    /**
      * Constructor.
      *
-     * @param ColumnInterface       $column
-     * @param DatagridViewInterface $datagrid
+     * @param ColumnInterface $column
+     * @param DatagridView    $datagrid
      */
-    public function __construct(ColumnInterface $column, DatagridViewInterface $datagrid)
+    public function __construct(ColumnInterface $column, DatagridView $datagrid)
     {
-        $this->column = $column;
-        $this->datagrid = $datagrid;
-
         $this->prefix = $column->getType()->getBlockPrefix();
         $this->name = $column->getName();
+        $this->datagrid = $datagrid;
     }
 }

@@ -11,7 +11,9 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\ActionType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\DateTimeType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
@@ -39,7 +41,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
         $datagrid->addColumn($this->factory->createColumn('name', TextType::class, ['label' => 'Name', 'data_provider' => function ($data) { return $data['name']; }]));
         $datagrid->addColumn($this->factory->createColumn('email', TextType::class, ['label' => 'Email', 'data_provider' => function ($data) { return $data['email']; }]));
         $datagrid->addColumn($this->factory->createColumn('regdate', DateTimeType::class, ['label' => 'regdate', 'data_provider' => function ($data) { return $data['regdate']; }]));
-        $datagrid->addColumn($this->factory->createColumn('last_modified', DateTimeType::class, ['label' => 'last_modified', 'data_provider' => function ($data) { return $data['lastModified']; }]));
+        $datagrid->addColumn($this->factory->createColumn('lastModified', DateTimeType::class, ['label' => 'last_modified', 'data_provider' => function ($data) { return $data['lastModified']; }]));
         $datagrid->addColumn(
             $this->factory->createColumn(
                 'status',
@@ -58,26 +60,25 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
         $datagrid->addColumn(
             $this->factory->createColumn(
                 'actions',
-                'compound_column',
+                CompoundColumnType::class,
                 [
-                    'data_provider' => function ($data) { return $data; },
                     'label' => 'Actions',
                     'columns' => [
                         'modify' => $this->factory->createColumn(
                             'modify',
-                            'action',
+                            ActionType::class,
                             [
                                 'label' => 'Modify',
-                                'data_provider' => function ($data) { return $data['id']; },
+                                'data_provider' => function ($data) { return ['' => $data['id']]; },
                                 'uri_scheme' => 'entity/{id}/modify',
                             ]
                         ),
                         'delete' => $this->factory->createColumn(
                             'delete',
-                            'action',
+                            ActionType::class,
                             [
                                 'label' => 'Delete',
-                                'data_provider' => function ($data) { return $data['id']; },
+                                'data_provider' => function ($data) { return ['' => $data['id']]; },
                                 'uri_scheme' => 'entity/{id}/delete',
                             ]
                         ),
@@ -94,13 +95,13 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 'name' => 'Who',
                 'email' => 'me@example.com',
                 'regdate' => new \DateTime(),
-                'last_modified' => new \DateTime(),
+                'lastModified' => new \DateTime(),
                 'status' => mt_rand(0, 1),
                 'group' => 'Default',
             ];
         }
 
         $datagrid->setData($data);
-        $this->assertInstanceOf(DatagridViewInterface::class, $datagrid->createView());
+        $this->assertInstanceOf(DatagridView::class, $datagrid->createView());
     }
 }

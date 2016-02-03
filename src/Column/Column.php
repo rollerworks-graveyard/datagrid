@@ -11,7 +11,7 @@
 
 namespace Rollerworks\Component\Datagrid\Column;
 
-use Rollerworks\Component\Datagrid\DatagridViewInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\DataTransformerInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 
@@ -167,7 +167,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function createHeaderView(DatagridViewInterface $datagrid)
+    public function createHeaderView(DatagridView $datagrid)
     {
         // The methods createHeaderView(), buildHeaderView() are called
         // explicitly here in order to be able to override either of them
@@ -182,7 +182,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function createCellView(DatagridViewInterface $datagrid, $object, $index)
+    public function createCellView(DatagridView $datagrid, $object, $index)
     {
         // The methods createCellView(), buildCellView() are called
         // explicitly here in order to be able to override either of them

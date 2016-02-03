@@ -65,7 +65,7 @@ interface DatagridInterface
     /**
      * Return all registered columns in the datagrid.
      *
-     * @return array
+     * @return ColumnInterface[]
      */
     public function getColumns();
 
@@ -94,7 +94,7 @@ interface DatagridInterface
      * The created DatagridView should be passed to a compatible
      * datagrid rendered.
      *
-     * @return DatagridViewInterface
+     * @return DatagridView
      */
     public function createView();
 
@@ -129,11 +129,9 @@ interface DatagridInterface
     public function addEventSubscriber(EventSubscriberInterface $subscriber);
 
     /**
-     * Returns the data-set of the datagrid.
+     * Returns the data set on the datagrid.
      *
-     * @param bool $original returns the data unprocessed
-     *
-     * @return array|\Traversable
+     * @return array|\Traversable|null Returns null when no data was set.
      */
-    public function getData($original = false);
+    public function getData();
 }

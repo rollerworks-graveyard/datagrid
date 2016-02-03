@@ -15,6 +15,12 @@ and clean-ups.
    minimum Symfony 2.7 now. Symfony 3 is now allowed to be installed, and
    will be used unless any of your composer.json packages restricts this version.
 
+ * Data passed to `Datagrid::setData()` must be an `array` or `Traversable` object,
+   pre/post data filtering is no longer supported.
+
+   As a result of this the `PRE_SET_DATA` and `POST_SET_DATA` constants on `DatagridEvents`
+   are removed.
+
 ### Columns
 
  * The `Rollerworks\Component\Datagrid\Tests\Extension\Core\ColumnType` namespace is
@@ -227,6 +233,27 @@ and clean-ups.
 
  * The empty value handling of the `TextTransformer` has moved to its own Transformer
    `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\EmptyValueTransformer`.
+
+### Views
+
+ * All the view interfaces are removed, and only classes are provided.
+   All view classes have public properties and can be extended when needed.
+
+ * Rows are now initialized when the DatagridView is created, and not when the row
+   iterated.
+
+ * Views are no longer aware of the object that created them, meaning it's no longer possible
+   to directly get the Datagrid or Column object from a view.
+
+   Instead any information should be set on the view's `vars` property instead.
+
+ * When a DatagridView is created it's no longer possible to change the column order
+   or it's cells. Existing rows can be removed but not added or replaced.
+
+ * The `DatagridEvents::POST_BUILD_VIEW` constant is renamed to `DatagridEvents::BUILD_VIEW`,
+   and a `DatagridViewEvent` will be dispatched instead of `DatagridEvent`.
+
+ * The `DatagridEvents::PRE_BUILD_VIEW` constant is removed.
 
 ## Upgrade FROM 0.5 to 0.6
 

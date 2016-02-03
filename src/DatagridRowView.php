@@ -11,79 +11,61 @@
 
 namespace Rollerworks\Component\Datagrid;
 
+use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
+use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- * @author FSi sp. z o.o. <info@fsi.pl>
  */
-class DatagridRowView implements DatagridRowViewInterface
+class DatagridRowView implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
      * Cells views.
      *
-     * @var array
+     * @var CellView[]
      */
-    protected $cellViews = [];
+    public $cells = [];
 
     /**
      * The source object for which view is created.
      *
-     * @var mixed
+     * @var array|object
      */
-    protected $source;
+    public $source;
 
     /**
      * Row index as given by the Datagrid.
      *
      * @var int
      */
-    protected $index;
+    public $index;
+
+    /**
+     * @var DatagridView
+     */
+    public $datagrid;
 
     /**
      * Constructor.
      *
-     * @param DatagridViewInterface $datagridView
-     * @param ColumnInterface[]     $columns
-     * @param mixed                 $source
-     * @param int                   $index
+     * @param DatagridView      $datagridView
+     * @param ColumnInterface[] $columns
+     * @param mixed             $source
+     * @param int               $index
      *
      * @throws UnexpectedTypeException
      */
-    public function __construct(DatagridViewInterface $datagridView, array $columns, $source, $index)
+    public function __construct(DatagridView $datagridView, array $columns, $source, $index)
     {
-        $this->count = count($columns);
+        $this->datagrid = $datagridView;
         $this->source = $source;
         $this->index = $index;
 
-        foreach ($columns as $name => $column) {
-            if (!$column instanceof ColumnInterface) {
-                throw new UnexpectedTypeException($column, 'Rollerworks\Component\Datagrid\Column\ColumnInterface');
-            }
-
-            $view = $column->createCellView($datagridView, $source, $index);
-            $view->source = $source;
-
-            $this->cellViews[$name] = $view;
+        foreach ($columns as $column) {
+            $this->cells[$column->getName()] = $column->createCellView($datagridView, $source, $index);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndex()
-    {
-        return $this->index;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSource()
-    {
-        return $this->source;
     }
 
     /**
@@ -95,69 +77,7 @@ class DatagridRowView implements DatagridRowViewInterface
      */
     public function count()
     {
-        return count($this->cellViews);
-    }
-
-    /**
-     * Return the current cell view.
-     *
-     * Similar to the current() function for arrays in PHP.
-     * Required by interface Iterator.
-     *
-     * @return Column\CellView current element from the rowset
-     */
-    public function current()
-    {
-        return current($this->cellViews);
-    }
-
-    /**
-     * Return the identifying key of the current column.
-     *
-     * Similar to the key() function for arrays in PHP.
-     * Required by interface Iterator.
-     *
-     * @return string
-     */
-    public function key()
-    {
-        return key($this->cellViews);
-    }
-
-    /**
-     * Move forward to next cell view.
-     *
-     * Similar to the next() function for arrays in PHP.
-     * Required by interface Iterator.
-     *
-     * @return string
-     */
-    public function next()
-    {
-        next($this->cellViews);
-    }
-
-    /**
-     * Rewind the Iterator to the first element.
-     *
-     * Similar to the reset() function for arrays in PHP.
-     * Required by interface Iterator.
-     */
-    public function rewind()
-    {
-        reset($this->cellViews);
-    }
-
-    /**
-     * Checks if current position is valid.
-     *
-     * Required by the SeekableIterator implementation.
-     *
-     * @return bool
-     */
-    public function valid()
-    {
-        return $this->key() !== null;
+        return count($this->cells);
     }
 
     /**
@@ -169,7 +89,7 @@ class DatagridRowView implements DatagridRowViewInterface
      */
     public function offsetExists($offset)
     {
-        return isset($this->cellViews[$offset]);
+        return isset($this->cells[$offset]);
     }
 
     /**
@@ -177,39 +97,40 @@ class DatagridRowView implements DatagridRowViewInterface
      *
      * @param string $offset
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return mixed|false|ColumnTypeInterface
+     * @return CellView
      */
     public function offsetGet($offset)
     {
-        if ($this->offsetExists($offset)) {
-            return $this->cellViews[$offset];
-        }
-
-        throw new \InvalidArgumentException(sprintf('Column "%s" does not exist in row.', $offset));
+        return $this->cells[$offset];
     }
 
     /**
-     * Does nothing.
+     * Implements \ArrayAccess.
      *
-     * Required by the ArrayAccess implementation.
-     *
-     * @param string $offset
-     * @param mixed  $value
+     * @throws BadMethodCallException always as overwriting a cell is not allowed.
      */
     public function offsetSet($offset, $value)
     {
+        throw new BadMethodCallException('Not supported');
     }
 
     /**
-     * Does nothing.
+     * Implements \ArrayAccess.
      *
-     * Required by the ArrayAccess implementation.
-     *
-     * @param string $offset
+     * @throws BadMethodCallException always as removing a cell is not allowed.
      */
     public function offsetUnset($offset)
     {
+        throw new BadMethodCallException('Not supported');
+    }
+
+    /**
+     * Returns an iterator to iterate over cell (implements \IteratorAggregate).
+     *
+     * @return \ArrayIterator The iterator.
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->cells);
     }
 }
