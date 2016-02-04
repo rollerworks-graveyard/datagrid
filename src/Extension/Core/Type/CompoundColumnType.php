@@ -37,10 +37,11 @@ class CompoundColumnType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['label', 'columns']);
+        $resolver->setRequired(['columns']);
+        $resolver->setDefault('label', null);
 
         // Not used but required by the ResolvedColumnType
-        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('label', ['string', 'null']);
         $resolver->setAllowedTypes('columns', 'array');
     }
 
@@ -50,7 +51,11 @@ class CompoundColumnType extends AbstractType
     public function buildColumn(ColumnInterface $column, array $options)
     {
         // Simple pass all $data to the sub-columns;
-        $column->setDataProvider(function ($data) { return $data; });
+        $column->setDataProvider(
+            function ($data) {
+                return $data;
+            }
+        );
     }
 
     /**

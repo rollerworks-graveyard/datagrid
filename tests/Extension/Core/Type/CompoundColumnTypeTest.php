@@ -41,13 +41,13 @@ class CompoundColumnTypeTest extends BaseTypeTest
     public function testSubCellsToView()
     {
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class, ['label' => 'Age']);
-        $columns['name'] = $this->factory->createColumn('name', TextType::class, ['label' => 'Name']);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class);
+        $columns['name'] = $this->factory->createColumn('name', TextType::class);
 
         $column = $this->factory->createColumn(
             'actions',
             $this->getTestedType(),
-            ['label' => 'My label', 'columns' => $columns]
+            ['columns' => $columns]
         );
 
         $object = new \stdClass();
@@ -88,7 +88,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->datagrid->setData([1 => $object]);
 
         $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class, ['label' => 'My label']);
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class);
         $columns['foo'] = false;
         $options['columns'] = $columns;
 
