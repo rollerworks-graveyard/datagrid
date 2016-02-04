@@ -48,10 +48,9 @@ class ColumnType implements ColumnTypeInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['label']);
-        $resolver->setDefaults(['data_provider' => null]);
+        $resolver->setDefaults(['data_provider' => null, 'label' => null]);
 
-        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('label', ['string', 'null']);
         $resolver->setAllowedTypes('data_provider', ['callable', 'null']);
     }
 

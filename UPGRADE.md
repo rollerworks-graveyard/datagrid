@@ -234,6 +234,16 @@ and clean-ups.
  * The empty value handling of the `TextTransformer` has moved to its own Transformer
    `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\EmptyValueTransformer`.
 
+ * The 'label' option is now optional, you should "humanize" the column name when no label
+   is provided.
+
+   You can use the following snippet to humanize a column name:
+
+   ```php
+   $text = 'columnName';
+   $label = ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $text))));
+   ```
+
 ### Views
 
  * All the view interfaces are removed, and only classes are provided.

@@ -23,8 +23,8 @@ class ColumnTypeTest extends BaseTypeTest
         $object->key2 = 'bar';
         $data = [1 => $object];
 
-        $column1 = $this->factory->createColumn('key', ColumnType::class, ['label' => 'My label']);
-        $column2 = $this->factory->createColumn('key2', ColumnType::class, ['label' => 'My label2']);
+        $column1 = $this->factory->createColumn('key', ColumnType::class);
+        $column2 = $this->factory->createColumn('key2', ColumnType::class);
 
         $this->datagrid->setData($data);
         $datagridView = $this->datagrid->createView();
@@ -43,7 +43,7 @@ class ColumnTypeTest extends BaseTypeTest
         $object->key2 = 'bar';
         $data = [1 => $object];
 
-        $column = $this->factory->createColumn('key3', ColumnType::class, ['label' => 'My label']);
+        $column = $this->factory->createColumn('key3', ColumnType::class);
 
         $this->datagrid->setData($data);
         $datagridView = $this->datagrid->createView();
