@@ -23,17 +23,20 @@ abstract class BaseTypeTest extends ColumnTypeTestCase
             [
                 'label' => 'My label',
                 'data_provider' => function ($data) {
-                    return $data['key'];
+                    return $data->key;
                 },
             ]
         );
 
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
         $object = new \stdClass();
         $object->key = ' foo ';
-        $this->datagrid->setData([1 => $object]);
 
-        $datagridView = $this->datagrid->createView();
-        $view = $column->createHeaderView($datagridView);
+        $datagrid->setData([1 => $object]);
+
+        $view = $datagrid->createView();
+        $view = $column->createHeaderView($view);
 
         $this->assertSame('My label', $view->label);
     }

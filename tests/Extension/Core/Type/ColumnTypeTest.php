@@ -26,8 +26,10 @@ class ColumnTypeTest extends BaseTypeTest
         $column1 = $this->factory->createColumn('key', ColumnType::class);
         $column2 = $this->factory->createColumn('key2', ColumnType::class);
 
-        $this->datagrid->setData($data);
-        $datagridView = $this->datagrid->createView();
+        $datagrid = $this->factory->createDatagrid('grid', [$column1, $column2]);
+
+        $datagrid->setData($data);
+        $datagridView = $datagrid->createView();
 
         $view1 = $column1->createCellView($datagridView, $object, 1);
         $view2 = $column2->createCellView($datagridView, $object, 1);
@@ -45,12 +47,12 @@ class ColumnTypeTest extends BaseTypeTest
 
         $column = $this->factory->createColumn('key3', ColumnType::class);
 
-        $this->datagrid->setData($data);
-        $datagridView = $this->datagrid->createView();
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid->setData($data);
 
         $this->setExpectedException(DataProviderException::class, 'Unable to get value for column "key3"');
 
-        $column->createCellView($datagridView, $object, 1);
+        $datagrid->createView();
     }
 
     protected function getTestedType()

@@ -35,56 +35,54 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
     {
         $this->setMaxRunningTime(1);
 
-        $datagrid = $this->factory->createDatagrid('test');
+        $datagrid = $this->factory->createDatagridBuilder('test');
 
-        $datagrid->addColumn($this->factory->createColumn('id', NumberType::class, ['data_provider' => function ($data) { return $data['id']; }]));
-        $datagrid->addColumn($this->factory->createColumn('name', TextType::class, ['data_provider' => function ($data) { return $data['name']; }]));
-        $datagrid->addColumn($this->factory->createColumn('email', TextType::class, ['data_provider' => function ($data) { return $data['email']; }]));
-        $datagrid->addColumn($this->factory->createColumn('regdate', DateTimeType::class, ['data_provider' => function ($data) { return $data['regdate']; }]));
-        $datagrid->addColumn($this->factory->createColumn('lastModified', DateTimeType::class, ['data_provider' => function ($data) { return $data['lastModified']; }]));
-        $datagrid->addColumn(
-            $this->factory->createColumn(
-                'status',
-                TextType::class,
-                [
-                    'label' => 'last_modified',
-                    'data_provider' => function ($data) { return $data['lastModified']; },
-                    'value_format' => function ($value) {
-                        return $value === 1 ? 'active' : 'deactivated';
-                    },
-                ]
-            )
+        $datagrid->add('id', NumberType::class, ['data_provider' => function ($data) { return $data['id']; }]);
+        $datagrid->add('name', TextType::class, ['data_provider' => function ($data) { return $data['name']; }]);
+        $datagrid->add('email', TextType::class, ['data_provider' => function ($data) { return $data['email']; }]);
+        $datagrid->add('regdate', DateTimeType::class, ['data_provider' => function ($data) { return $data['regdate']; }]);
+        $datagrid->add('lastModified', DateTimeType::class, ['data_provider' => function ($data) { return $data['lastModified']; }]);
+        $datagrid->add(
+            'status',
+            TextType::class,
+            [
+                'label' => 'last_modified',
+                'data_provider' => function ($data) {
+                    return $data['lastModified'];
+                },
+                'value_format' => function ($value) {
+                    return $value === 1 ? 'active' : 'deactivated';
+                },
+            ]
         );
-        $datagrid->addColumn($this->factory->createColumn('group', TextType::class));
+        $datagrid->add('group', TextType::class);
 
-        $datagrid->addColumn(
-            $this->factory->createColumn(
-                'actions',
-                CompoundColumnType::class,
-                [
-                    'label' => 'Actions',
-                    'columns' => [
-                        'modify' => $this->factory->createColumn(
-                            'modify',
-                            ActionType::class,
-                            [
-                                'label' => 'Modify',
-                                'data_provider' => function ($data) { return ['id' => $data['id']]; },
-                                'uri_scheme' => 'entity/{id}/modify',
-                            ]
-                        ),
-                        'delete' => $this->factory->createColumn(
-                            'delete',
-                            ActionType::class,
-                            [
-                                'label' => 'Delete',
-                                'data_provider' => function ($data) { return ['id' => $data['id']]; },
-                                'uri_scheme' => 'entity/{id}/delete',
-                            ]
-                        ),
-                    ],
-                ]
-            )
+        $datagrid->add(
+            'actions',
+            CompoundColumnType::class,
+            [
+                'label' => 'Actions',
+                'columns' => [
+                    'modify' => $this->factory->createColumn(
+                        'modify',
+                        ActionType::class,
+                        [
+                            'label' => 'Modify',
+                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'uri_scheme' => 'entity/{id}/modify',
+                        ]
+                    ),
+                    'delete' => $this->factory->createColumn(
+                        'delete',
+                        ActionType::class,
+                        [
+                            'label' => 'Delete',
+                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'uri_scheme' => 'entity/{id}/delete',
+                        ]
+                    ),
+                ],
+            ]
         );
 
         $data = [];
@@ -100,6 +98,8 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 'group' => 'Default',
             ];
         }
+
+        $datagrid = $datagrid->getDatagrid();
 
         $datagrid->setData($data);
         $this->assertInstanceOf(DatagridView::class, $datagrid->createView());
@@ -121,54 +121,50 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
     {
         $this->setMaxRunningTime(1);
 
-        $datagrid = $this->factory->createDatagrid('test');
+        $datagrid = $this->factory->createDatagridBuilder('test');
 
-        $datagrid->addColumn($this->factory->createColumn('id', NumberType::class));
-        $datagrid->addColumn($this->factory->createColumn('name', TextType::class));
-        $datagrid->addColumn($this->factory->createColumn('email', TextType::class));
-        $datagrid->addColumn($this->factory->createColumn('regdate', DateTimeType::class));
-        $datagrid->addColumn($this->factory->createColumn('lastModified', DateTimeType::class));
-        $datagrid->addColumn(
-            $this->factory->createColumn(
-                'status',
-                TextType::class,
-                [
-                    'value_format' => function ($value) {
-                        return $value === 1 ? 'active' : 'deactivated';
-                    },
-                ]
-            )
+        $datagrid->add('id', NumberType::class);
+        $datagrid->add('name', TextType::class);
+        $datagrid->add('email', TextType::class);
+        $datagrid->add('regdate', DateTimeType::class);
+        $datagrid->add('lastModified', DateTimeType::class);
+        $datagrid->add(
+            'status',
+            TextType::class,
+            [
+                'value_format' => function ($value) {
+                    return $value === 1 ? 'active' : 'deactivated';
+                },
+            ]
         );
-        $datagrid->addColumn($this->factory->createColumn('group', TextType::class));
+        $datagrid->add('group', TextType::class);
 
-        $datagrid->addColumn(
-            $this->factory->createColumn(
-                'actions',
-                CompoundColumnType::class,
-                [
-                    'label' => 'Actions',
-                    'columns' => [
-                        'modify' => $this->factory->createColumn(
-                            'modify',
-                            ActionType::class,
-                            [
-                                'label' => 'Modify',
-                                'data_provider' => function ($data) { return ['id' => $data['id']]; },
-                                'uri_scheme' => 'entity/{id}/modify',
-                            ]
-                        ),
-                        'delete' => $this->factory->createColumn(
-                            'delete',
-                            ActionType::class,
-                            [
-                                'label' => 'Delete',
-                                'data_provider' => function ($data) { return ['id' => $data['id']]; },
-                                'uri_scheme' => 'entity/{id}/delete',
-                            ]
-                        ),
-                    ],
-                ]
-            )
+        $datagrid->add(
+            'actions',
+            CompoundColumnType::class,
+            [
+                'label' => 'Actions',
+                'columns' => [
+                    'modify' => $this->factory->createColumn(
+                        'modify',
+                        ActionType::class,
+                        [
+                            'label' => 'Modify',
+                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'uri_scheme' => 'entity/{id}/modify',
+                        ]
+                    ),
+                    'delete' => $this->factory->createColumn(
+                        'delete',
+                        ActionType::class,
+                        [
+                            'label' => 'Delete',
+                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'uri_scheme' => 'entity/{id}/delete',
+                        ]
+                    ),
+                ],
+            ]
         );
 
         $data = [];
@@ -184,6 +180,8 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                 'group' => 'Default',
             ];
         }
+
+        $datagrid = $datagrid->getDatagrid();
 
         $datagrid->setData($data);
         $this->assertInstanceOf(DatagridView::class, $datagrid->createView());

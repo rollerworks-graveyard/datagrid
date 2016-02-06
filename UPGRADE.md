@@ -18,8 +18,15 @@ and clean-ups.
  * Data passed to `Datagrid::setData()` must be an `array` or `Traversable` object,
    pre/post data filtering is no longer supported.
 
-   As a result of this the `PRE_SET_DATA` and `POST_SET_DATA` constants on `DatagridEvents`
-   are removed.
+ * The `DatagridEvents` class is removed as no events are dispatched anymore.
+
+ * Data can only be set once on a datagrid, calling `Datagrid::setData()` will throw
+   an exception.
+
+ * The `Datagrid` class no longer allows to change the registered columns
+   (all must be provided in the constructor).
+
+   It's advised to use `DatagridBuilder` if you need to allow changing the columns.
 
 ### Columns
 
@@ -250,7 +257,7 @@ and clean-ups.
    All view classes have public properties and can be extended when needed.
 
  * Rows are now initialized when the DatagridView is created, and not when the row
-   iterated.
+   gets iterated.
 
  * Views are no longer aware of the object that created them, meaning it's no longer possible
    to directly get the Datagrid or Column object from a view.
@@ -260,10 +267,8 @@ and clean-ups.
  * When a DatagridView is created it's no longer possible to change the column order
    or it's cells. Existing rows can be removed but not added or replaced.
 
- * The `DatagridEvents::POST_BUILD_VIEW` constant is renamed to `DatagridEvents::BUILD_VIEW`,
-   and a `DatagridViewEvent` will be dispatched instead of `DatagridEvent`.
-
- * The `DatagridEvents::PRE_BUILD_VIEW` constant is removed.
+ * Updating the `DatagridView` class is changed to use a callable instead of looping
+   through event listeners.
 
 ## Upgrade FROM 0.5 to 0.6
 

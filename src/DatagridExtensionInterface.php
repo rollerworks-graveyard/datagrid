@@ -21,13 +21,6 @@ use Rollerworks\Component\Datagrid\Exception\DatagridException;
 interface DatagridExtensionInterface
 {
     /**
-     * Register event listeners.
-     *
-     * @param DatagridInterface $datagrid
-     */
-    public function registerListeners(DatagridInterface $datagrid);
-
-    /**
      * Check if extension has column type of $type.
      *
      * @param string $type

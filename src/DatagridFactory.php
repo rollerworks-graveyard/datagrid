@@ -36,9 +36,9 @@ class DatagridFactory implements DatagridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createDatagrid($name)
+    public function createDatagrid($name, array $columns)
     {
-        return new Datagrid($name);
+        return new Datagrid($name, $columns);
     }
 
     /**
