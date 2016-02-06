@@ -11,25 +11,11 @@
 
 namespace Rollerworks\Component\Datagrid\Test;
 
-use Rollerworks\Component\Datagrid\Datagrid;
-
 abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
 {
-    /**
-     * @var Datagrid
-     */
-    protected $datagrid;
-
     public static function assertDateTimeEquals(\DateTime $expected, \DateTime $actual)
     {
         self::assertEquals($expected->format('c'), $actual->format('c'));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->datagrid = $this->factory->createDatagrid('grid');
     }
 
     protected function assertCellValueEquals($expectedValue, $data, array $options = [], array $viewAttributes = null, $idx = 1)
@@ -48,14 +34,16 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
             )
         );
 
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
         if (!is_array($data)) {
             $object = new \stdClass();
             $object->key = $data;
             $data = [$idx => $object];
         }
 
-        $this->datagrid->setData($data);
-        $datagridView = $this->datagrid->createView();
+        $datagrid->setData($data);
+        $datagridView = $datagrid->createView();
 
         $view = $column->createCellView($datagridView, $data[$idx], $idx);
 
@@ -84,6 +72,8 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
             )
         );
 
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
         if (!is_array($data)) {
             $object = new \stdClass();
             $object->key = $data;
@@ -91,8 +81,8 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
             $data = [$idx => $object];
         }
 
-        $this->datagrid->setData($data);
-        $datagridView = $this->datagrid->createView();
+        $datagrid->setData($data);
+        $datagridView = $datagrid->createView();
 
         $view = $column->createCellView($datagridView, $data[$idx], $idx);
         $this->assertNotEquals($expectedValue, $view->value);

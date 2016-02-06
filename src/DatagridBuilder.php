@@ -147,8 +147,6 @@ final class DatagridBuilder implements DatagridBuilderInterface
             );
         }
 
-        $datagrid = new Datagrid($this->name);
-
         foreach ($this->unresolvedColumns as $name => $column) {
             $this->columns[$name] = $this->factory->createColumn(
                 $name,
@@ -159,9 +157,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
             unset($this->unresolvedColumns[$name]);
         }
 
-        foreach ($this->columns as $column) {
-            $datagrid->addColumn($column);
-        }
+        $datagrid = new Datagrid($this->name, $this->columns);
 
         $this->locked = true;
 

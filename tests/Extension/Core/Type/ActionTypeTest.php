@@ -32,11 +32,13 @@ class ActionTypeTest extends BaseTypeTest
             ]
         );
 
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
         $object = new \stdClass();
         $object->key = ' foo ';
-        $this->datagrid->setData([1 => $object]);
+        $datagrid->setData([1 => $object]);
 
-        $datagridView = $this->datagrid->createView();
+        $datagridView = $datagrid->createView();
         $view = $column->createHeaderView($datagridView);
 
         $this->assertEquals('My label', $view->label);

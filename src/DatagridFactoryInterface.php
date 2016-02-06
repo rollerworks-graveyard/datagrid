@@ -32,11 +32,12 @@ interface DatagridFactoryInterface
     /**
      * Create a new DatagridInterface instance with a unique name.
      *
-     * @param string $name
+     * @param string            $name    Name of the datagrid.
+     * @param ColumnInterface[] $columns Columns of the datagrid
      *
      * @return DatagridInterface
      */
-    public function createDatagrid($name);
+    public function createDatagrid($name, array $columns);
 
     /**
      * Create a new DatagridBuilderInterface instance.

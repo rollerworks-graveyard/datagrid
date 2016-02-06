@@ -18,6 +18,7 @@ use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\DatagridView;
+use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
@@ -31,7 +32,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->datagrid = new Datagrid('grid');
+        $this->datagrid = new Datagrid('grid', [$this->createColumn()]);
     }
 
     /**
@@ -67,6 +68,14 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         return $column->reveal();
     }
 
+    /**
+     * @expectedException \Rollerworks\Component\Datagrid\Exception\InvalidArgumentException
+     */
+    public function testInvalidColumnThrowsException()
+    {
+        new Datagrid('grid', [$this->createColumn(), null]);
+    }
+
     public function testGetName()
     {
         $this->assertSame('grid', $this->datagrid->getName());
@@ -74,8 +83,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testHasColumn()
     {
-        $this->datagrid->addColumn($this->createColumn());
-
         $this->assertTrue($this->datagrid->hasColumn('foo1'));
         $this->assertTrue($this->datagrid->hasColumnType(TextType::class));
 
@@ -85,26 +92,8 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ColumnInterface::class, $this->datagrid->getColumn('foo1'));
     }
 
-    public function testRemoveColumn()
-    {
-        $this->datagrid->addColumn($this->createColumn());
-        $this->datagrid->addColumn($this->createColumn('foo2'));
-
-        $this->assertTrue($this->datagrid->hasColumn('foo1'));
-        $this->assertTrue($this->datagrid->hasColumn('foo2'));
-
-        $this->datagrid->removeColumn('foo1');
-
-        $this->assertFalse($this->datagrid->hasColumn('foo1'));
-        $this->assertTrue($this->datagrid->hasColumn('foo2'));
-    }
-
     public function testSetData()
     {
-        $column = $this->createColumn('foo1', TextType::class);
-
-        $this->datagrid->addColumn($column);
-
         $data = [
             new Entity('entity1'),
             new Entity('entity2'),
@@ -117,10 +106,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testSetDataWithArrayAsSource()
     {
-        $column = $this->createColumn('foo1', TextType::class);
-
-        $this->datagrid->addColumn($column);
-
         $data = [
             ['some', 'data'],
             ['next', 'data'],
@@ -131,12 +116,24 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($data, $this->datagrid->getData());
     }
 
+    public function testSetDataShouldOnlyBeCalledOnce()
+    {
+        $data = [
+            new Entity('entity1'),
+        ];
+
+        $this->datagrid->setData($data);
+
+        $this->setExpectedException(
+            BadMethodCallException::class,
+            'Datagrid::setData() can only be called once.'
+        );
+
+        $this->datagrid->setData($data);
+    }
+
     public function testCreateView()
     {
-        $column = $this->createColumn('foo1', TextType::class);
-
-        $this->datagrid->addColumn($column);
-
         $gridData = [
             new Entity('entity1'),
             new Entity('entity2'),

@@ -47,7 +47,7 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateGrid()
     {
-        $grid = $this->factory->createDatagrid('grid');
+        $grid = $this->factory->createDatagrid('grid', []);
 
         $this->assertInstanceOf(DatagridInterface::class, $grid);
         $this->assertEquals('grid', $grid->getName());

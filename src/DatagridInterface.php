@@ -12,8 +12,8 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -27,29 +27,6 @@ interface DatagridInterface
      * @return string
      */
     public function getName();
-
-    /**
-     * Add new a column to the datagrid.
-     *
-     * @param ColumnInterface $column
-     *
-     * @return DatagridInterface
-     */
-    public function addColumn(ColumnInterface $column);
-
-    /**
-     * Remove a column from the datagrid.
-     *
-     * @param string $name
-     *
-     * @throws UnknownColumnException when the column is not registered in the datagrid
-     */
-    public function removeColumn($name);
-
-    /**
-     * Remove all columns from Datagrid.
-     */
-    public function clearColumns();
 
     /**
      * Return column with by name.
@@ -92,44 +69,29 @@ interface DatagridInterface
      * Create a new DatagridView object for rendering the datagrid.
      *
      * The created DatagridView should be passed to a compatible
-     * datagrid rendered.
+     * datagrid renderer.
      *
      * @return DatagridView
      */
     public function createView();
 
     /**
-     * Set data collection of the datagrid.
+     * Set the data collection of the datagrid.
+     *
+     * This method should only be called once and throw an exception
+     * when called more then once.
      *
      * Data must be passed as an array or object that implements the
      * \ArrayAccess, \Countable and \IteratorAggregate interfaces.
      *
      * @param array|\Traversable $data
+     *
+     * @throws BadMethodCallException When data was already set.
      */
     public function setData($data);
 
     /**
-     * Adds an event listener that listens on the specified events.
-     *
-     * @param string   $eventName The event to listen on
-     * @param callable $listener  The listener
-     * @param int      $priority  The priority of the listener.
-     *                            The higher this value, the earlier an event
-     *                            listener will be triggered in the chain.
-     *                            Note that priority must be between -255 and 255
-     */
-    public function addEventListener($eventName, callable $listener, $priority = 0);
-
-    /**
-     * Adds an EventSubscriber. The subscriber is asked for all the events it is
-     * interested in and added as a listener for these events.
-     *
-     * @param EventSubscriberInterface $subscriber The subscriber
-     */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber);
-
-    /**
-     * Returns the data set on the datagrid.
+     * Returns the data collection of the datagrid.
      *
      * @return array|\Traversable|null Returns null when no data was set.
      */

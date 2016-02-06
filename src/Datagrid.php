@@ -13,11 +13,9 @@ namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
-use Rollerworks\Component\Datagrid\Exception\DatagridException;
+use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Exception\UnknownColumnException;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Default Datagrid implementation.
@@ -27,7 +25,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * to create a new Datagrid.
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- * @author FSi sp. z o.o. <info@fsi.pl>
  */
 class Datagrid implements DatagridInterface
 {
@@ -51,21 +48,35 @@ class Datagrid implements DatagridInterface
     private $columns = [];
 
     /**
-     * EventDispatcher for data and view creation.
-     *
-     * @var EventDispatcher
+     * @var callable
      */
-    private $dispatcher;
+    private $viewBuilder;
 
     /**
      * Constructor.
      *
-     * @param string $name
+     * @param string            $name        Name of the datagrid.
+     * @param ColumnInterface[] $columns     Columns of the datagrid
+     * @param callable|null     $viewBuilder A callable view builder.
+     *                                       Use the decorator pattern to chain multiple.
      */
-    public function __construct($name)
+    public function __construct($name, array $columns, callable $viewBuilder = null)
     {
         $this->name = $name;
-        $this->dispatcher = new EventDispatcher();
+        $this->viewBuilder = $viewBuilder;
+
+        foreach ($columns as $column) {
+            if (!$column instanceof ColumnInterface) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'All columns passed to Datagrid::__construct() must of instances of %s.',
+                        ColumnInterface::class
+                    )
+                );
+            }
+
+            $this->columns[$column->getName()] = $column;
+        }
     }
 
     /**
@@ -74,44 +85,6 @@ class Datagrid implements DatagridInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addEventListener($eventName, callable $listener, $priority = 0)
-    {
-        $this->dispatcher->addListener($eventName, $listener, $priority);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber)
-    {
-        $this->dispatcher->addSubscriber($subscriber);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addColumn(ColumnInterface $column)
-    {
-        $name = $column->getName();
-
-        if (isset($this->columns[$name])) {
-            throw new DatagridException(
-                sprintf('A column with name "%s" is already registered on the datagrid', $name)
-            );
-        }
-
-        $this->columns[$name] = $column;
-
-        return $this;
     }
 
     /**
@@ -159,32 +132,12 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function removeColumn($name)
-    {
-        if (!isset($this->columns[$name])) {
-            throw new UnknownColumnException($name, $this);
-        }
-
-        unset($this->columns[$name]);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function clearColumns()
-    {
-        $this->columns = [];
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setData($data)
     {
+        if (null !== $this->data) {
+            throw new BadMethodCallException('Datagrid::setData() can only be called once.');
+        }
+
         if (!is_array($data) && !$data instanceof \Traversable) {
             throw new UnexpectedTypeException($data, ['array', 'Traversable']);
         }
@@ -215,8 +168,10 @@ class Datagrid implements DatagridInterface
 
         $view = new DatagridView($this);
 
-        $event = new DatagridViewEvent($this, $view);
-        $this->dispatcher->dispatch(DatagridEvents::BUILD_VIEW, $event);
+        if (null !== $this->viewBuilder) {
+            $builder = $this->viewBuilder;
+            $builder($view);
+        }
 
         return $view;
     }

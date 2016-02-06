@@ -88,13 +88,6 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function registerListeners(DatagridInterface $datagrid)
-    {
-    }
-
-    /**
      * If extension needs to provide new column types this function
      * should be overloaded in child class and return an array of ColumnTypeInterface
      * instances.
@@ -104,19 +97,6 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
      * @codeCoverageIgnore
      */
     protected function loadTypes()
-    {
-        return [];
-    }
-
-    /**
-     * If extension needs to load event subscribers this method should be overloaded in
-     * child class and return array event subscribers.
-     *
-     * @return array
-     *
-     * @codeCoverageIgnore
-     */
-    protected function loadSubscribers()
     {
         return [];
     }
