@@ -44,6 +44,11 @@ class HeaderView
     public $type;
 
     /**
+     * @var string
+     */
+    public $prefix;
+
+    /**
      * @param ColumnInterface $column
      * @param DatagridView    $datagrid
      * @param string          $label
