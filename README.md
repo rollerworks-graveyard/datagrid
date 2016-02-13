@@ -17,7 +17,7 @@ displaying all kinds of lists in your application without duplicating code.
 **Documentation is currently missing or may outdated from time to time.**
 
 > Compatibility breaks will result in a new minor version like 0.x.0.
-> And are documented in the CHANGELOG.md
+> And are documented in the UPGRADE.md
 
 Requirements
 ------------
@@ -26,7 +26,7 @@ You need at least PHP 5.5, and Intl extension for international support.
 
 For framework integration you may use the following;
 
-* Symfony Bundle (available!)
+* [Symfony Bundle](https://github.com/rollerworks/datagrid-bundle)
 * Symfony DependencyInjection extension (coming soon)
 * ZendFramework2 Plugin (coming soon)
 * Silex Plugin (coming soon)
@@ -51,8 +51,6 @@ possible and very straightforward. You can use any type of data
 * Money
 * Number
 * Text
-
-Note: The names of the types to use should all be lower case e.g. DateTime -> `datetime`.
 
 Installation
 ------------
