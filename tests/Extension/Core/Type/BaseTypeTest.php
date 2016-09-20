@@ -15,29 +15,4 @@ use Rollerworks\Component\Datagrid\Test\ColumnTypeTestCase;
 
 abstract class BaseTypeTest extends ColumnTypeTestCase
 {
-    public function testPassLabelToView()
-    {
-        $column = $this->factory->createColumn(
-            'id',
-            $this->getTestedType(),
-            [
-                'label' => 'My label',
-                'data_provider' => function ($data) {
-                    return $data->key;
-                },
-            ]
-        );
-
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
-
-        $object = new \stdClass();
-        $object->key = ' foo ';
-
-        $datagrid->setData([1 => $object]);
-
-        $view = $datagrid->createView();
-        $view = $column->createHeaderView($view);
-
-        $this->assertSame('My label', $view->label);
-    }
 }

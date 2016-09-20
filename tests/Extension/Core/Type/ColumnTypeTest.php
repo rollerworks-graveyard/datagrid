@@ -16,6 +16,32 @@ use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
 
 class ColumnTypeTest extends BaseTypeTest
 {
+    public function testPassLabelToView()
+    {
+        $column = $this->factory->createColumn(
+            'id',
+            $this->getTestedType(),
+            [
+                'label' => 'My label',
+                'data_provider' => function ($data) {
+                    return $data->key;
+                },
+            ]
+        );
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
+        $object = new \stdClass();
+        $object->key = new \DateTime();
+
+        $datagrid->setData([1 => $object]);
+
+        $view = $datagrid->createView();
+        $view = $column->createHeaderView($view);
+
+        $this->assertSame('My label', $view->label);
+    }
+
     public function testAutoConfigurationDataProvider()
     {
         $object = new \stdClass();
