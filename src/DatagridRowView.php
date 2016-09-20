@@ -19,30 +19,32 @@ use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class DatagridRowView implements \IteratorAggregate, \Countable, \ArrayAccess
+class DatagridRowView implements \IteratorAggregate, \Countable
 {
     /**
-     * Cells views.
+     * READ-ONLY: Cells views.
      *
      * @var CellView[]
      */
     public $cells = [];
 
     /**
-     * The source object for which view is created.
+     * READ-ONLY: The source object from which view is created.
      *
      * @var array|object
      */
     public $source;
 
     /**
-     * Row index as given by the Datagrid.
+     * READ-ONLY: Row index as given by the Datagrid.
      *
      * @var int
      */
     public $index;
 
     /**
+     * READ-ONLY: DatagridView this row is part of.
+     *
      * @var DatagridView
      */
     public $datagrid;
@@ -54,8 +56,6 @@ class DatagridRowView implements \IteratorAggregate, \Countable, \ArrayAccess
      * @param ColumnInterface[] $columns
      * @param mixed             $source
      * @param int               $index
-     *
-     * @throws UnexpectedTypeException
      */
     public function __construct(DatagridView $datagridView, array $columns, $source, $index)
     {
@@ -81,51 +81,7 @@ class DatagridRowView implements \IteratorAggregate, \Countable, \ArrayAccess
     }
 
     /**
-     * Required by the ArrayAccess implementation.
-     *
-     * @param string $offset
-     *
-     * @return bool
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->cells[$offset]);
-    }
-
-    /**
-     * Required by the ArrayAccess implementation.
-     *
-     * @param string $offset
-     *
-     * @return CellView
-     */
-    public function offsetGet($offset)
-    {
-        return $this->cells[$offset];
-    }
-
-    /**
-     * Implements \ArrayAccess.
-     *
-     * @throws BadMethodCallException always as overwriting a cell is not allowed.
-     */
-    public function offsetSet($offset, $value)
-    {
-        throw new BadMethodCallException('Not supported');
-    }
-
-    /**
-     * Implements \ArrayAccess.
-     *
-     * @throws BadMethodCallException always as removing a cell is not allowed.
-     */
-    public function offsetUnset($offset)
-    {
-        throw new BadMethodCallException('Not supported');
-    }
-
-    /**
-     * Returns an iterator to iterate over cell (implements \IteratorAggregate).
+     * Returns an iterator for the cells.
      *
      * @return \ArrayIterator The iterator.
      */

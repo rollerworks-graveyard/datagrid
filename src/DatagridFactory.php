@@ -11,7 +11,6 @@
 
 namespace Rollerworks\Component\Datagrid;
 
-use Rollerworks\Component\Datagrid\Column\Column;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
@@ -53,22 +52,6 @@ class DatagridFactory implements DatagridFactoryInterface
      * {@inheritdoc}
      */
     public function createColumn($name, $type, array $options = [])
-    {
-        return $this->createColumnBuilder($name, $type, $options);
-    }
-
-    /**
-     * Creates a new {@link Rollerworks\Component\Datagrid\Column\Column} instance.
-     *
-     * @param string $name
-     * @param string $type
-     * @param array  $options
-     *
-     * @throws UnexpectedTypeException
-     *
-     * @return Column
-     */
-    private function createColumnBuilder($name, $type = 'column', array $options = [])
     {
         if (!is_string($type)) {
             throw new UnexpectedTypeException($type, 'string');
