@@ -13,8 +13,6 @@ namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -83,7 +81,7 @@ class DatagridRowView implements \IteratorAggregate, \Countable
     /**
      * Returns an iterator for the cells.
      *
-     * @return \ArrayIterator The iterator.
+     * @return \ArrayIterator The iterator
      */
     public function getIterator()
     {

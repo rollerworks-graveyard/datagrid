@@ -86,14 +86,14 @@ interface DatagridInterface
      *
      * @param array|\Traversable $data
      *
-     * @throws BadMethodCallException When data was already set.
+     * @throws BadMethodCallException When data was already set
      */
     public function setData($data);
 
     /**
      * Returns the data collection of the datagrid.
      *
-     * @return array|\Traversable|null Returns null when no data was set.
+     * @return array|\Traversable|null Returns null when no data was set
      */
     public function getData();
 }

@@ -31,9 +31,9 @@ class PreloadedExtension implements DatagridExtensionInterface
      * Creates a new preloaded extension.
      *
      * @param ColumnTypeInterface[]          $types          The column-types that the extension
-     *                                                       should support.
+     *                                                       should support
      * @param ColumnTypeExtensionInterface[] $typeExtensions The column-type extensions that the extension
-     *                                                       should support.
+     *                                                       should support
      */
     public function __construct(array $types, array $typeExtensions)
     {

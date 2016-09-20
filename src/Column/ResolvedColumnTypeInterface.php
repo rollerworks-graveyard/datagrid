@@ -23,28 +23,28 @@ interface ResolvedColumnTypeInterface
     /**
      * Returns the prefix of the template block name for this type.
      *
-     * @return string The prefix of the template block name.
+     * @return string The prefix of the template block name
      */
     public function getBlockPrefix();
 
     /**
      * Returns the parent type.
      *
-     * @return ResolvedColumnTypeInterface|null The parent type or null.
+     * @return ResolvedColumnTypeInterface|null The parent type or null
      */
     public function getParent();
 
     /**
      * Returns the wrapped column type.
      *
-     * @return ColumnTypeInterface The wrapped form type.
+     * @return ColumnTypeInterface The wrapped form type
      */
     public function getInnerType();
 
     /**
      * Returns the extensions of the wrapped column type.
      *
-     * @return ColumnTypeExtensionInterface[] An array of {@link ColumnTypeExtensionInterface} instances.
+     * @return ColumnTypeExtensionInterface[] An array of {@link ColumnTypeExtensionInterface} instances
      */
     public function getTypeExtensions();
 
@@ -110,7 +110,7 @@ interface ResolvedColumnTypeInterface
     /**
      * Returns the configured options resolver used for this type.
      *
-     * @return \Symfony\Component\OptionsResolver\OptionsResolver The options resolver.
+     * @return \Symfony\Component\OptionsResolver\OptionsResolver The options resolver
      */
     public function getOptionsResolver();
 

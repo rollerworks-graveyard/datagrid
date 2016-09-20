@@ -37,11 +37,21 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
 
         $datagrid = $this->factory->createDatagridBuilder('test');
 
-        $datagrid->add('id', NumberType::class, ['data_provider' => function ($data) { return $data['id']; }]);
-        $datagrid->add('name', TextType::class, ['data_provider' => function ($data) { return $data['name']; }]);
-        $datagrid->add('email', TextType::class, ['data_provider' => function ($data) { return $data['email']; }]);
-        $datagrid->add('regdate', DateTimeType::class, ['data_provider' => function ($data) { return $data['regdate']; }]);
-        $datagrid->add('lastModified', DateTimeType::class, ['data_provider' => function ($data) { return $data['lastModified']; }]);
+        $datagrid->add('id', NumberType::class, ['data_provider' => function ($data) {
+            return $data['id'];
+        }]);
+        $datagrid->add('name', TextType::class, ['data_provider' => function ($data) {
+            return $data['name'];
+        }]);
+        $datagrid->add('email', TextType::class, ['data_provider' => function ($data) {
+            return $data['email'];
+        }]);
+        $datagrid->add('regdate', DateTimeType::class, ['data_provider' => function ($data) {
+            return $data['regdate'];
+        }]);
+        $datagrid->add('lastModified', DateTimeType::class, ['data_provider' => function ($data) {
+            return $data['lastModified'];
+        }]);
         $datagrid->add(
             'status',
             TextType::class,
@@ -68,7 +78,9 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                         ActionType::class,
                         [
                             'label' => 'Modify',
-                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'data_provider' => function ($data) {
+                                return ['id' => $data['id']];
+                            },
                             'uri_scheme' => 'entity/{id}/modify',
                         ]
                     ),
@@ -77,7 +89,9 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                         ActionType::class,
                         [
                             'label' => 'Delete',
-                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'data_provider' => function ($data) {
+                                return ['id' => $data['id']];
+                            },
                             'uri_scheme' => 'entity/{id}/delete',
                         ]
                     ),
@@ -150,7 +164,9 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                         ActionType::class,
                         [
                             'label' => 'Modify',
-                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'data_provider' => function ($data) {
+                                return ['id' => $data['id']];
+                            },
                             'uri_scheme' => 'entity/{id}/modify',
                         ]
                     ),
@@ -159,7 +175,9 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
                         ActionType::class,
                         [
                             'label' => 'Delete',
-                            'data_provider' => function ($data) { return ['id' => $data['id']]; },
+                            'data_provider' => function ($data) {
+                                return ['id' => $data['id']];
+                            },
                             'uri_scheme' => 'entity/{id}/delete',
                         ]
                     ),

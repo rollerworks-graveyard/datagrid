@@ -53,7 +53,7 @@ class ArrayToDateTimeTransformer extends BaseDateTimeTransformer
      * @throws TransformationFailedException If the given value is not an array,
      *                                       if the value could not be transformed
      *                                       or if the input timezone is not
-     *                                       supported.
+     *                                       supported
      *
      * @return \DateTime Normalized date
      */

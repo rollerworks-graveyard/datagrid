@@ -42,38 +42,38 @@ interface ColumnInterface
      * @param DataTransformerInterface $viewTransformer
      * @param bool                     $forcePrepend    if set to true, prepend instead of appending
      *
-     * @return self The configuration object.
+     * @return self The configuration object
      */
     public function addViewTransformer(DataTransformerInterface $viewTransformer, $forcePrepend = false);
 
     /**
      * Clears the view transformers.
      *
-     * @return self The configuration object.
+     * @return self The configuration object
      */
     public function resetViewTransformers();
 
     /**
      * Returns the view transformers of the column cell.
      *
-     * @return DataTransformerInterface[] An array of {@link DataTransformerInterface} instances.
+     * @return DataTransformerInterface[] An array of {@link DataTransformerInterface} instances
      */
     public function getViewTransformers();
 
     /**
      * Returns all options passed during the construction of the column.
      *
-     * @return array The passed options.
+     * @return array The passed options
      */
     public function getOptions();
 
     /**
      * Returns the value of a specific option.
      *
-     * @param string $name    The option name.
-     * @param mixed  $default The value returned if the option does not exist.
+     * @param string $name    The option name
+     * @param mixed  $default The value returned if the option does not exist
      *
-     * @return mixed The option value.
+     * @return mixed The option value
      */
     public function getOption($name, $default = null);
 

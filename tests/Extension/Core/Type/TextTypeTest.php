@@ -28,7 +28,9 @@ class TextTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $options = [
-            'data_provider' => function ($data) { return (array) $data; },
+            'data_provider' => function ($data) {
+                return (array) $data;
+            },
             'value_format' => ' - %s - ',
             'value_glue' => ',',
         ];
@@ -44,7 +46,9 @@ class TextTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $options = [
-            'data_provider' => function ($data) { return (array) $data; },
+            'data_provider' => function ($data) {
+                return (array) $data;
+            },
             'value_format' => ' - %s - ',
             'empty_value' => '?',
             'value_glue' => ',',
@@ -77,7 +81,9 @@ class TextTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $options = [
-            'data_provider' => function ($data) { return (array) $data; },
+            'data_provider' => function ($data) {
+                return (array) $data;
+            },
             'value_format' => ' - %s - ',
             'empty_value' => ['key' => '?1', 'key2' => '?2'],
             'value_glue' => ',',

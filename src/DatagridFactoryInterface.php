@@ -32,7 +32,7 @@ interface DatagridFactoryInterface
     /**
      * Create a new DatagridInterface instance with a unique name.
      *
-     * @param string            $name    Name of the datagrid.
+     * @param string            $name    Name of the datagrid
      * @param ColumnInterface[] $columns Columns of the datagrid
      *
      * @return DatagridInterface

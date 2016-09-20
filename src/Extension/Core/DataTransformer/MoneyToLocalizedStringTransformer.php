@@ -83,7 +83,7 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
      * @param array|string|int|float $value array, float or string
      *
      * @throws TransformationFailedException If the given value is not numeric or
-     *                                       if the value can not be transformed.
+     *                                       if the value can not be transformed
      *
      * @return string Localized money string
      */

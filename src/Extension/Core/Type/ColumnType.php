@@ -92,7 +92,7 @@ class ColumnType implements ColumnTypeInterface
     /**
      * Returns the prefix of the template block name for this type.
      *
-     * @return string The prefix of the template block name.
+     * @return string The prefix of the template block name
      */
     public function getBlockPrefix()
     {
