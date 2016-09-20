@@ -1,6 +1,14 @@
 UPGRADE
 =======
 
+## Upgrade FROM 0.8 to 0.9
+
+* The `Rollerworks\Component\Datagrid\Column\HeaderView` and `Rollerworks\Component\Datagrid\DatagridView`
+  no longer implement `ArrayAccess` interface.
+  
+**Note:** This is the last version of the Rollerworks Datagrid that supports PHP 5.5. All feature releases, will
+require PHP 7.0 at minimum.
+
 ## Upgrade FROM 0.7 to 0.8
 
 This version contains some major BC breaking changes and introduces improvements

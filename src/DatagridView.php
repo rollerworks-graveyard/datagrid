@@ -12,19 +12,16 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\HeaderView;
-use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 
 /**
- * DatagridView provides all the information required to render
- * a Datagrid.
+ * DatagridView provides all the information to render a Datagrid.
  *
- * This class should only be initialized by a Datagrid.
- * And not directly.
+ * This class should only be initialized be directly.
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class DatagridView implements \IteratorAggregate, \Countable, \ArrayAccess
+class DatagridView implements \IteratorAggregate, \Countable
 {
     /**
      * READ-ONLY: The Datagrid name.
@@ -43,9 +40,6 @@ class DatagridView implements \IteratorAggregate, \Countable, \ArrayAccess
     /**
      * READ-ONLY: The Datagrid rows.
      *
-     * To remove a row use offsetUnset().
-     * Instead of changing this value directly.
-     *
      * @var DatagridRowView[]
      */
     public $rows = [];
@@ -54,7 +48,7 @@ class DatagridView implements \IteratorAggregate, \Countable, \ArrayAccess
      * Extra variables for view rendering.
      *
      * It's possible to set values directly.
-     * But property type itself should not be changed!
+     * But the property type itself should not be changed!
      *
      * @var array
      */
@@ -106,6 +100,9 @@ class DatagridView implements \IteratorAggregate, \Countable, \ArrayAccess
     /**
      * Get a variable value by key.
      *
+     * This method should only be used when the key can null.
+     * Else it's faster to get ths var's value directly.
+     *
      * @param string $key
      * @param mixed  $default
      *
@@ -128,51 +125,6 @@ class DatagridView implements \IteratorAggregate, \Countable, \ArrayAccess
     public function count()
     {
         return count($this->rows);
-    }
-
-    /**
-     * Check if an offset exists.
-     * Required by the ArrayAccess implementation.
-     *
-     * @param string $offset
-     *
-     * @return bool
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->rows[$offset]);
-    }
-
-    /**
-     * Get the DatagridRowView for the given offset.
-     *
-     * @param int $offset
-     *
-     * @return DatagridRowView
-     */
-    public function offsetGet($offset)
-    {
-        return $this->rows[$offset];
-    }
-
-    /**
-     * Implements \ArrayAccess.
-     *
-     * @throws BadMethodCallException always as overwriting a row is not allowed.
-     */
-    public function offsetSet($offset, $value)
-    {
-        throw new BadMethodCallException('Not supported');
-    }
-
-    /**
-     * Rows a row from the view.
-     *
-     * @param int $offset
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->rows[$offset]);
     }
 
     /**
