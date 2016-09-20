@@ -16,6 +16,32 @@ use Symfony\Component\Intl\Util\IntlTestHelper;
 
 class DateTimeTypeTest extends BaseTypeTest
 {
+    public function testPassLabelToView()
+    {
+        $column = $this->factory->createColumn(
+            'id',
+            $this->getTestedType(),
+            [
+                'label' => 'My label',
+                'data_provider' => function ($data) {
+                    return $data->key;
+                },
+            ]
+        );
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
+        $object = new \stdClass();
+        $object->key = new \DateTime();
+
+        $datagrid->setData([1 => $object]);
+
+        $view = $datagrid->createView();
+        $view = $column->createHeaderView($view);
+
+        $this->assertSame('My label', $view->label);
+    }
+
     protected function getTestedType()
     {
         return DateTimeType::class;

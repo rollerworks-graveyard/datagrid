@@ -57,8 +57,8 @@ class NumberToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCase
     public function provideTransformationsWithGrouping()
     {
         return [
-            [1234.5, '1.234,5', 'de_AT'],
-            [12345.912, '12.345,912', 'de_AT'],
+            [1234.5, '1 234,5', 'de_AT'],
+            [12345.912, '12 345,912', 'de_AT'],
             [1234.5, '1 234,5', 'fr'],
             [1234.5, '1 234,5', 'ru'],
             [1234.5, '1 234,5', 'fi'],

@@ -27,7 +27,7 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $column = $this->getMock(ColumnInterface::class);
+        $column = $this->createMock(ColumnInterface::class);
 
         $column->expects($this->atLeastOnce())
             ->method('getName')
@@ -37,7 +37,7 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
             ->method('createHeaderView')
             ->willReturn($this->getMockBuilder(HeaderView::class)->disableOriginalConstructor()->getMock());
 
-        $datagrid = $this->getMock(DatagridInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
 
         $datagrid->expects($this->once())
             ->method('getColumns')
@@ -70,7 +70,7 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowsExceptionWhenGettingUnRegisteredColumn()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->gridView->getColumn('bar');
     }
 

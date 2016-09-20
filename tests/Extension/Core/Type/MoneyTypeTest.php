@@ -30,6 +30,32 @@ class MoneyTypeTest extends BaseTypeTest
         parent::setUp();
     }
 
+    public function testPassLabelToView()
+    {
+        $column = $this->factory->createColumn(
+            'id',
+            $this->getTestedType(),
+            [
+                'label' => 'My label',
+                'data_provider' => function ($data) {
+                    return $data->key;
+                },
+            ]
+        );
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
+        $object = new \stdClass();
+        $object->key = '20.00';
+
+        $datagrid->setData([1 => $object]);
+
+        $view = $datagrid->createView();
+        $view = $column->createHeaderView($view);
+
+        $this->assertSame('My label', $view->label);
+    }
+
     public function testEURWithUS()
     {
         \Locale::setDefault('en_US');
@@ -62,13 +88,15 @@ class MoneyTypeTest extends BaseTypeTest
         $column = $this->factory->createColumn('price', $this->getTestedType(), ['currency' => 'EUR']);
         $column2 = $this->factory->createColumn('price2', $this->getTestedType(), ['currency' => 'GBP']);
 
+        $datagrid = $this->factory->createDatagrid('grid', [$column, $column2]);
+
         $object = new \stdClass();
         $object->price = '1.23';
         $object->price2 = '1.23';
         $data = [1 => $object];
 
-        $this->datagrid->setData($data);
-        $datagridView = $this->datagrid->createView();
+        $datagrid->setData($data);
+        $datagridView = $datagrid->createView();
 
         $view = $column->createCellView($datagridView, $data[1], 1);
         $this->assertSame('1,23 €', $view->value);
@@ -82,28 +110,46 @@ class MoneyTypeTest extends BaseTypeTest
         \Locale::setDefault('de_DE');
 
         $column = $this->factory->createColumn('price', $this->getTestedType(), ['currency' => 'EUR']);
-        $column2 = $this->factory->createColumn('price2', $this->getTestedType(), ['input_field' => 'price2', 'currency_field' => 'currency']);
+        $column2 = $this->factory->createColumn(
+            'price2',
+            $this->getTestedType(),
+            [
+                'input_field' => 'price2',
+                'currency_field' => 'currency',
+                'data_provider' => function ($value) {
+                    return (array) $value;
+                },
+            ]
+        );
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column, $column2]);
 
         $object = new \stdClass();
         $object->price = '1.23';
         $object->price2 = '1.23';
-        $object->currency = 'GBP';
-        $data = [1 => $object];
+        $object->currency = null;
 
-        $this->datagrid->setData($data);
-        $datagridView = $this->datagrid->createView();
+        $object2 = new \stdClass();
+        $object2->price = '1.23';
+        $object2->price2 = '1.23';
+        $object2->currency = 'GBP';
+
+        $data = [1 => $object, 2 => $object2];
+
+        $datagrid->setData($data);
+        $datagridView = $datagrid->createView();
 
         $view = $column->createCellView($datagridView, $data[1], 1);
         $this->assertSame('1,23 €', $view->value);
 
-        $view = $column2->createCellView($datagridView, $data[1], 1);
+        $view = $column2->createCellView($datagridView, $data[2], 1);
         $this->assertSame('1,23 £', $view->value);
     }
 
     public function testPrecision()
     {
-        // Note changing the precision does not work nl and en_US
-        // I'm unable to find the cause, please provide a fix you have one
+        // Note changing the precision does not work for nl and en_US
+        // I'm unable to find the cause, please provide a fix if you have one - Sebastiaan Stok (@sstok)
         \Locale::setDefault('de_DE');
 
         $this->assertCellValueEquals('1,2355 €', '1.2355', ['currency' => 'EUR', 'precision' => 4]);

@@ -1,16 +1,16 @@
 language: php
 
-php:
-    - 5.5
-    - 5.6
-    - 7.0
-    - hhvm
-
 matrix:
     include:
-        - php: 5.5
-          env: DEPENDENCIES='low'
         - php: 7.0
+        # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
+        #- php: hhvm-3.12
+        #  sudo: required
+        #  dist: trusty
+        #  group: edge
+        - php: 7.0
+          env: DEPENDENCIES='low'
+        - php: 7.1
           env: DEPENDENCIES='dev'
     allow_failures:
         - env: DEPENDENCIES='dev'
@@ -29,4 +29,4 @@ install:
     - if [ "$DEPENDENCIES" == "low" ]; then travis_retry composer update --prefer-lowest; fi;
 
 script:
-    - phpunit --configuration phpunit.xml.dist --verbose
+    - vendor/bin/phpunit --configuration phpunit.xml.dist --verbose
