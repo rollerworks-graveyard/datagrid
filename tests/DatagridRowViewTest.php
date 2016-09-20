@@ -38,7 +38,7 @@ class DatagridRowViewTest extends \PHPUnit_Framework_TestCase
         $this->datagridView = $this->getMockBuilder(DatagridView::class)->disableOriginalConstructor()->getMock();
         $this->cellView = $this->getMockBuilder(CellView::class)->disableOriginalConstructor()->getMock();
 
-        $column = $this->getMock(ColumnInterface::class);
+        $column = $this->createMock(ColumnInterface::class);
 
         $column->expects($this->once())
             ->method('getName')

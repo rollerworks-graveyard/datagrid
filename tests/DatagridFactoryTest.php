@@ -39,8 +39,8 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->getMock(ColumnTypeRegistryInterface::class);
-        $this->resolvedTypeFactory = $this->getMock(ResolvedColumnTypeFactoryInterface::class);
+        $this->registry = $this->createMock(ColumnTypeRegistryInterface::class);
+        $this->resolvedTypeFactory = $this->createMock(ResolvedColumnTypeFactoryInterface::class);
 
         $this->factory = new DatagridFactory($this->registry);
     }
@@ -61,9 +61,9 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateColumn()
     {
-        $type = $this->getMock(ResolvedColumnTypeInterface::class);
+        $type = $this->createMock(ResolvedColumnTypeInterface::class);
 
-        $column = $this->getMock(ColumnInterface::class);
+        $column = $this->createMock(ColumnInterface::class);
         $column->expects($this->once())
                 ->method('getOptions')
                 ->will($this->returnValue(['foo' => 'bar']));

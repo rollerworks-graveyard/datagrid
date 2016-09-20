@@ -28,4 +28,4 @@ install:
     - if [ "$DEPENDENCIES" == "low" ]; then travis_retry composer update --prefer-lowest; fi;
 
 script:
-    - phpunit --configuration phpunit.xml.dist --verbose
+    - vendor/bin/phpunit --configuration phpunit.xml.dist --verbose
