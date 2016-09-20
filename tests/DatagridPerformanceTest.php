@@ -35,7 +35,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
     {
         $this->setMaxRunningTime(1);
 
-        $datagrid = $this->factory->createDatagridBuilder('test');
+        $datagrid = $this->factory->createDatagridBuilder();
 
         $datagrid->add('id', NumberType::class, ['data_provider' => function ($data) {
             return $data['id'];
@@ -113,7 +113,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
             ];
         }
 
-        $datagrid = $datagrid->getDatagrid();
+        $datagrid = $datagrid->getDatagrid('test');
 
         $datagrid->setData($data);
         $this->assertInstanceOf(DatagridView::class, $datagrid->createView());
@@ -135,7 +135,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
     {
         $this->setMaxRunningTime(1);
 
-        $datagrid = $this->factory->createDatagridBuilder('test');
+        $datagrid = $this->factory->createDatagridBuilder();
 
         $datagrid->add('id', NumberType::class);
         $datagrid->add('name', TextType::class);
@@ -199,7 +199,7 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
             ];
         }
 
-        $datagrid = $datagrid->getDatagrid();
+        $datagrid = $datagrid->getDatagrid('test');
 
         $datagrid->setData($data);
         $this->assertInstanceOf(DatagridView::class, $datagrid->createView());

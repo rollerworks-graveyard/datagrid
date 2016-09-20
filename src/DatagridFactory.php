@@ -43,9 +43,9 @@ class DatagridFactory implements DatagridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createDatagridBuilder(string $name): DatagridBuilderInterface
+    public function createDatagridBuilder(): DatagridBuilderInterface
     {
-        return new DatagridBuilder($this, $name);
+        return new DatagridBuilder($this);
     }
 
     /**

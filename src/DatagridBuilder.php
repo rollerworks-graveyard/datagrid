@@ -12,75 +12,26 @@
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
-use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 final class DatagridBuilder implements DatagridBuilderInterface
 {
-    /**
-     * @var DatagridFactory
-     */
     private $factory;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var ColumnInterface[]
-     */
     private $columns = [];
-
-    /**
-     * @var array[]
-     */
     private $unresolvedColumns = [];
 
-    /**
-     * @var bool
-     */
-    private $locked;
-
-    /**
-     * @param DatagridFactoryInterface $factory
-     * @param string                   $name
-     */
-    public function __construct(DatagridFactoryInterface $factory, $name)
+    public function __construct(DatagridFactoryInterface $factory)
     {
         $this->factory = $factory;
-        $this->name = $name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function add($field, $type = null, array $options = [])
+    public function add(string $name, string $type = null, array $options = [])
     {
-        if ($this->locked) {
-            throw new BadMethodCallException(
-                'DatagridBuilder methods cannot be accessed anymore once the builder is turned into a Datagrid instance.'
-            );
-        }
-
-        if (!$field instanceof ColumnInterface && !is_string($field)) {
-            throw new UnexpectedTypeException($field, ['string', ColumnInterface::class]);
-        }
-
-        if ($field instanceof ColumnInterface) {
-            $this->columns[$field->getName()] = $field;
-            unset($this->unresolvedColumns[$field->getName()]);
-
-            return $this;
-        }
-
-        if (!$type instanceof ColumnTypeInterface && !is_string($type)) {
-            throw new UnexpectedTypeException($type, ['string', ColumnTypeInterface::class]);
-        }
-
-        $this->unresolvedColumns[$field] = [
+        unset($this->columns[$name]);
+        $this->unresolvedColumns[$name] = [
             'type' => $type,
             'options' => $options,
         ];
@@ -89,16 +40,25 @@ final class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
+     * Add a column instance to the builder.
+     *
+     * @param ColumnInterface $column
+     *
+     * @return DatagridBuilderInterface
+     */
+    public function set(ColumnInterface $column)
+    {
+        $this->columns[$column->getName()] = $column;
+        unset($this->unresolvedColumns[$column->getName()]);
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function remove($name)
+    public function remove(string $name)
     {
-        if ($this->locked) {
-            throw new BadMethodCallException(
-                'DatagridBuilder methods cannot be accessed anymore once the builder is turned into a Datagrid instance.'
-            );
-        }
-
         unset($this->columns[$name], $this->unresolvedColumns[$name]);
 
         return $this;
@@ -107,7 +67,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         if (isset($this->unresolvedColumns[$name])) {
             return true;
@@ -123,10 +83,18 @@ final class DatagridBuilder implements DatagridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name)
+    public function get(string $name): ColumnInterface
     {
         if (isset($this->unresolvedColumns[$name])) {
-            return $this->unresolvedColumns[$name];
+            $this->columns[$name] = $this->factory->createColumn(
+                $name,
+                $this->unresolvedColumns[$name]['type'],
+                $this->unresolvedColumns[$name]['options']
+            );
+
+            unset($this->unresolvedColumns[$name]);
+
+            return $this->columns[$name];
         }
 
         if (isset($this->columns[$name])) {
@@ -139,28 +107,18 @@ final class DatagridBuilder implements DatagridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDatagrid()
+    public function getDatagrid(string $name): DatagridInterface
     {
-        if ($this->locked) {
-            throw new BadMethodCallException(
-                'DatagridBuilder methods cannot be accessed anymore once the builder is turned into a Datagrid instance.'
-            );
-        }
-
-        foreach ($this->unresolvedColumns as $name => $column) {
-            $this->columns[$name] = $this->factory->createColumn(
-                $name,
+        foreach ($this->unresolvedColumns as $n => $column) {
+            $this->columns[$n] = $this->factory->createColumn(
+                $n,
                 $column['type'],
                 $column['options']
             );
 
-            unset($this->unresolvedColumns[$name]);
+            unset($this->unresolvedColumns[$n]);
         }
 
-        $datagrid = new Datagrid($this->name, $this->columns);
-
-        $this->locked = true;
-
-        return $datagrid;
+        return new Datagrid($name, $this->columns);
     }
 }

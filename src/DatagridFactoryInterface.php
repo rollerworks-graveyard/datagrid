@@ -42,9 +42,7 @@ interface DatagridFactoryInterface
     /**
      * Create a new DatagridBuilderInterface instance.
      *
-     * @param string $name
-     *
      * @return DatagridBuilderInterface
      */
-    public function createDatagridBuilder(string $name): DatagridBuilderInterface;
+    public function createDatagridBuilder(): DatagridBuilderInterface;
 }

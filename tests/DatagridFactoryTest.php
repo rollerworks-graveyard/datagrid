@@ -53,12 +53,6 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('grid', $grid->getName());
     }
 
-    public function testCreateGridBuilder()
-    {
-        $this->assertInstanceOf(DatagridBuilderInterface::class, $this->factory->createDatagridBuilder('grid'));
-        $this->assertInstanceOf(DatagridBuilderInterface::class, $this->factory->createDatagridBuilder('grid2'));
-    }
-
     public function testCreateColumn()
     {
         $type = $this->createMock(ResolvedColumnTypeInterface::class);

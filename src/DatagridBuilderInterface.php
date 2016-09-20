@@ -17,34 +17,42 @@ use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
 interface DatagridBuilderInterface
 {
     /**
-     * Add a column to the datagrid builder.
+     * Add a column to the builder.
      *
-     * @param string|ColumnInterface     $field
-     * @param string|ColumnTypeInterface $type
-     * @param array                      $options
+     * @param string $name
+     * @param string $type
+     * @param array  $options
+     *
+     * @return self
+     */
+    public function add(string $name, string $type = null, array $options = []);
+
+    /**
+     * Add a column instance to the builder.
+     *
+     * @param ColumnInterface $column
      *
      * @return DatagridBuilderInterface
      */
-    public function add($field, $type = null, array $options = []);
+    public function set(ColumnInterface $column);
 
     /**
-     * Remove a column from the datagrid builder.
+     * Remove a column from the builder.
      *
      * @param string $name
      *
-     * @return DatagridBuilderInterface
+     * @return self
      */
-    public function remove($name);
+    public function remove(string $name);
 
     /**
-     * Returns whether the datagrid builder has a column with
-     * the specified name.
+     * Returns whether the builder has a column with the name.
      *
      * @param string $name
      *
      * @return bool
      */
-    public function has($name);
+    public function has(string $name): bool;
 
     /**
      * Get the registered column by name.
@@ -53,12 +61,14 @@ interface DatagridBuilderInterface
      *
      * @return ColumnInterface
      */
-    public function get($name);
+    public function get(string $name): ColumnInterface;
 
     /**
      * Return the configured datagrid instance.
      *
+     * @param string $name
+     *
      * @return DatagridInterface
      */
-    public function getDatagrid();
+    public function getDatagrid(string $name): DatagridInterface;
 }
