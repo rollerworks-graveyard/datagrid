@@ -1,16 +1,15 @@
 language: php
 
 php:
-    - 5.5
-    - 5.6
     - 7.0
+    - 7.1
     - hhvm
 
 matrix:
     include:
-        - php: 5.5
-          env: DEPENDENCIES='low'
         - php: 7.0
+          env: DEPENDENCIES='low'
+        - php: 7.1
           env: DEPENDENCIES='dev'
     allow_failures:
         - env: DEPENDENCIES='dev'
