@@ -130,7 +130,7 @@ class DatagridView implements \IteratorAggregate, \Countable
     /**
      * Returns an iterator to iterate over rows (implements \IteratorAggregate).
      *
-     * @return \ArrayIterator The iterator.
+     * @return \ArrayIterator The iterator
      */
     public function getIterator()
     {

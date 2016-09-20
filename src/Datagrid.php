@@ -55,10 +55,10 @@ class Datagrid implements DatagridInterface
     /**
      * Constructor.
      *
-     * @param string            $name        Name of the datagrid.
+     * @param string            $name        Name of the datagrid
      * @param ColumnInterface[] $columns     Columns of the datagrid
      * @param callable|null     $viewBuilder A callable view builder.
-     *                                       Use the decorator pattern to chain multiple.
+     *                                       Use the decorator pattern to chain multiple
      */
     public function __construct($name, array $columns, callable $viewBuilder = null)
     {

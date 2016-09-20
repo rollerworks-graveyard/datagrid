@@ -27,7 +27,7 @@ class TimestampToDateTimeTransformer extends BaseDateTimeTransformer
      * @param string $value A timestamp
      *
      * @throws TransformationFailedException If the given value is not a timestamp
-     *                                       or if the given timestamp is invalid.
+     *                                       or if the given timestamp is invalid
      *
      * @return \DateTime A \DateTime object
      */

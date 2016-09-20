@@ -21,7 +21,7 @@ interface ColumnTypeInterface
     /**
      * Sets the default options for this type.
      *
-     * @param OptionsResolver $resolver The resolver for the options.
+     * @param OptionsResolver $resolver The resolver for the options
      */
     public function configureOptions(OptionsResolver $resolver);
 
@@ -54,14 +54,14 @@ interface ColumnTypeInterface
     /**
      * Returns the prefix of the template block name for this type.
      *
-     * @return string The prefix of the template block name.
+     * @return string The prefix of the template block name
      */
     public function getBlockPrefix();
 
     /**
      * Returns the fully-qualified class name of the parent type.
      *
-     * @return string|null The name of the parent type if any, null otherwise.
+     * @return string|null The name of the parent type if any, null otherwise
      */
     public function getParent();
 }

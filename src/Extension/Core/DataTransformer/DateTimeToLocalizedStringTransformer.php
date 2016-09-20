@@ -70,13 +70,13 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
     /**
      * Transforms a normalized date into a localized date string.
      *
-     * @param \DateTime $dateTime Normalized date.
+     * @param \DateTime $dateTime Normalized date
      *
      * @throws TransformationFailedException If the given value is not an instance
      *                                       of \DateTime or if the date could not
-     *                                       be transformed.
+     *                                       be transformed
      *
-     * @return string|array Localized date string/array.
+     * @return string|array Localized date string/array
      */
     public function transform($dateTime)
     {

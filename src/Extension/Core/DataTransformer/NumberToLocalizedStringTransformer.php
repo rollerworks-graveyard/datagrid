@@ -117,12 +117,12 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Transforms a number type into localized number.
      *
-     * @param int|float $value Number value.
+     * @param int|float $value Number value
      *
      * @throws TransformationFailedException If the given value is not numeric
-     *                                       or if the value can not be transformed.
+     *                                       or if the value can not be transformed
      *
-     * @return string Localized value.
+     * @return string Localized value
      */
     public function transform($value)
     {

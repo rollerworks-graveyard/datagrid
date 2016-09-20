@@ -58,7 +58,7 @@ class StringToDateTimeTransformer extends BaseDateTimeTransformer
      *
      * @throws TransformationFailedException If the given value is not a string,
      *                                       if the date could not be parsed or
-     *                                       if the input timezone is not supported.
+     *                                       if the input timezone is not supported
      *
      * @return \DateTime An instance of \DateTime
      */
