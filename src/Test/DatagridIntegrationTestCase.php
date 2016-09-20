@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -34,7 +34,7 @@ abstract class DatagridIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $this->factory = new DatagridFactory($typesRegistry);
     }
 
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return [];
     }

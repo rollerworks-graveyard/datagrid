@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -92,7 +92,7 @@ class TextTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(' - foo - , - ?2 - ', $data, $options);
     }
 
-    protected function getTestedType()
+    protected function getTestedType(): string
     {
         return TextType::class;
     }

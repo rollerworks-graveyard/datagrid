@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -31,5 +31,5 @@ interface ResolvedColumnTypeFactoryInterface
      *
      * @return ResolvedColumnTypeInterface
      */
-    public function createResolvedType(ColumnTypeInterface $type, array $typeExtensions, ResolvedColumnTypeInterface $parent = null);
+    public function createResolvedType(ColumnTypeInterface $type, array $typeExtensions, ResolvedColumnTypeInterface $parent = null): ResolvedColumnTypeInterface;
 }

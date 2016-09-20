@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -72,7 +72,7 @@ class ValueFormatTransformer implements DataTransformerInterface
         return $this->formatValue($value, $this->format, $this->glue);
     }
 
-    private function formatValue($value, $format, $glue)
+    private function formatValue($value, $format, $glue): string
     {
         $formatCallable = is_callable($format);
 

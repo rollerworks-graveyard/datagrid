@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -32,7 +32,7 @@ interface ColumnTypeRegistryInterface
      *
      * @return ResolvedColumnTypeInterface The type
      */
-    public function getType($name);
+    public function getType($name): ResolvedColumnTypeInterface;
 
     /**
      * Returns whether the given column type is supported.
@@ -41,12 +41,12 @@ interface ColumnTypeRegistryInterface
      *
      * @return bool Whether the type is supported
      */
-    public function hasType($name);
+    public function hasType($name): bool;
 
     /**
      * Returns the extensions loaded by the component.
      *
      * @return DatagridExtensionInterface[]
      */
-    public function getExtensions();
+    public function getExtensions(): array;
 }

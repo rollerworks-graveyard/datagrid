@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -29,12 +29,12 @@ class TimestampToDateTimeTransformer extends BaseDateTimeTransformer
      * @throws TransformationFailedException If the given value is not a timestamp
      *                                       or if the given timestamp is invalid
      *
-     * @return \DateTime A \DateTime object
+     * @return \DateTime|null
      */
     public function transform($value)
     {
         if (null === $value) {
-            return;
+            return null;
         }
 
         if (!is_numeric($value)) {
@@ -44,7 +44,7 @@ class TimestampToDateTimeTransformer extends BaseDateTimeTransformer
         try {
             $dateTime = new \DateTime();
             $dateTime->setTimezone(new \DateTimeZone($this->outputTimezone));
-            $dateTime->setTimestamp($value);
+            $dateTime->setTimestamp((int) $value);
 
             if ($this->inputTimezone !== $this->outputTimezone) {
                 $dateTime->setTimezone(new \DateTimeZone($this->inputTimezone));

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -27,7 +27,7 @@ interface DatagridFactoryInterface
      *
      * @return ColumnInterface
      */
-    public function createColumn($name, $type, array $options = []);
+    public function createColumn(string $name, string $type, array $options = []): ColumnInterface;
 
     /**
      * Create a new DatagridInterface instance with a unique name.
@@ -37,7 +37,7 @@ interface DatagridFactoryInterface
      *
      * @return DatagridInterface
      */
-    public function createDatagrid($name, array $columns);
+    public function createDatagrid(string $name, array $columns): DatagridInterface;
 
     /**
      * Create a new DatagridBuilderInterface instance.
@@ -46,5 +46,5 @@ interface DatagridFactoryInterface
      *
      * @return DatagridBuilderInterface
      */
-    public function createDatagridBuilder($name);
+    public function createDatagridBuilder(string $name): DatagridBuilderInterface;
 }

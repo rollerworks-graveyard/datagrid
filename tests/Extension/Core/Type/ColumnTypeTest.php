@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -81,7 +81,7 @@ class ColumnTypeTest extends BaseTypeTest
         $datagrid->createView();
     }
 
-    protected function getTestedType()
+    protected function getTestedType(): string
     {
         return ColumnType::class;
     }

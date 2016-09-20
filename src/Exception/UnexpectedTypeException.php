@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -14,7 +14,7 @@ namespace Rollerworks\Component\Datagrid\Exception;
 class UnexpectedTypeException extends DatagridException
 {
     /**
-     * @param string       $value
+     * @param mixed        $value
      * @param string|array $expectedType
      */
     public function __construct($value, $expectedType)

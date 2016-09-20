@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -50,7 +50,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     {
         foreach ($extensions as $extension) {
             if (!$extension instanceof DatagridExtensionInterface) {
-                throw new UnexpectedTypeException($extension, 'Rollerworks\Component\Datagrid\DatagridExtensionInterface');
+                throw new UnexpectedTypeException($extension, DatagridExtensionInterface::class);
             }
         }
 
@@ -61,7 +61,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($name)
+    public function getType($name): ResolvedColumnTypeInterface
     {
         if (!isset($this->types[$name])) {
             $type = null;
@@ -92,7 +92,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasType($name)
+    public function hasType($name): bool
     {
         if (isset($this->types[$name])) {
             return true;
@@ -110,20 +110,12 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return $this->extensions;
     }
 
-    /**
-     * Wraps a type into a ResolvedFormTypeInterface implementation and connects
-     * it with its parent type.
-     *
-     * @param ColumnTypeInterface $type The type to resolve
-     *
-     * @return ResolvedColumnTypeInterface The resolved type
-     */
-    private function resolveType(ColumnTypeInterface $type)
+    private function resolveType(ColumnTypeInterface $type): ResolvedColumnTypeInterface
     {
         $parentType = $type->getParent();
         $fqcn = get_class($type);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -56,7 +56,7 @@ interface ColumnTypeInterface
      *
      * @return string The prefix of the template block name
      */
-    public function getBlockPrefix();
+    public function getBlockPrefix(): string;
 
     /**
      * Returns the fully-qualified class name of the parent type.

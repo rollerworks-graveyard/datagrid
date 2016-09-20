@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -88,5 +88,5 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
         $this->assertNotEquals($expectedValue, $view->value);
     }
 
-    abstract protected function getTestedType();
+    abstract protected function getTestedType(): string;
 }

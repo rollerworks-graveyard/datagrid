@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -20,7 +20,7 @@ use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 
 class CompoundColumnTypeTest extends BaseTypeTest
 {
-    protected function getTestedType()
+    protected function getTestedType(): string
     {
         return CompoundColumnType::class;
     }

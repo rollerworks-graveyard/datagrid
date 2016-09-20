@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -26,7 +26,7 @@ interface DatagridInterface
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Return column with by name.
@@ -37,14 +37,14 @@ interface DatagridInterface
      *
      * @return ColumnInterface
      */
-    public function getColumn($name);
+    public function getColumn($name): ColumnInterface;
 
     /**
      * Return all registered columns in the datagrid.
      *
      * @return ColumnInterface[]
      */
-    public function getColumns();
+    public function getColumns(): array;
 
     /**
      * Get if the column is registered on the datagrid.
@@ -53,7 +53,7 @@ interface DatagridInterface
      *
      * @return bool
      */
-    public function hasColumn($name);
+    public function hasColumn($name): bool;
 
     /**
      * Get whether column with a specific type is registered
@@ -63,7 +63,7 @@ interface DatagridInterface
      *
      * @return bool
      */
-    public function hasColumnType($type);
+    public function hasColumnType($type): bool;
 
     /**
      * Create a new DatagridView object for rendering the datagrid.
@@ -73,7 +73,7 @@ interface DatagridInterface
      *
      * @return DatagridView
      */
-    public function createView();
+    public function createView(): DatagridView;
 
     /**
      * Set the data collection of the datagrid.

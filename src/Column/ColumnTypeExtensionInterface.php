@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -50,5 +50,5 @@ interface ColumnTypeExtensionInterface
      *
      * @return string The name of the type being extended
      */
-    public function getExtendedType();
+    public function getExtendedType(): string;
 }

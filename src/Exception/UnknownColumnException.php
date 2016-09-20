@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -45,7 +45,7 @@ class UnknownColumnException extends \InvalidArgumentException implements Except
     /**
      * @return DatagridInterface
      */
-    public function getDatagrid()
+    public function getDatagrid(): DatagridInterface
     {
         return $this->datagrid;
     }
@@ -53,7 +53,7 @@ class UnknownColumnException extends \InvalidArgumentException implements Except
     /**
      * @return string
      */
-    public function getColumnName()
+    public function getColumnName(): string
     {
         return $this->columnName;
     }

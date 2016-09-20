@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -11,8 +11,8 @@
 
 namespace Rollerworks\Component\Datagrid;
 
+use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -35,7 +35,7 @@ class DatagridFactory implements DatagridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createDatagrid($name, array $columns)
+    public function createDatagrid(string $name, array $columns): DatagridInterface
     {
         return new Datagrid($name, $columns);
     }
@@ -43,7 +43,7 @@ class DatagridFactory implements DatagridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createDatagridBuilder($name)
+    public function createDatagridBuilder(string $name): DatagridBuilderInterface
     {
         return new DatagridBuilder($this, $name);
     }
@@ -51,18 +51,14 @@ class DatagridFactory implements DatagridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createColumn($name, $type, array $options = [])
+    public function createColumn(string $name, string $type, array $options = []): ColumnInterface
     {
-        if (!is_string($type)) {
-            throw new UnexpectedTypeException($type, 'string');
-        }
-
         $type = $this->typeRegistry->getType($type);
 
         $column = $type->createColumn($name, $options);
 
         // Explicitly call buildType() in order to be able to override either
-        // createColumn() or buildType() in the resolved column type
+        // createColumn() or buildType() in the resolved column type.
         $type->buildType($column, $column->getOptions());
 
         return $column;
