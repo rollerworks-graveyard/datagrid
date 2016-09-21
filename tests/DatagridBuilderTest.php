@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -38,7 +40,7 @@ final class DatagridBuilderTest extends TestCase
             // 0=name, 1=type, 2=options
             $column = $test->createMock(ColumnInterface::class);
             $column->expects(self::any())->method('getName')->willReturn($args[0]);
-            $column->expects(self::any())->method('getType')->willReturn(new ResolvedColumnType(new $args[1]));
+            $column->expects(self::any())->method('getType')->willReturn(new ResolvedColumnType(new $args[1]()));
             $column->expects(self::any())->method('getOptions')->willReturn($args[2]);
 
             return $column;

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the RollerworksDatagrid package.
@@ -15,7 +17,6 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
-use Rollerworks\Component\Datagrid\DatagridBuilderInterface;
 use Rollerworks\Component\Datagrid\DatagridFactory;
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
