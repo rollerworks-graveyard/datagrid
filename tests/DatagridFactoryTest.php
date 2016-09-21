@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -15,7 +17,6 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
-use Rollerworks\Component\Datagrid\DatagridBuilderInterface;
 use Rollerworks\Component\Datagrid\DatagridFactory;
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
@@ -51,12 +52,6 @@ class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(DatagridInterface::class, $grid);
         $this->assertEquals('grid', $grid->getName());
-    }
-
-    public function testCreateGridBuilder()
-    {
-        $this->assertInstanceOf(DatagridBuilderInterface::class, $this->factory->createDatagridBuilder('grid'));
-        $this->assertInstanceOf(DatagridBuilderInterface::class, $this->factory->createDatagridBuilder('grid2'));
     }
 
     public function testCreateColumn()

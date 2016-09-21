@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -114,7 +116,7 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         $timeFormat = $this->timeFormat;
         $timezone = $this->outputTimezone;
         $calendar = $this->calendar;
-        $pattern = $this->pattern;
+        $pattern = $this->pattern ?? '';
 
         $intlDateFormatter = new \IntlDateFormatter(\Locale::getDefault(), $dateFormat, $timeFormat, $timezone, $calendar, $pattern);
         $intlDateFormatter->setLenient(false);

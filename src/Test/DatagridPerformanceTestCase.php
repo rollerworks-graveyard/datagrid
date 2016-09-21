@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -52,7 +54,7 @@ abstract class DatagridPerformanceTestCase extends DatagridIntegrationTestCase
      *
      * @throws \InvalidArgumentException
      */
-    public function setMaxRunningTime($maxRunningTime)
+    public function setMaxRunningTime(int $maxRunningTime)
     {
         if ($maxRunningTime >= 0) {
             $this->maxRunningTime = $maxRunningTime;
@@ -64,7 +66,7 @@ abstract class DatagridPerformanceTestCase extends DatagridIntegrationTestCase
     /**
      * @return int
      */
-    public function getMaxRunningTime()
+    public function getMaxRunningTime(): int
     {
         return $this->maxRunningTime;
     }

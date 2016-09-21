@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -94,12 +96,12 @@ class ColumnType implements ColumnTypeInterface
      *
      * @return string The prefix of the template block name
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return StringUtil::fqcnToBlockPrefix(get_class($this));
     }
 
-    private function createDataProvider(ColumnInterface $column)
+    private function createDataProvider(ColumnInterface $column): \Closure
     {
         return function ($data) use ($column) {
             $path = null;

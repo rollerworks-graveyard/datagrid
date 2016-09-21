@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -42,7 +44,7 @@ class DateTimeTypeTest extends BaseTypeTest
         $this->assertSame('My label', $view->label);
     }
 
-    protected function getTestedType()
+    protected function getTestedType(): string
     {
         return DateTimeType::class;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -38,7 +40,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($type)
+    public function getType($type): ColumnTypeInterface
     {
         if (null === $this->types) {
             $this->initColumnTypes();
@@ -54,7 +56,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasType($type)
+    public function hasType($type): bool
     {
         if (null === $this->types) {
             $this->initColumnTypes();
@@ -66,7 +68,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasTypeExtensions($type)
+    public function hasTypeExtensions($type): bool
     {
         if (null === $this->typesExtensions) {
             $this->initTypesExtensions();
@@ -78,7 +80,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeExtensions($type)
+    public function getTypeExtensions($type): array
     {
         if (null === $this->typesExtensions) {
             $this->initTypesExtensions();
@@ -96,7 +98,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
      *
      * @codeCoverageIgnore
      */
-    protected function loadTypes()
+    protected function loadTypes(): array
     {
         return [];
     }
@@ -110,7 +112,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
      *
      * @codeCoverageIgnore
      */
-    protected function loadTypesExtensions()
+    protected function loadTypesExtensions(): array
     {
         return [];
     }

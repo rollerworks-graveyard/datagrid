@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -24,14 +26,14 @@ interface ColumnInterface
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns the column-type name.
      *
      * @return ResolvedColumnTypeInterface
      */
-    public function getType();
+    public function getType(): ResolvedColumnTypeInterface;
 
     /**
      * Appends / prepends a transformer to the view transformer chain.
@@ -58,14 +60,14 @@ interface ColumnInterface
      *
      * @return DataTransformerInterface[] An array of {@link DataTransformerInterface} instances
      */
-    public function getViewTransformers();
+    public function getViewTransformers(): array;
 
     /**
      * Returns all options passed during the construction of the column.
      *
      * @return array The passed options
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
      * Returns the value of a specific option.
@@ -84,14 +86,14 @@ interface ColumnInterface
      *
      * @return bool
      */
-    public function hasOption($name);
+    public function hasOption($name): bool;
 
     /**
      * @param DatagridView $datagrid
      *
      * @return HeaderView
      */
-    public function createHeaderView(DatagridView $datagrid);
+    public function createHeaderView(DatagridView $datagrid): HeaderView;
 
     /**
      * @param DatagridView $datagrid
@@ -100,7 +102,7 @@ interface ColumnInterface
      *
      * @return CellView
      */
-    public function createCellView(DatagridView $datagrid, $object, $index);
+    public function createCellView(DatagridView $datagrid, $object, $index): CellView;
 
     /**
      * Set the data-provider for the column.
@@ -114,5 +116,5 @@ interface ColumnInterface
      *
      * @return callable
      */
-    public function getDataProvider();
+    public function getDataProvider(): callable;
 }

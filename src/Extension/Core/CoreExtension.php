@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -22,7 +24,7 @@ class CoreExtension extends AbstractDatagridExtension
     /**
      * {@inheritdoc}
      */
-    protected function loadTypes()
+    protected function loadTypes(): array
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -43,7 +45,7 @@ class CoreExtension extends AbstractDatagridExtension
     /**
      * {@inheritdoc}
      */
-    protected function loadTypesExtensions()
+    protected function loadTypesExtensions(): array
     {
         return [
             new TypeExtension\ColumnOrderExtension(),

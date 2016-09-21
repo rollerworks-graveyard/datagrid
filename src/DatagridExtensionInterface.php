@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -27,7 +29,7 @@ interface DatagridExtensionInterface
      *
      * @return bool
      */
-    public function hasType($type);
+    public function hasType($type): bool;
 
     /**
      * Get column type.
@@ -38,7 +40,7 @@ interface DatagridExtensionInterface
      *
      * @return ColumnTypeInterface
      */
-    public function getType($type);
+    public function getType($type): ColumnTypeInterface;
 
     /**
      * Check if extension has any column type extension for column of $type.
@@ -47,7 +49,7 @@ interface DatagridExtensionInterface
      *
      * @return bool
      */
-    public function hasTypeExtensions($type);
+    public function hasTypeExtensions($type): bool;
 
     /**
      * Return extensions for column type provided by this data grid extension.
@@ -56,5 +58,5 @@ interface DatagridExtensionInterface
      *
      * @return ColumnTypeExtensionInterface[]
      */
-    public function getTypeExtensions($type);
+    public function getTypeExtensions($type): array;
 }

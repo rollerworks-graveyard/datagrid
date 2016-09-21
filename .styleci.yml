@@ -1,0 +1,23 @@
+preset: symfony
+
+risky: true
+
+linting: false
+
+enabled:
+    #- ordered_class_elements
+    - ordered_imports
+    - phpdoc_order
+    - short_array_syntax
+    - strict_param
+    #- declare_strict_types
+
+disabled:
+    - simplified_null_return # PHP 7.1 compatiblity (void !== null)
+
+finder:
+    path:
+        - 'src/'
+        - 'tests/'
+    not-path:
+        - 'Fixtures'

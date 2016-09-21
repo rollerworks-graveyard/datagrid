@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -60,12 +62,12 @@ class StringToDateTimeTransformer extends BaseDateTimeTransformer
      *                                       if the date could not be parsed or
      *                                       if the input timezone is not supported
      *
-     * @return \DateTime An instance of \DateTime
+     * @return \DateTime|null An instance of \DateTime
      */
     public function transform($value)
     {
         if (empty($value)) {
-            return;
+            return null;
         }
 
         if (!is_string($value)) {
@@ -88,7 +90,7 @@ class StringToDateTimeTransformer extends BaseDateTimeTransformer
             }
 
             if ($this->inputTimezone !== $this->outputTimezone) {
-                $dateTime->setTimeZone(new \DateTimeZone($this->inputTimezone));
+                $dateTime->setTimezone(new \DateTimeZone($this->inputTimezone));
             }
         } catch (TransformationFailedException $e) {
             throw $e;

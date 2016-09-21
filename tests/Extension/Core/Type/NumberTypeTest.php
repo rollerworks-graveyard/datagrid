@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -26,7 +28,7 @@ class NumberTypeTest extends BaseTypeTest
         \Locale::setDefault('de_DE');
     }
 
-    protected function getTestedType()
+    protected function getTestedType(): string
     {
         return NumberType::class;
     }

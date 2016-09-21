@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -11,48 +13,124 @@
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Column\ResolvedColumnType;
 use Rollerworks\Component\Datagrid\DatagridBuilder;
 use Rollerworks\Component\Datagrid\DatagridFactoryInterface;
 use Rollerworks\Component\Datagrid\DatagridInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 
-final class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
+final class DatagridBuilderTest extends TestCase
 {
     /**
-     * @var \Prophecy\Prophecy\ObjectProphecy
+     * @var DatagridFactoryInterface
      */
     private $factory;
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy
-     */
-    private $dataMapper;
-
     protected function setUp()
     {
-        $this->factory = $this->prophesize(DatagridFactoryInterface::class);
-    }
-
-    public function testCreateDatagridWithUnresolvedColumns()
-    {
+        // Ensure access to the testing context.
         $test = $this;
 
-        $columnCreator = function ($args) use ($test) {
-            $column = $test->prophesize(ColumnInterface::class);
-            $column->getName()->willReturn($args[0]);
+        $creator = function ($args) use ($test) {
+            // 0=name, 1=type, 2=options
+            $column = $test->createMock(ColumnInterface::class);
+            $column->expects(self::any())->method('getName')->willReturn($args[0]);
+            $column->expects(self::any())->method('getType')->willReturn(new ResolvedColumnType(new $args[1]()));
+            $column->expects(self::any())->method('getOptions')->willReturn($args[2]);
 
-            return $column->reveal();
+            return $column;
         };
 
-        $this->factory->createColumn('id', NumberType::class, [])->will($columnCreator)->shouldBeCalled();
-        $this->factory->createColumn('name', TextType::class, ['format' => '%s'])->will($columnCreator)->shouldBeCalled();
+        $factory = $this->prophesize(DatagridFactoryInterface::class);
+        $factory->createColumn(Argument::any(), Argument::any(), Argument::any())->will($creator);
 
-        $grid = new DatagridBuilder($this->factory->reveal(), 'grid');
-        $grid->add('id', NumberType::class);
-        $grid->add('name', TextType::class, ['format' => '%s']);
+        $this->factory = $factory->reveal();
+    }
 
-        $this->assertInstanceOf(DatagridInterface::class, $grid->getDatagrid());
+    /** @test */
+    public function it_generates_datagrid()
+    {
+        $builder = new DatagridBuilder($this->factory);
+        $builder->add('id', NumberType::class);
+        $builder->add('name', TextType::class, ['format' => '%s']);
+
+        self::assertTrue($builder->has('id'));
+        self::assertTrue($builder->has('name'));
+        self::assertFalse($builder->has('date'));
+
+        $datagrid = $builder->getDatagrid('my_grid');
+
+        self::assertSame('my_grid', $datagrid->getName());
+        self::assertDatagridHasColumn($datagrid, 'id', NumberType::class);
+        self::assertDatagridHasColumn($datagrid, 'name', TextType::class, ['format' => '%s']);
+    }
+
+    /** @test */
+    public function it_gets_a_resolved_column()
+    {
+        $builder = new DatagridBuilder($this->factory);
+        $builder->add('id', NumberType::class);
+        $builder->set($c = $this->factory->createColumn('name', TextType::class, ['format' => '%s']));
+
+        self::assertTrue($builder->has('id'));
+        self::assertTrue($builder->has('name'));
+        self::assertFalse($builder->has('date'));
+
+        self::assertColumnEquals($builder->get('id'), 'id', NumberType::class);
+        self::assertSame($c, $builder->get('name'));
+
+        self::assertTrue($builder->has('id'));
+        self::assertTrue($builder->has('name'));
+        self::assertFalse($builder->has('date'));
+    }
+
+    /** @test */
+    public function it_returns_a_new_datagrid_every_time()
+    {
+        $builder = new DatagridBuilder($this->factory);
+        $builder->add('id', NumberType::class);
+        $builder->add('name', TextType::class, ['format' => '%s']);
+
+        $datagrid = $builder->getDatagrid('my_grid');
+        $datagrid2 = $builder->getDatagrid('my_grid'); // duplicate name not allowed, but not checked here.
+
+        self::assertNotSame($datagrid, $datagrid2);
+
+        $builder->remove('id');
+
+        $datagrid3 = $builder->getDatagrid('my_grid');
+
+        self::assertTrue($datagrid->hasColumn('id'));
+        self::assertTrue($datagrid2->hasColumn('id'));
+        self::assertFalse($datagrid3->hasColumn('id'));
+    }
+
+    private static function assertColumnEquals(
+        ColumnInterface $column,
+        string $name,
+        string $type = ColumnType::class,
+        array $options = null
+    ) {
+        self::assertEquals($name, $column->getName());
+        self::assertInstanceOf($type, $column->getType()->getInnerType());
+
+        if (null !== $options) {
+            self::assertEquals($options, $column->getOptions());
+        }
+    }
+
+    private static function assertDatagridHasColumn(
+        DatagridInterface $datagrid,
+        string $name,
+        string $type = ColumnType::class,
+        array $options = null
+    ) {
+        self::assertTrue($datagrid->hasColumn($name), sprintf('Datagrid does not have a column named "%s"', $name));
+        self::assertColumnEquals($datagrid->getColumn($name), $name, $type, $options);
     }
 }

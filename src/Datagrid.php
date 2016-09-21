@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -82,7 +84,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -90,7 +92,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumn($name)
+    public function getColumn($name): ColumnInterface
     {
         if (!isset($this->columns[$name])) {
             throw new UnknownColumnException($name, $this);
@@ -102,7 +104,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumns()
+    public function getColumns(): array
     {
         return $this->columns;
     }
@@ -110,7 +112,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function hasColumn($name)
+    public function hasColumn($name): bool
     {
         return isset($this->columns[$name]);
     }
@@ -118,7 +120,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function hasColumnType($type)
+    public function hasColumnType($type): bool
     {
         foreach ($this->columns as $column) {
             if ($column->getType()->getInnerType() instanceof $type) {
@@ -158,7 +160,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function createView()
+    public function createView(): DatagridView
     {
         if (!isset($this->data)) {
             throw new BadMethodCallException(

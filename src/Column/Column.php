@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -83,7 +85,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -91,7 +93,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): ResolvedColumnTypeInterface
     {
         return $this->type;
     }
@@ -131,7 +133,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getViewTransformers()
+    public function getViewTransformers(): array
     {
         return $this->viewTransformers;
     }
@@ -139,7 +141,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -159,7 +161,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function hasOption($name)
+    public function hasOption($name): bool
     {
         return array_key_exists($name, $this->options);
     }
@@ -167,7 +169,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function createHeaderView(DatagridView $datagrid)
+    public function createHeaderView(DatagridView $datagrid): HeaderView
     {
         // The methods createHeaderView(), buildHeaderView() are called
         // explicitly here in order to be able to override either of them
@@ -182,7 +184,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function createCellView(DatagridView $datagrid, $object, $index)
+    public function createCellView(DatagridView $datagrid, $object, $index): CellView
     {
         // The methods createCellView(), buildCellView() are called
         // explicitly here in order to be able to override either of them
@@ -214,7 +216,7 @@ class Column implements ColumnInterface
      *
      * @return callable
      */
-    public function getDataProvider()
+    public function getDataProvider(): callable
     {
         return $this->dataProvider;
     }

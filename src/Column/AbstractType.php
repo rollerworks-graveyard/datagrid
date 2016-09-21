@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -56,7 +58,7 @@ abstract class AbstractType implements ColumnTypeInterface
      *
      * @return string The prefix of the template block name
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return StringUtil::fqcnToBlockPrefix(get_class($this));
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -67,7 +69,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return $this->innerType->getBlockPrefix();
     }
@@ -87,7 +89,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      *
      * @return ColumnTypeInterface The wrapped column type
      */
-    public function getInnerType()
+    public function getInnerType(): ColumnTypeInterface
     {
         return $this->innerType;
     }
@@ -97,7 +99,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      *
      * @return ColumnTypeExtensionInterface[] An array of {@link ColumnTypeExtensionInterface} instances
      */
-    public function getTypeExtensions()
+    public function getTypeExtensions(): array
     {
         return $this->typeExtensions;
     }
@@ -132,7 +134,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      *
      * @return ColumnInterface
      */
-    public function createColumn($name, array $options = [])
+    public function createColumn(string $name, array $options = []): ColumnInterface
     {
         $options = $this->getOptionsResolver()->resolve($options);
         $builder = $this->newColumn($name, $options);
@@ -143,7 +145,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * {inheritdoc}.
      */
-    public function createHeaderView(ColumnInterface $column, DatagridView $datagrid)
+    public function createHeaderView(ColumnInterface $column, DatagridView $datagrid): HeaderView
     {
         $view = new HeaderView($column, $datagrid, $column->getOption('label'));
 
@@ -153,7 +155,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * {inheritdoc}.
      */
-    public function createCellView(ColumnInterface $column, DatagridView $datagrid)
+    public function createCellView(ColumnInterface $column, DatagridView $datagrid): CellView
     {
         $view = new CellView($column, $datagrid);
 
@@ -220,7 +222,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      *
      * @return OptionsResolver The options resolver
      */
-    public function getOptionsResolver()
+    public function getOptionsResolver(): OptionsResolver
     {
         if (null === $this->optionsResolver) {
             if (null !== $this->parent) {
@@ -247,9 +249,9 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      * @param string $name    The name of the column
      * @param array  $options The builder options
      *
-     * @return Column The new field instance
+     * @return ColumnInterface The new field instance
      */
-    protected function newColumn($name, array $options)
+    protected function newColumn($name, array $options): ColumnInterface
     {
         return new Column($name, $this, $options);
     }

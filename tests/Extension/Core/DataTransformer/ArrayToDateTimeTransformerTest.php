@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -32,12 +34,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
         $transformer = new ArrayToDateTimeTransformer('UTC', 'UTC');
 
         $input = [
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ];
 
         $output = new \DateTime('2010-02-03 04:05:06 UTC');
@@ -50,12 +52,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
         $transformer = new ArrayToDateTimeTransformer('UTC', 'UTC');
 
         $input = [
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '0',
-            'second' => '0',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 0,
+            'second' => 0,
         ];
 
         $output = new \DateTime('2010-02-03 04:00:00 UTC');
@@ -99,11 +101,11 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -114,11 +116,11 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -129,11 +131,11 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -144,11 +146,11 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -159,11 +161,11 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'second' => 6,
         ]);
     }
 
@@ -174,11 +176,11 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
         ]);
     }
 
@@ -194,12 +196,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
         $transformer = new ArrayToDateTimeTransformer('America/New_York', 'Asia/Hong_Kong');
 
         $input = [
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ];
 
         $output = new \DateTime('2010-02-03 04:05:06 Asia/Hong_Kong');
@@ -213,12 +215,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
         $transformer = new ArrayToDateTimeTransformer('Asia/Hong_Kong', 'UTC');
 
         $input = [
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ];
 
         $output = new \DateTime('2010-02-03 04:05:06 UTC');
@@ -243,12 +245,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '-1',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => -1,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -259,12 +261,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '-1',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => -1,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -275,12 +277,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '-1',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => -1,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -291,12 +293,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '-1',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => -1,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -307,12 +309,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '-1',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => -1,
+            'second' => 6,
         ]);
     }
 
@@ -323,12 +325,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '-1',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => -1,
         ]);
     }
 
@@ -339,12 +341,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '13',
-            'day' => '3',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 13,
+            'day' => 3,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -355,12 +357,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
-            'day' => '31',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'year' => 2010,
+            'month' => 2,
+            'day' => 31,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -371,12 +373,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
-            'month' => '2',
+            'year' => 2010,
+            'month' => 2,
             'day' => 'bazinga',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -387,12 +389,12 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
-            'year' => '2010',
+            'year' => 2010,
             'month' => 'bazinga',
-            'day' => '31',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'day' => 31,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 
@@ -404,11 +406,11 @@ class ArrayToDateTimeTransformerTest extends DateTimeTestCase
         $transformer = new ArrayToDateTimeTransformer();
         $transformer->transform([
             'year' => 'bazinga',
-            'month' => '2',
-            'day' => '31',
-            'hour' => '4',
-            'minute' => '5',
-            'second' => '6',
+            'month' => 2,
+            'day' => 31,
+            'hour' => 4,
+            'minute' => 5,
+            'second' => 6,
         ]);
     }
 }

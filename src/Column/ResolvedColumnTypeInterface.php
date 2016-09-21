@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -12,6 +14,7 @@
 namespace Rollerworks\Component\Datagrid\Column;
 
 use Rollerworks\Component\Datagrid\DatagridView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * A wrapper for a field type and its extensions.
@@ -25,7 +28,7 @@ interface ResolvedColumnTypeInterface
      *
      * @return string The prefix of the template block name
      */
-    public function getBlockPrefix();
+    public function getBlockPrefix(): string;
 
     /**
      * Returns the parent type.
@@ -39,14 +42,14 @@ interface ResolvedColumnTypeInterface
      *
      * @return ColumnTypeInterface The wrapped form type
      */
-    public function getInnerType();
+    public function getInnerType(): ColumnTypeInterface;
 
     /**
      * Returns the extensions of the wrapped column type.
      *
      * @return ColumnTypeExtensionInterface[] An array of {@link ColumnTypeExtensionInterface} instances
      */
-    public function getTypeExtensions();
+    public function getTypeExtensions(): array;
 
     /**
      * Returns a new ColumnInterface instance.
@@ -56,7 +59,7 @@ interface ResolvedColumnTypeInterface
      *
      * @return ColumnInterface
      */
-    public function createColumn($name, array $options = []);
+    public function createColumn(string $name, array $options = []): ColumnInterface;
 
     /**
      * This configures the {@link ColumnInterface} instance.
@@ -77,7 +80,7 @@ interface ResolvedColumnTypeInterface
      *
      * @return HeaderView
      */
-    public function createHeaderView(ColumnInterface $column, DatagridView $datagrid);
+    public function createHeaderView(ColumnInterface $column, DatagridView $datagrid): HeaderView;
 
     /**
      * Creates a new cell view for a column of this type.
@@ -87,7 +90,7 @@ interface ResolvedColumnTypeInterface
      *
      * @return CellView
      */
-    public function createCellView(ColumnInterface $column, DatagridView $datagrid);
+    public function createCellView(ColumnInterface $column, DatagridView $datagrid): CellView;
 
     /**
      * Configures a header view for the type hierarchy.
@@ -110,12 +113,12 @@ interface ResolvedColumnTypeInterface
     /**
      * Returns the configured options resolver used for this type.
      *
-     * @return \Symfony\Component\OptionsResolver\OptionsResolver The options resolver
+     * @return OptionsResolver The options resolver
      */
-    public function getOptionsResolver();
+    public function getOptionsResolver(): OptionsResolver;
 
     /**
-     * Get of the column.
+     * Get the value of the column.
      *
      * @param ColumnInterface $column
      * @param mixed           $object

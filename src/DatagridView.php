@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -54,11 +56,6 @@ class DatagridView implements \IteratorAggregate, \Countable
      */
     public $vars = [];
 
-    /**
-     * Constructor.
-     *
-     * @param DatagridInterface $datagrid
-     */
     public function __construct(DatagridInterface $datagrid)
     {
         $this->name = $datagrid->getName();
@@ -77,18 +74,12 @@ class DatagridView implements \IteratorAggregate, \Countable
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasColumn($name)
+    public function hasColumn(string $name): bool
     {
         return isset($this->columns[$name]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getColumn($name)
+    public function getColumn(string $name): HeaderView
     {
         if (isset($this->columns[$name])) {
             return $this->columns[$name];
@@ -108,7 +99,7 @@ class DatagridView implements \IteratorAggregate, \Countable
      *
      * @return mixed
      */
-    public function getVar($key, $default = null)
+    public function getVar(string $key, $default = null)
     {
         if (array_key_exists($key, $this->vars)) {
             return $this->vars[$key];

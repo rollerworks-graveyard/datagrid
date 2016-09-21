@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -55,7 +57,7 @@ class DatagridRowView implements \IteratorAggregate, \Countable
      * @param mixed             $source
      * @param int               $index
      */
-    public function __construct(DatagridView $datagridView, array $columns, $source, $index)
+    public function __construct(DatagridView $datagridView, array $columns, $source, int $index)
     {
         $this->datagrid = $datagridView;
         $this->source = $source;

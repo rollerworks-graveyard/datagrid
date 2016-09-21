@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the RollerworksDatagrid package.
  *
@@ -16,7 +18,7 @@ use Symfony\Component\Intl\Util\IntlTestHelper;
 
 class MoneyTypeTest extends BaseTypeTest
 {
-    protected function getTestedType()
+    protected function getTestedType(): string
     {
         return MoneyType::class;
     }
