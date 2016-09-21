@@ -1,0 +1,6 @@
+---------------------------------------------------------------------------
+
+by sstok at 2016-09-21 08:53
+
+That's strange, `simplified_null_return` is disabled but StyleCI doesn't disable this 🤔
+But the local PHP-CS-Fixer bridge disabled it.
