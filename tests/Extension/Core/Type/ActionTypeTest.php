@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
+use Rollerworks\Component\Datagrid\Exception\InvalidConfigurationException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\ActionType;
 
 class ActionTypeTest extends BaseTypeTest
@@ -48,7 +49,31 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertEquals('My label', $view->label);
     }
 
-    public function testActionWithAttr()
+    /** @test */
+    public function it_renders_with_an_url()
+    {
+        $options = [
+            'url' => '/entity/1/edit',
+            'content' => 'edit',
+            'data_provider' => function ($data) {
+                return ['key' => $data->key];
+            },
+            'attr' => ['class' => 'i-edit'],
+            'url_attr' => ['data-new-window' => true],
+        ];
+
+        $expectedAttributesAttributes = [
+            'url' => '/entity/1/edit',
+            'content' => 'edit',
+            'attr' => ['class' => 'i-edit'],
+            'url_attr' => ['data-new-window' => true],
+        ];
+
+        $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributesAttributes);
+    }
+
+    /** @test */
+    public function it_resolves_an_uri_scheme()
     {
         $options = [
             'uri_scheme' => '/entity/{key}/edit',
@@ -70,7 +95,8 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributesAttributes);
     }
 
-    public function testActionsWithUriAsClosure()
+    /** @test */
+    public function it_evaluates_uri_scheme_as_closure()
     {
         $options = [
             'content' => 'Delete',
@@ -92,7 +118,8 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
-    public function testActionsWithContentAsClosure()
+    /** @test */
+    public function it_evaluates_content_as_closure()
     {
         $options = [
             'uri_scheme' => '/entity/{key}/delete',
@@ -114,7 +141,8 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
-    public function testActionsWithRedirectUri()
+    /** @test */
+    public function it_adds_redirect_to_url()
     {
         $options = [
             'uri_scheme' => '/entity/{key}/edit',
@@ -135,7 +163,8 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
-    public function testActionsWithRedirectUriWithExistingQueryStringInUrl()
+    /** @test */
+    public function it_appends_redirect_to_url_with_existing_query_string()
     {
         $options = [
             'uri_scheme' => '/entity/{key}/edit?foo=bar',
@@ -156,7 +185,8 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
-    public function testActionsWithRedirectUriAsClosure()
+    /** @test */
+    public function it_evaluates_redirect_as_closure()
     {
         $options = [
             'uri_scheme' => '/entity/{key}/edit',
@@ -179,7 +209,8 @@ class ActionTypeTest extends BaseTypeTest
         $this->assertCellValueEquals(['key' => 42], 42, $options, $expectedAttributes);
     }
 
-    public function testActionsWithMultipleFields()
+    /** @test */
+    public function it_passes_all_provided_values()
     {
         $options = [
             'uri_scheme' => '/entity/{id}/edit?name={username}',
@@ -203,5 +234,37 @@ class ActionTypeTest extends BaseTypeTest
         $data = [1 => $object];
 
         $this->assertCellValueEquals(['id' => 50, 'username' => 'sheldon'], $data, $options, $expectedAttributes);
+    }
+
+    /** @test */
+    public function url_or_uri_schema_must_be_provided()
+    {
+        $column = $this->factory->createColumn(
+            'id',
+            $this->getTestedType(),
+            [
+                'url' => null,
+                'uri_scheme' => null,
+                'content' => 'edit',
+                'label' => 'My label',
+                'data_provider' => function ($data) {
+                    return ['id' => $data->id, 'username' => $data->name];
+                },
+            ]
+        );
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+
+        $object = new \stdClass();
+        $object->id = 50;
+        $object->name = 'sheldon';
+        $data = [1 => $object];
+
+        $datagrid->setData($data);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Action needs an "url" or "uri_scheme" but none is provided.');
+
+        $datagrid->createView();
     }
 }
