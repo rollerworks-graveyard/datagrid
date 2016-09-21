@@ -54,14 +54,6 @@ class ColumnOrderExtension extends AbstractTypeExtension
             'display_order' => null,
         ]);
 
-        if ($resolver instanceof OptionsResolverInterface) {
-            $resolver->setAllowedTypes(
-                [
-                    'display_order' => ['integer', 'null'],
-                ]
-            );
-        } else {
-            $resolver->setAllowedTypes('display_order', ['integer', 'null']);
-        }
+        $resolver->setAllowedTypes('display_order', ['integer', 'null']);
     }
 }
