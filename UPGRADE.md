@@ -1,6 +1,106 @@
 UPGRADE
 =======
 
+## Upgrade FROM 0.9 to 0.10
+
+**Support for PHP 5.5 is dropped, you need at least PHP 7.0.**
+
+* All classes and interfaces now (whenever possible) declare type-hints *and* return types.
+  
+  *As this list quite extensive, not all affected classes are listed here.*
+  The simplest way to see if your custom implementation is affected is running your tests
+  and or use your IDE's code analyzer to check for incompatibility's.
+  
+  See also: http://php.net/manual/en/functions.returning-values.php#functions.returning-values.type-declaration
+  
+* Datagrid and ColumnType extensions now must be defined with a compatible return type.
+
+  **Note:** `ColumnTypeInterface::getParent()` has no return type as this value can be null.
+
+  **AbstractDatagridExtension**
+
+  Before:
+
+  ```php
+  class MyType extends AbstractType
+  {
+      public function getBlockPrefix()
+      {
+          return ...;
+      }
+  }    
+
+  class MyExtension extends AbstractDatagridExtension
+  {
+      protected function loadTypes()
+      {
+          return [...];
+      } 
+
+      protected function loadTypesExtensions()
+      {
+          return [...];
+      }  
+  }  
+
+  class MyTypeExtension extends AbstractTypeExtension
+  {
+      public function getExtendedType()
+      {
+          ...
+      }
+  }
+  ```
+
+  After:
+
+  ```php
+  class MyType extends AbstractType
+  {
+      public function getBlockPrefix(): string
+      {
+          return ...;
+      }
+  }    
+
+  class MyExtension extends AbstractDatagridExtension
+  {
+      protected function loadTypes(): array
+      {
+          return [...];
+      } 
+
+      protected function loadTypesExtensions(): array
+      {
+          return [...];
+      }  
+  }  
+
+  class MyTypeExtension extends AbstractTypeExtension
+  {
+      public function getExtendedType(): string
+      {
+          ...
+      }
+  }
+  ```
+  
+### DatagridBuilder
+  
+* The `DatagridBuilder` now allows re-usage of the Builder instance.
+  Each call to `getDatagrid` will produce an new `Datagrid` instance.
+  
+* The name of the datagrid must now be passed when calling `getDatagrid`
+  and not as of the Constructor. *Duplicate usage of a datagrid name is not validated.*
+
+* The `add` method no longer accepts a Column object, use the new method `set` method instead.
+  *This was needed to make strict type-hints possible.*
+  
+* The `get` method now always returns an `ColumnInterface` instance.
+
+* Calling `DatagridBuilder::getDatagrid()` will re-use the resolved Column instance for
+  all Datagrid builds.
+
 ## Upgrade FROM 0.8 to 0.9
 
 * The `Rollerworks\Component\Datagrid\Column\HeaderView` and `Rollerworks\Component\Datagrid\DatagridView`
