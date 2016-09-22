@@ -41,15 +41,4 @@ class CoreExtension extends AbstractDatagridExtension
             new Type\TextType(),
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function loadTypesExtensions(): array
-    {
-        return [
-            new TypeExtension\ColumnOrderExtension(),
-            new TypeExtension\CompoundColumnOrderExtension(),
-        ];
-    }
 }

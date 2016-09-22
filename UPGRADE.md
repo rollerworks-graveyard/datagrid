@@ -99,6 +99,8 @@ UPGRADE
 * The first argument of `IntegerToLocalizedStringTransformer::__construct()` is removed. 
   Precision is not used with integers, and keeping this argument only causes confusion.
   
+* The class `ColumnOrderExtension` and `CompoundColumnOrderExtension`.
+  
 ### DatagridBuilder
   
 * The `DatagridBuilder` now allows re-usage of the Builder instance.
