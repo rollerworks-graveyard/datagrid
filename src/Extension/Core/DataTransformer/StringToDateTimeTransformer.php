@@ -67,7 +67,7 @@ class StringToDateTimeTransformer extends BaseDateTimeTransformer
     public function transform($value)
     {
         if (empty($value)) {
-            return null;
+            return;
         }
 
         if (!is_string($value)) {
