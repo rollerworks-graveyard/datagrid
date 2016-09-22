@@ -88,9 +88,9 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
 
     private function transformStringWithCurrencyToLocalized(string $value)
     {
-        list($currency, $amount)=explode(' ', $value);
+        list($currency, $amount) = explode(' ', $value);
 
-        if (mb_strlen($currency) <> 3) {
+        if (mb_strlen($currency) != 3) {
             throw new TransformationFailedException(
                 sprintf(
                     'Currency "%s" extracted from "%s" is not accepted. Only three character format is supported.',

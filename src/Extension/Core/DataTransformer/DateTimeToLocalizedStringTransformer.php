@@ -50,8 +50,7 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         int $timeFormat = null,
         int $calendar = \IntlDateFormatter::GREGORIAN,
         string $pattern = null
-    )
-    {
+    ) {
         parent::__construct($inputTimezone, $outputTimezone);
 
         if (null === $dateFormat) {
