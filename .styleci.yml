@@ -2,8 +2,6 @@ preset: symfony
 
 risky: true
 
-linting: false
-
 enabled:
     #- ordered_class_elements
     - ordered_imports
