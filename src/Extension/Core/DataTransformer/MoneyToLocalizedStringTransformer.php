@@ -25,24 +25,14 @@ use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
 class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransformer
 {
     /**
-     * @var int|null
+     * @var int
      */
-    private $divisor;
+    private $divisor = 1;
 
     /**
      * @var string
      */
     private $defaultCurrency;
-
-    /**
-     * @var null|string
-     */
-    private $currencyField;
-
-    /**
-     * @var null|string
-     */
-    private $inputField;
 
     /**
      * Constructor.
@@ -52,37 +42,24 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
      * @param int    $roundingMode
      * @param int    $divisor
      * @param string $defaultCurrency
-     * @param string $inputField
-     * @param string $currencyField
      */
-    public function __construct($precision = null, $grouping = null, $roundingMode = null, $divisor = null, $defaultCurrency = 'EUR', $inputField = null, $currencyField = null)
-    {
-        if (null === $grouping) {
-            $grouping = true;
-        }
-
-        if (null === $precision) {
-            $precision = 2;
-        }
-
+    public function __construct(
+        int $precision = 2,
+        bool $grouping = true,
+        int $roundingMode = self::ROUND_HALF_UP,
+        int $divisor = 1,
+        string $defaultCurrency = 'EUR'
+    ) {
         parent::__construct($precision, $grouping, $roundingMode);
 
-        if (null === $divisor) {
-            $divisor = 1;
-        }
-
         $this->divisor = $divisor;
-
         $this->defaultCurrency = $defaultCurrency;
-
-        $this->currencyField = $currencyField;
-        $this->inputField = $inputField;
     }
 
     /**
      * Transforms a normalized format into a localized money string.
      *
-     * @param array|string|int|float $value array, float or string
+     * @param string|int|float|array $value
      *
      * @throws TransformationFailedException If the given value is not numeric or
      *                                       if the value can not be transformed
@@ -95,49 +72,53 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
             return '';
         }
 
-        if (is_array($value) && $this->currencyField) {
-            if (!$this->defaultCurrency && $this->currencyField && !isset($value[$this->currencyField])) {
-                throw new TransformationFailedException(sprintf('Field "%s" is "%s" does not exist provided value.', $this->currencyField));
-            }
-
-            if (!isset($value[$this->inputField])) {
-                throw new TransformationFailedException(sprintf('Field "%s" is "%s" does not exist provided value.', $this->inputField));
-            }
-
-            $currency = isset($value[$this->currencyField]) ? $value[$this->currencyField] : $this->defaultCurrency;
-            $amountValue = $value[$this->inputField];
-        } elseif (is_array($value)) {
-            if (!$this->defaultCurrency && !isset($value['currency'])) {
-                throw new TransformationFailedException('The field "currency" should not be empty when no default is set.');
-            }
-
-            if (!isset($value['value'])) {
-                throw new TransformationFailedException('The field "value" should not be empty.');
-            }
-
-            $currency = isset($value['currency']) ? $value['currency'] : $this->defaultCurrency;
-            $amountValue = $value['value'];
-        } else {
-            $currency = $this->defaultCurrency;
-            $amountValue = $value;
+        if (is_array($value)) {
+            return $this->doTransformation($value['currency'] ?: $this->defaultCurrency, (string) $value['amount']);
         }
 
-        if (!is_numeric($amountValue)) {
+        // Convert fixed spaces to normal ones.
+        $value = str_replace("\xc2\xa0", ' ', (string) $value);
+
+        if (false !== strpos($value, ' ')) {
+            return $this->transformStringWithCurrencyToLocalized($value);
+        }
+
+        return $this->doTransformation($this->defaultCurrency, $value);
+    }
+
+    private function transformStringWithCurrencyToLocalized(string $value)
+    {
+        list($currency, $amount)=explode(' ', $value);
+
+        if (mb_strlen($currency) <> 3) {
+            throw new TransformationFailedException(
+                sprintf(
+                    'Currency "%s" extracted from "%s" is not accepted. Only three character format is supported.',
+                    $currency,
+                    $value
+                )
+            );
+        }
+
+        return $this->doTransformation($currency, $amount);
+    }
+
+    private function doTransformation(string $currency, string $amount)
+    {
+        if (!is_numeric($amount)) {
             throw new TransformationFailedException('Expected a numeric value.');
         }
 
-        $amountValue /= $this->divisor;
+        $amount /= $this->divisor;
         $formatter = $this->getNumberFormatter(\NumberFormatter::CURRENCY);
 
-        $value = $formatter->formatCurrency($amountValue, $currency);
+        $value = $formatter->formatCurrency($amount, $currency);
 
         if (intl_is_failure($formatter->getErrorCode())) {
             throw new TransformationFailedException($formatter->getErrorMessage());
         }
 
         // Convert fixed spaces to normal ones
-        $value = str_replace("\xc2\xa0", ' ', $value);
-
-        return $value;
+        return str_replace("\xc2\xa0", ' ', $value);
     }
 }

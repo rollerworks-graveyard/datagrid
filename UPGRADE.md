@@ -85,6 +85,17 @@ UPGRADE
   }
   ```
   
+### Core extensions
+
+* The `currency_field` and `input_field` options are removed from the `MoneyType`.
+
+* The `MoneyType` changed in the way input values are transformed:
+  
+  * When the value is a string without currency it's transformed with the `currency` option.
+  * When the value is a string with a currency, eg. `EUR 12.00` it's transformed with 'EUR' currency.
+  * When the value is an array, the keys `currency` and `amount` are expected to be present.
+    Currency can be `null`, then the value of the `currency` option is used.
+  
 ### DatagridBuilder
   
 * The `DatagridBuilder` now allows re-usage of the Builder instance.
