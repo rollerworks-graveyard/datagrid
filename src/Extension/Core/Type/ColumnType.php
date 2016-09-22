@@ -104,7 +104,7 @@ class ColumnType implements ColumnTypeInterface
     private function createDataProvider(ColumnInterface $column): \Closure
     {
         return function ($data) use ($column) {
-            $path = null;
+            static $path = null;
 
             if (null === $path) {
                 $name = $column->getName();
