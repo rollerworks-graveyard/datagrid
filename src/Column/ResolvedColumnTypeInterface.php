@@ -17,7 +17,7 @@ use Rollerworks\Component\Datagrid\DatagridView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * A wrapper for a field type and its extensions.
+ * A wrapper for a column type and its extensions.
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */

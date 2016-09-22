@@ -244,7 +244,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      * @param string $name    The name of the column
      * @param array  $options The builder options
      *
-     * @return ColumnInterface The new field instance
+     * @return ColumnInterface The new column instance
      */
     protected function newColumn($name, array $options): ColumnInterface
     {

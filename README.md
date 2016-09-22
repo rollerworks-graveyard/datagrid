@@ -1,16 +1,15 @@
 RollerworksDatagrid
 ===================
 
-RollerworksDatagrid provides you with a powerful datagrid system
-for your PHP applications.
+RollerworksDatagrid provides a powerful datagrid system for your PHP applications.
 
 The system has a modular design and can work with any PHP framework,
 user locale, data format or storage system.
 
 Displaying an objects list is one of the most common tasks in web applications
-and probably the easiest one, so you could ask how can this component help you?
+and probably the easiest one, so you could ask how can this library help you?
 
-The Datagrid Component allows you to create one action that handles
+The Datagrid system allows you to create one action that handles
 displaying all kinds of lists in your application without duplicating code.
 
 **WARNING. This project is still under development, compatibility breaks may occur.**
@@ -22,7 +21,7 @@ displaying all kinds of lists in your application without duplicating code.
 Requirements
 ------------
 
-You need at least PHP 5.5, and Intl extension for international support.
+You need at least PHP 7.0, and the Intl extension if you want international support.
 
 For framework integration you may use the following;
 
@@ -34,7 +33,7 @@ For framework integration you may use the following;
 Features
 --------
 
-The following types are provided out of the box, building yours is also
+The following types are provided out of the box, building your own is also
 possible and very straightforward. You can use any type of data
 (including nested sets).
 
@@ -47,7 +46,6 @@ possible and very straightforward. You can use any type of data
 * Boolean
 * CompoundColumn (nested columns)
 * DateTime
-* Model (Property access)
 * Money
 * Number
 * Text
@@ -85,7 +83,7 @@ Versioning
 ----------
 
 For transparency and insight into the release cycle, and for striving
-to maintain backwards compatibility, RollerworksSearch is maintained under
+to maintain backwards compatibility, RollerworksDatagrid is maintained under
 the Semantic Versioning guidelines as much as possible.
 
 Releases will be numbered with the following format:
@@ -112,9 +110,7 @@ This package contains code originally provided by FSi sp. z o.o.
 License
 -------
 
-This package is provided under the none-restrictive MIT license,
-you are free to use it for any free or proprietary product/application,
-without restrictions.
+This package is provided under the none-restrictive MIT license.
 
 [LICENSE](LICENSE)
 
