@@ -96,6 +96,9 @@ UPGRADE
   * When the value is an array, the keys `currency` and `amount` are expected to be present.
     Currency can be `null`, then the value of the `currency` option is used.
   
+* The first argument of `IntegerToLocalizedStringTransformer::__construct()` is removed. 
+  Precision is not used with integers, and keeping this argument only causes confusion.
+  
 ### DatagridBuilder
   
 * The `DatagridBuilder` now allows re-usage of the Builder instance.

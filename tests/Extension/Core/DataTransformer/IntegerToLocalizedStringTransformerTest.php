@@ -87,7 +87,7 @@ class IntegerToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCas
      */
     public function testTransformWithRounding($input, $output, $roundingMode)
     {
-        $transformer = new IntegerToLocalizedStringTransformer(null, null, $roundingMode);
+        $transformer = new IntegerToLocalizedStringTransformer(null, $roundingMode);
 
         $this->assertEquals($output, $transformer->transform($input));
     }
