@@ -19,18 +19,11 @@ use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 
 class PreloadedExtension implements DatagridExtensionInterface
 {
-    /**
-     * @var ColumnTypeInterface[]
-     */
     private $columnTypes = [];
-
-    /**
-     * @var ColumnTypeExtensionInterface[]
-     */
     private $typeColumnExtensions = [];
 
     /**
-     * Creates a new preloaded extension.
+     * Constructor.
      *
      * @param ColumnTypeInterface[]          $types          The column-types that the extension
      *                                                       should support
@@ -46,11 +39,11 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($name)
+    public function getType($name): ColumnTypeInterface
     {
         if (!isset($this->columnTypes[$name])) {
             throw new InvalidArgumentException(
-                sprintf('The column-type "%s" can not be loaded by this extension', $name)
+                sprintf('The column-type "%s" can not be loaded by this extension.', $name)
             );
         }
 
@@ -60,7 +53,7 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasType($name)
+    public function hasType($name): bool
     {
         return isset($this->columnTypes[$name]);
     }
@@ -68,7 +61,7 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeExtensions($name)
+    public function getTypeExtensions($name): array
     {
         return isset($this->typeColumnExtensions[$name]) ? $this->typeColumnExtensions[$name] : [];
     }
@@ -76,16 +69,8 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasTypeExtensions($name)
+    public function hasTypeExtensions($name): bool
     {
         return !empty($this->typeColumnExtensions[$name]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerListeners(DatagridInterface $datagrid)
-    {
-        // no op
     }
 }
