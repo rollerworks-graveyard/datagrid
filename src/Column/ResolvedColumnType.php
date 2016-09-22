@@ -137,9 +137,8 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     public function createColumn(string $name, array $options = []): ColumnInterface
     {
         $options = $this->getOptionsResolver()->resolve($options);
-        $builder = $this->newColumn($name, $options);
 
-        return $builder;
+        return $this->newColumn($name, $options);
     }
 
     /**
@@ -147,9 +146,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     public function createHeaderView(ColumnInterface $column, DatagridView $datagrid): HeaderView
     {
-        $view = new HeaderView($column, $datagrid, $column->getOption('label'));
-
-        return $view;
+        return new HeaderView($column, $datagrid, $column->getOption('label'));
     }
 
     /**
@@ -157,9 +154,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     public function createCellView(ColumnInterface $column, DatagridView $datagrid): CellView
     {
-        $view = new CellView($column, $datagrid);
-
-        return $view;
+        return new CellView($column, $datagrid);
     }
 
     /**
