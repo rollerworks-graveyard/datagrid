@@ -116,10 +116,8 @@ class MoneyTypeTest extends BaseTypeTest
             'price2',
             $this->getTestedType(),
             [
-                'input_field' => 'price2',
-                'currency_field' => 'currency',
                 'data_provider' => function ($value) {
-                    return (array) $value;
+                    return ['currency' => $value->currency, 'amount' => $value->price2];
                 },
             ]
         );

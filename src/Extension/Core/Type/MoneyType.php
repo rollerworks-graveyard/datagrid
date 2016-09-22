@@ -25,17 +25,13 @@ class MoneyType extends AbstractType
 {
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        $column
-            ->addViewTransformer(new MoneyToLocalizedStringTransformer(
-                $options['precision'],
-                $options['grouping'],
-                null,
-                $options['divisor'],
-                $options['currency'],
-                $options['input_field'],
-                $options['currency_field']
-            ))
-        ;
+        $column->addViewTransformer(new MoneyToLocalizedStringTransformer(
+            $options['precision'],
+            $options['grouping'],
+            $options['rounding_mode'],
+            $options['divisor'],
+            $options['currency']
+        ));
     }
 
     /**
@@ -48,8 +44,20 @@ class MoneyType extends AbstractType
             'grouping' => false,
             'divisor' => 1,
             'currency' => 'EUR',
-            'input_field' => null,
-            'currency_field' => null,
+            'rounding_mode' => \NumberFormatter::ROUND_HALFUP,
         ]);
+
+        $resolver->setAllowedValues(
+            'rounding_mode',
+            [
+                \NumberFormatter::ROUND_FLOOR,
+                \NumberFormatter::ROUND_DOWN,
+                \NumberFormatter::ROUND_HALFDOWN,
+                \NumberFormatter::ROUND_HALFEVEN,
+                \NumberFormatter::ROUND_HALFUP,
+                \NumberFormatter::ROUND_UP,
+                \NumberFormatter::ROUND_CEILING,
+            ]
+        );
     }
 }

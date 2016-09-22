@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Rollerworks\Component\Datagrid\Extension\Core\DataTransformer;
 
 use Rollerworks\Component\Datagrid\DataTransformerInterface;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
@@ -48,19 +47,9 @@ abstract class BaseDateTimeTransformer implements DataTransformerInterface
      *
      * @param string $inputTimezone  The name of the input timezone
      * @param string $outputTimezone The name of the output timezone
-     *
-     * @throws UnexpectedTypeException if a timezone is not a string
      */
-    public function __construct($inputTimezone = null, $outputTimezone = null)
+    public function __construct(string $inputTimezone = null, string $outputTimezone = null)
     {
-        if (!is_string($inputTimezone) && null !== $inputTimezone) {
-            throw new UnexpectedTypeException($inputTimezone, 'string');
-        }
-
-        if (!is_string($outputTimezone) && null !== $outputTimezone) {
-            throw new UnexpectedTypeException($outputTimezone, 'string');
-        }
-
         $this->inputTimezone = $inputTimezone ?: date_default_timezone_get();
         $this->outputTimezone = $outputTimezone ?: date_default_timezone_get();
     }

@@ -78,11 +78,11 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
 
             if (!$type) {
                 // Support fully-qualified class names.
-                if (class_exists($name) && in_array(ColumnTypeInterface::class, class_implements($name), true)) {
-                    $type = new $name();
-                } else {
+                if (!class_exists($name) || !in_array(ColumnTypeInterface::class, class_implements($name), true)) {
                     throw new InvalidArgumentException(sprintf('Could not load type "%s"', $name));
                 }
+
+                $type = new $name();
             }
 
             $this->types[$name] = $this->resolveType($type);

@@ -25,7 +25,7 @@ use Rollerworks\Component\Datagrid\Exception\TransformationFailedException;
 class CompoundColumnTransformer implements DataTransformerInterface
 {
     /**
-     * @var array|ColumnInterface[]
+     * @var ColumnInterface[]
      */
     private $columns = [];
 

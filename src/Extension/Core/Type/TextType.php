@@ -26,7 +26,7 @@ class TextType extends AbstractType
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        if ($options['empty_value']) {
+        if (null !== $options['empty_value']) {
             $column->addViewTransformer(new EmptyValueTransformer($options['empty_value']));
         }
 

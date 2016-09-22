@@ -154,20 +154,4 @@ class DateTimeToLocalizedStringTransformerTest extends DateTimeTestCase
         $transformer = new DateTimeToLocalizedStringTransformer();
         $transformer->transform('2010-01-01');
     }
-
-    /**
-     * @expectedException \Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException
-     */
-    public function testValidateDateFormatOption()
-    {
-        new DateTimeToLocalizedStringTransformer(null, null, 'foobar');
-    }
-
-    /**
-     * @expectedException \Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException
-     */
-    public function testValidateTimeFormatOption()
-    {
-        new DateTimeToLocalizedStringTransformer(null, null, null, 'foobar');
-    }
 }
