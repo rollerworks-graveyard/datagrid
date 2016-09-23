@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid;
 
-use Rollerworks\Component\Datagrid\Column\ColumnTypeExtensionInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 
@@ -25,10 +24,11 @@ class PreloadedExtension implements DatagridExtensionInterface
     /**
      * Constructor.
      *
-     * @param ColumnTypeInterface[]          $types          The column-types that the extension
-     *                                                       should support
-     * @param ColumnTypeExtensionInterface[] $typeExtensions The column-type extensions that the extension
-     *                                                       should support
+     * @param ColumnTypeInterface[] $types          The column-types that the extension
+     *                                              should support
+     * @param array[]               $typeExtensions The column-type extensions that the extension
+     *                                              should support.
+     *                                              Registered as [type => [ColumnTypeExtensionInterface object, ...]]
      */
     public function __construct(array $types, array $typeExtensions)
     {
