@@ -40,7 +40,7 @@ interface ResolvedColumnTypeInterface
     /**
      * Returns the wrapped column type.
      *
-     * @return ColumnTypeInterface The wrapped form type
+     * @return ColumnTypeInterface The wrapped column type
      */
     public function getInnerType(): ColumnTypeInterface;
 

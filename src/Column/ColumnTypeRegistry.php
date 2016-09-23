@@ -44,7 +44,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
      * Constructor.
      *
      * @param DatagridExtensionInterface[]       $extensions          An array of DatagridExtensionInterface
-     * @param ResolvedColumnTypeFactoryInterface $resolvedTypeFactory The factory for resolved form types
+     * @param ResolvedColumnTypeFactoryInterface $resolvedTypeFactory The factory for resolved column types
      *
      * @throws UnexpectedTypeException if an extension does not implement DatagridExtensionInterface
      */
