@@ -15,6 +15,7 @@ namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Exception\DataProviderException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class ColumnTypeTest extends BaseTypeTest
 {
@@ -66,6 +67,56 @@ class ColumnTypeTest extends BaseTypeTest
         $this->assertEquals($object->key2, $view2->value);
     }
 
+    /** @test */
+    public function it_converts_a_string_to_a_dataProvider_closure()
+    {
+        $object = new \stdClass();
+        $object->key = 'foo';
+        $object->key2 = 'bar';
+        $data = [1 => $object];
+
+        $column1 = $this->factory->createColumn('key', ColumnType::class);
+        $column2 = $this->factory->createColumn('foo', ColumnType::class, ['data_provider' => 'key2']);
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column1, $column2]);
+
+        $datagrid->setData($data);
+        $datagridView = $datagrid->createView();
+
+        $view1 = $column1->createCellView($datagridView, $object, 1);
+        $view2 = $column2->createCellView($datagridView, $object, 1);
+
+        $this->assertEquals($object->key, $view1->value);
+        $this->assertEquals($object->key2, $view2->value);
+    }
+
+    /** @test */
+    public function it_converts_a_propertyPath_to_a_dataProvider_closure()
+    {
+        $object = new \stdClass();
+        $object->key = 'foo';
+        $object->key2 = 'bar';
+        $data = [1 => $object];
+
+        $column1 = $this->factory->createColumn('key', ColumnType::class);
+        $column2 = $this->factory->createColumn(
+            'foo',
+            ColumnType::class,
+            ['data_provider' => new PropertyPath('key2')]
+        );
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column1, $column2]);
+
+        $datagrid->setData($data);
+        $datagridView = $datagrid->createView();
+
+        $view1 = $column1->createCellView($datagridView, $object, 1);
+        $view2 = $column2->createCellView($datagridView, $object, 1);
+
+        $this->assertEquals($object->key, $view1->value);
+        $this->assertEquals($object->key2, $view2->value);
+    }
+
     public function testAutoConfigurationDataProviderFailsForUnsupportedPath()
     {
         $object = new \stdClass();
@@ -78,7 +129,46 @@ class ColumnTypeTest extends BaseTypeTest
         $datagrid = $this->factory->createDatagrid('grid', [$column]);
         $datagrid->setData($data);
 
-        $this->setExpectedException(DataProviderException::class, 'Unable to get value for column "key3"');
+        $this->expectException(DataProviderException::class);
+        $this->expectExceptionMessage('Unable to get value for column "key3".');
+
+        $datagrid->createView();
+    }
+
+    public function testStringDataProviderFailsForUnsupportedPath()
+    {
+        $object = new \stdClass();
+        $object->key = 'foo';
+        $object->key2 = 'bar';
+        $data = [1 => $object];
+
+        $column = $this->factory->createColumn('key2', ColumnType::class, ['data_provider' => 'key3']);
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid->setData($data);
+
+        $this->expectException(DataProviderException::class);
+        $this->expectExceptionMessage('Unable to get value for column "key2" with property-path "key3".');
+
+        $datagrid->createView();
+    }
+
+    public function testInvalidPropertyPathProviderFailsWithHelpfulMessage()
+    {
+        $object = new \stdClass();
+        $object->key = 'foo';
+        $object->key2 = 'bar';
+        $data = [1 => $object];
+
+        $column = $this->factory->createColumn('key2', ColumnType::class, ['data_provider' => '][key3']);
+
+        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid->setData($data);
+
+        $this->expectException(DataProviderException::class);
+        $this->expectExceptionMessage(
+            'Invalid property-path for column "key2" with message: Could not parse property path "][key3"'
+        );
 
         $datagrid->createView();
     }

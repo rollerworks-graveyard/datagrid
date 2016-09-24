@@ -20,6 +20,7 @@ use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Exception\DataProviderException;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\Exception\InvalidPropertyPathException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -53,7 +54,7 @@ class ColumnType implements ColumnTypeInterface
         $resolver->setDefaults(['data_provider' => null, 'label' => null]);
 
         $resolver->setAllowedTypes('label', ['string', 'null']);
-        $resolver->setAllowedTypes('data_provider', ['callable', 'null']);
+        $resolver->setAllowedTypes('data_provider', ['Closure', 'null', 'string', PropertyPath::class]);
     }
 
     /**
@@ -63,8 +64,16 @@ class ColumnType implements ColumnTypeInterface
     {
         $dataProvider = $options['data_provider'];
 
-        if (null === $dataProvider) {
-            $dataProvider = $this->createDataProvider($column);
+        if (!$dataProvider instanceof \Closure) {
+            $dataProvider = function ($data) use ($column, $dataProvider) {
+                static $path;
+
+                if (null === $path) {
+                    $path = $this->createDataProviderPath($column, $data, $dataProvider);
+                }
+
+                return $this->propertyAccessor->getValue($data, $path);
+            };
         }
 
         $column->setDataProvider($dataProvider);
@@ -101,22 +110,28 @@ class ColumnType implements ColumnTypeInterface
         return StringUtil::fqcnToBlockPrefix(get_class($this));
     }
 
-    private function createDataProvider(ColumnInterface $column): \Closure
+    private function createDataProviderPath(ColumnInterface $column, $data, $customPath): PropertyPath
     {
-        return function ($data) use ($column) {
-            static $path = null;
-
-            if (null === $path) {
+        try {
+            if (null === $customPath) {
                 $name = $column->getName();
 
                 if (!$this->propertyAccessor->isReadable($data, $path = new PropertyPath(sprintf('[%s]', $name))) &&
                     !$this->propertyAccessor->isReadable($data, $path = new PropertyPath($name))
                 ) {
-                    throw DataProviderException::autoAccessorUnableToGetValue($column->getName());
+                    throw DataProviderException::autoAccessorUnableToGetValue($name);
                 }
+
+                return $path;
             }
 
-            return $this->propertyAccessor->getValue($data, $path);
-        };
+            if (!$this->propertyAccessor->isReadable($data, $path = new PropertyPath($customPath))) {
+                throw DataProviderException::pathAccessorUnableToGetValue($column->getName(), $path);
+            }
+
+            return $path;
+        } catch (InvalidPropertyPathException $e) {
+            throw DataProviderException::invalidPropertyPath($column->getName(), $e);
+        }
     }
 }
