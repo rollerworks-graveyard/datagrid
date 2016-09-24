@@ -100,6 +100,10 @@ UPGRADE
   Precision is not used with integers, and keeping this argument only causes confusion.
   
 * The class `ColumnOrderExtension` and `CompoundColumnOrderExtension`.
+
+* The `data_provider` option of the `ColumnType` no longer supports any callable
+  but requires a `Closure` or `Symfony\Component\PropertyAccess\PropertyPath` object, or a string
+  with a valid property-path.
   
 ### DatagridBuilder
   
