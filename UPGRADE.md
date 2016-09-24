@@ -85,6 +85,8 @@ UPGRADE
   }
   ```
   
+* The `type` property of the `CellView` is removed, this was already no longer populated.
+  
 ### Core extensions
 
 * The `currency_field` and `input_field` options are removed from the `MoneyType`.

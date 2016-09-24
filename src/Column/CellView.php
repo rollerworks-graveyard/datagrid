@@ -70,11 +70,6 @@ class CellView
     /**
      * @var string
      */
-    public $type;
-
-    /**
-     * @var string
-     */
     public $prefix;
 
     /**
