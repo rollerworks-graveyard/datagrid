@@ -17,6 +17,7 @@ use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
+use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 class BatchType extends AbstractType
 {
@@ -25,7 +26,20 @@ class BatchType extends AbstractType
      */
     public function buildCellView(CellView $view, ColumnInterface $column, array $options)
     {
+        if (!is_scalar($view->value)) {
+            throw new UnexpectedTypeException($view->value, 'scalar');
+        }
+
+        $id = str_replace(':', '-', sprintf('%s-%s__%s', $view->datagrid->name, $view->name, $view->value));
+
+        // Strip leading underscores and digits. These are allowed in
+        // form names, but not in HTML4 ID attributes.
+        // http://www.w3.org/TR/html401/struct/global.html#adef-id
+        $id = ltrim($id, '_0123456789');
+
         $view->attributes['datagrid_name'] = $view->datagrid->name;
+        $view->attributes['selection_name'] = sprintf('%s[%s][]', $view->datagrid->name, $view->name);
+        $view->attributes['selection_id'] = $id;
     }
 
     /**
