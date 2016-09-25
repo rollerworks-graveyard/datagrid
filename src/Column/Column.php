@@ -35,12 +35,12 @@ class Column implements ColumnInterface
     /**
      * @var array
      */
-    private $options;
+    protected $options;
 
     /**
      * @var bool
      */
-    private $locked = false;
+    protected $locked = false;
 
     /**
      * @var array

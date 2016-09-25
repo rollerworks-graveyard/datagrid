@@ -87,6 +87,22 @@ UPGRADE
   
 * The `type` property of the `CellView` is removed, this was already no longer populated.
   
+### CompoundColumn handling
+
+The CompoundColumn type has changed to allow for better relationship handling.
+**Creating a CompoundColumn without the Builder is discouraged, the DatagridBuilder provides an
+powerful and developer friendly way to create and register a CompoundColumn.**
+
+* The the "default" `ResolvedColumnType` will generate a `CompoundColumn` when the 
+  type is `CompoundColumnType` or when the type is a child of `CompoundColumn`.
+
+* Child Columns of a CompoundColumn must be registered after the CompoundColumn is created.
+  Each child Column must have an 'parent_column' option with the value being the `CompoundColumn` object.
+   
+  **Note**: For performance reasons the instance value of the option is not validated when setting.
+
+* The `columns` option is removed. Use the `CompoundColumn::setColumn()` and `CompoundColumn::getColumns`.
+    
 ### Core extensions
 
 * The `currency_field` and `input_field` options are removed from the `MoneyType`.
@@ -122,6 +138,9 @@ UPGRADE
 
 * Calling `DatagridBuilder::getDatagrid()` will re-use the resolved Column instance for
   all Datagrid builds.
+  
+* The `createCompound(string $name, array $options = [], string $type = null): CompoundColumnBuilderInterface` method is 
+  added to the `DatagridBuilderInterface`.
 
 ## Upgrade FROM 0.8 to 0.9
 
@@ -150,7 +169,7 @@ and clean-ups.
 
  * The `DatagridEvents` class is removed as no events are dispatched anymore.
 
- * Data can only be set once on a datagrid, calling `Datagrid::setData()` will throw
+ * Data can only be set once on a datagrid, calling `Datagrid::setData()` twice will throw
    an exception.
 
  * The `Datagrid` class no longer allows to change the registered columns

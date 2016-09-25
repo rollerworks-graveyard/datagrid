@@ -15,6 +15,8 @@ namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
+use Rollerworks\Component\Datagrid\Util\CompoundColumnBuilder;
+use Rollerworks\Component\Datagrid\Util\CompoundColumnBuilderInterface;
 
 final class DatagridBuilder implements DatagridBuilderInterface
 {
@@ -54,6 +56,14 @@ final class DatagridBuilder implements DatagridBuilderInterface
         unset($this->unresolvedColumns[$column->getName()]);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createCompound(string $name, array $options = [], string $type = null): CompoundColumnBuilderInterface
+    {
+        return new CompoundColumnBuilder($this->factory, $this, $name, $options, $type);
     }
 
     /**
