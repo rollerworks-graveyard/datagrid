@@ -16,6 +16,7 @@ namespace Rollerworks\Component\Datagrid\Column;
 use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -26,17 +27,22 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * @var ColumnTypeInterface
      */
-    private $innerType;
+    protected $innerType;
+
+    /**
+     * @var ResolvedColumnType
+     */
+    protected $parent;
+
+    /**
+     * @var bool
+     */
+    protected $compound = null;
 
     /**
      * @var ColumnTypeExtensionInterface[]
      */
     private $typeExtensions;
-
-    /**
-     * @var ResolvedColumnType
-     */
-    private $parent;
 
     /**
      * @var OptionsResolver
@@ -248,7 +254,38 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      */
     protected function newColumn($name, array $options): ColumnInterface
     {
+        // Special case of CompoundColumnType which requires that child columns
+        // are set afterwards. Whenever you extend this class, make sure to honor this
+        // special use-case.
+        if (null === $this->compound) {
+            $this->compound = $this->isCompound();
+        }
+
+        if ($this->compound) {
+            return new CompoundColumn($name, $this, $options);
+        }
+
         return new Column($name, $this, $options);
+    }
+
+    /**
+     * Determines whether this type is a compound.
+     *
+     * @return bool
+     */
+    protected function isCompound(): bool
+    {
+        if ($this->innerType instanceof CompoundColumnType) {
+            return true;
+        }
+
+        for ($type = $this->parent; null !== $type; $type = $type->getParent()) {
+            if ($type->getInnerType() instanceof CompoundColumnType) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

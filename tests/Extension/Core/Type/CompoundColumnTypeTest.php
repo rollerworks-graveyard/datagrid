@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Column\CellView;
-use Rollerworks\Component\Datagrid\DatagridView;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
+use Rollerworks\Component\Datagrid\Column\CompoundColumn;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
@@ -29,30 +28,37 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
     public function testPassLabelToView()
     {
-        $column = $this->factory->createColumn('id', $this->getTestedType(), ['label' => 'My label', 'columns' => []]);
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        /** @var CompoundColumn $rootColumn */
+        $rootColumn = $this->factory->createColumn('ids', $this->getTestedType(), ['label' => 'Ids']);
+        $column = $this->factory->createColumn(
+            'key',
+            TextType::class,
+            ['label' => 'My label', 'parent_column' => $rootColumn]
+        );
+
+        $rootColumn->setColumns(['id' => $column]);
+        $datagrid = $this->factory->createDatagrid('grid', [$rootColumn]);
 
         $object = new \stdClass();
         $object->key = ' foo ';
         $datagrid->setData([1 => $object]);
 
         $datagridView = $datagrid->createView();
-        $view = $column->createHeaderView($datagridView);
+        $view = $rootColumn->createHeaderView($datagridView);
 
-        $this->assertSame('My label', $view->label);
+        $this->assertSame('Ids', $view->label);
     }
 
     public function testSubCellsToView()
     {
-        $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class);
-        $columns['name'] = $this->factory->createColumn('name', TextType::class);
+        /** @var CompoundColumn $column */
+        $column = $this->factory->createColumn('actions', $this->getTestedType(), ['label' => 'Actions']);
 
-        $column = $this->factory->createColumn(
-            'actions',
-            $this->getTestedType(),
-            ['columns' => $columns]
-        );
+        $columns = [];
+        $columns['age'] = $this->factory->createColumn('age', NumberType::class, ['parent_column' => $column]);
+        $columns['name'] = $this->factory->createColumn('name', TextType::class, ['parent_column' => $column]);
+
+        $column->setColumns($columns);
 
         $datagrid = $this->factory->createDatagrid('grid', [$column]);
 
@@ -79,35 +85,5 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->assertInternalType('array', $view->value);
         $this->assertArrayHasKey($name, $view->value);
         $this->assertInstanceOf(CellView::class, $view->value[$name]);
-    }
-
-    public function testInvalidColumnGivesException()
-    {
-        $options = [
-            'label' => 'Birthday',
-        ];
-
-        $object = new \stdClass();
-        $object->key = ' foo ';
-        $object->name = ' sheldon ';
-        $object->age = 42;
-
-        $columns = [];
-        $columns['age'] = $this->factory->createColumn('age', NumberType::class);
-        $columns['foo'] = false;
-        $options['columns'] = $columns;
-
-        $datagridView = $this->getMockBuilder(DatagridView::class)->disableOriginalConstructor()->getMock();
-
-        $this->setExpectedException(
-             UnexpectedTypeException::class,
-             'Expected argument of type "Rollerworks\Component\Datagrid\Column\ColumnInterface", "boolean" given'
-        );
-
-        $this->factory->createColumn('birthday', CompoundColumnType::class, $options)->createCellView(
-            $datagridView,
-            $object,
-            0
-        );
     }
 }

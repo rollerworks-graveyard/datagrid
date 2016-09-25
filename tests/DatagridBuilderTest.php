@@ -16,11 +16,13 @@ namespace Rollerworks\Component\Datagrid\Tests;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Column\CompoundColumn;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnType;
 use Rollerworks\Component\Datagrid\DatagridBuilder;
 use Rollerworks\Component\Datagrid\DatagridFactoryInterface;
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
+use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 
@@ -38,9 +40,17 @@ final class DatagridBuilderTest extends TestCase
 
         $creator = function ($args) use ($test) {
             // 0=name, 1=type, 2=options
-            $column = $test->createMock(ColumnInterface::class);
+            $type = new $args[1]();
+
+            if ($type instanceof CompoundColumnType) {
+                $column = $test->createMock(CompoundColumn::class);
+                $column->expects(self::once())->method('setColumns');
+            } else {
+                $column = $test->createMock(ColumnInterface::class);
+            }
+
             $column->expects(self::any())->method('getName')->willReturn($args[0]);
-            $column->expects(self::any())->method('getType')->willReturn(new ResolvedColumnType(new $args[1]()));
+            $column->expects(self::any())->method('getType')->willReturn(new ResolvedColumnType($type));
             $column->expects(self::any())->method('getOptions')->willReturn($args[2]);
 
             return $column;
@@ -68,6 +78,23 @@ final class DatagridBuilderTest extends TestCase
         self::assertSame('my_grid', $datagrid->getName());
         self::assertDatagridHasColumn($datagrid, 'id', NumberType::class);
         self::assertDatagridHasColumn($datagrid, 'name', TextType::class, ['format' => '%s']);
+    }
+
+    /** @test */
+    public function it_generates_a_compoundColumn()
+    {
+        $builder = new DatagridBuilder($this->factory);
+        $builder->add('id', NumberType::class);
+        $builder->add('name', TextType::class, ['format' => '%s']);
+        $builder
+            ->createCompound('actions', ['abel' => 'act'])
+                ->add('id', NumberType::class)
+            ->end()
+        ;
+
+        $datagrid = $builder->getDatagrid('my_grid');
+
+        self::assertDatagridHasColumn($datagrid, 'actions', CompoundColumnType::class, ['abel' => 'act']);
     }
 
     /** @test */

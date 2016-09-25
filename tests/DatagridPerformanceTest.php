@@ -15,7 +15,6 @@ namespace Rollerworks\Component\Datagrid\Tests;
 
 use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\ActionType;
-use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\DateTimeType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
@@ -69,37 +68,32 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
         );
         $datagrid->add('group', TextType::class);
 
-        $datagrid->add(
-            'actions',
-            CompoundColumnType::class,
-            [
-                'label' => 'Actions',
-                'columns' => [
-                    'modify' => $this->factory->createColumn(
-                        'modify',
-                        ActionType::class,
-                        [
-                            'label' => 'Modify',
-                            'data_provider' => function ($data) {
-                                return ['id' => $data['id']];
-                            },
-                            'uri_scheme' => 'entity/{id}/modify',
-                        ]
-                    ),
-                    'delete' => $this->factory->createColumn(
-                        'delete',
-                        ActionType::class,
-                        [
-                            'label' => 'Delete',
-                            'data_provider' => function ($data) {
-                                return ['id' => $data['id']];
-                            },
-                            'uri_scheme' => 'entity/{id}/delete',
-                        ]
-                    ),
-                ],
-            ]
-        );
+        $datagrid
+            ->createCompound('actions', ['label' => 'Actions'])
+                ->add(
+                    'modify',
+                    ActionType::class,
+                    [
+                        'label' => 'Modify',
+                        'data_provider' => function ($data) {
+                            return ['id' => $data['id']];
+                        },
+                        'uri_scheme' => 'entity/{id}/modify',
+                    ]
+                )
+                ->add(
+                    'delete',
+                    ActionType::class,
+                    [
+                        'label' => 'Delete',
+                        'data_provider' => function ($data) {
+                            return ['id' => $data['id']];
+                        },
+                        'uri_scheme' => 'entity/{id}/delete',
+                    ]
+                )
+            ->end()
+        ;
 
         $data = [];
 
@@ -155,37 +149,32 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
         );
         $datagrid->add('group', TextType::class);
 
-        $datagrid->add(
-            'actions',
-            CompoundColumnType::class,
-            [
-                'label' => 'Actions',
-                'columns' => [
-                    'modify' => $this->factory->createColumn(
-                        'modify',
-                        ActionType::class,
-                        [
-                            'label' => 'Modify',
-                            'data_provider' => function ($data) {
-                                return ['id' => $data['id']];
-                            },
-                            'uri_scheme' => 'entity/{id}/modify',
-                        ]
-                    ),
-                    'delete' => $this->factory->createColumn(
-                        'delete',
-                        ActionType::class,
-                        [
-                            'label' => 'Delete',
-                            'data_provider' => function ($data) {
-                                return ['id' => $data['id']];
-                            },
-                            'uri_scheme' => 'entity/{id}/delete',
-                        ]
-                    ),
-                ],
-            ]
-        );
+        $datagrid
+            ->createCompound('actions', ['label' => 'Actions'])
+                ->add(
+                    'modify',
+                    ActionType::class,
+                    [
+                        'label' => 'Modify',
+                        'data_provider' => function ($data) {
+                            return ['id' => $data['id']];
+                        },
+                        'uri_scheme' => 'entity/{id}/modify',
+                    ]
+                )
+                ->add(
+                    'delete',
+                    ActionType::class,
+                    [
+                        'label' => 'Delete',
+                        'data_provider' => function ($data) {
+                            return ['id' => $data['id']];
+                        },
+                        'uri_scheme' => 'entity/{id}/delete',
+                    ]
+                )
+            ->end()
+        ;
 
         $data = [];
 

@@ -16,7 +16,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
+use Rollerworks\Component\Datagrid\Column\CompoundColumn;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -39,12 +39,11 @@ class CompoundColumnType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['columns']);
         $resolver->setDefault('label', null);
+        $resolver->setDefault('parent_column', null);
 
         // Not used but required by the ResolvedColumnType
         $resolver->setAllowedTypes('label', ['string', 'null']);
-        $resolver->setAllowedTypes('columns', 'array');
     }
 
     /**
@@ -67,11 +66,8 @@ class CompoundColumnType extends AbstractType
     {
         $cells = [];
 
-        foreach ($options['columns'] as $subColumn) {
-            if (!$subColumn instanceof ColumnInterface) {
-                throw new UnexpectedTypeException($subColumn, ColumnInterface::class);
-            }
-
+        /** @var CompoundColumn $column */
+        foreach ($column->getColumns() as $subColumn) {
             $subView = $subColumn->createCellView($view->datagrid, $view->source, $view->attributes['row']);
             $subView->attributes['compound'] = true;
 

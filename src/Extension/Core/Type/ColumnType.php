@@ -52,6 +52,7 @@ class ColumnType implements ColumnTypeInterface
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['data_provider' => null, 'label' => null]);
+        $resolver->setDefault('parent_column', null);
 
         $resolver->setAllowedTypes('label', ['string', 'null']);
         $resolver->setAllowedTypes('data_provider', ['Closure', 'null', 'string', PropertyPath::class]);

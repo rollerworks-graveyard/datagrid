@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Util\CompoundColumnBuilderInterface;
 
 interface DatagridBuilderInterface
 {
@@ -36,6 +37,27 @@ interface DatagridBuilderInterface
      * @return DatagridBuilderInterface
      */
     public function set(ColumnInterface $column);
+
+    /**
+     * Create a new CompoundColumnBuilder object.
+     *
+     * A CompoundColumn allows to group multiple columns together,
+     * eg. one more more date value or one or more row actions.
+     *
+     * <code>
+     * createCompound('actions', ['label' => 'Actions'])
+     *   ->add('edit', ActionType::class, ['data_provider' => '[id]', 'url_schema' => '/users/{id}/edit'])
+     *   ->add('delete', ActionType::class, ['data_provider' => '[id]', 'url_schema' => '/users/{id}/edit'])
+     * ->end() // This registers the CompoundColumn at the DatagridBuilder, and return the DatagridBuilder.
+     * </code>
+     *
+     * @param string $name    Name of this CompoundColumn
+     * @param array  $options Options for the CompoundColumn
+     * @param string $type    Optional type, must be a child-type of CompoundColumnType
+     *
+     * @return CompoundColumnBuilderInterface
+     */
+    public function createCompound(string $name, array $options = [], string $type = null): CompoundColumnBuilderInterface;
 
     /**
      * Remove a column from the builder.
