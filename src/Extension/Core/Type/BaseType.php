@@ -31,11 +31,35 @@ abstract class BaseType extends AbstractType
 {
     public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options)
     {
+        $blockName = (string) $options['block_name'];
+
+        if ('' === $blockName) {
+            $blockName = $view->datagrid->name.'_';
+
+            // Child-columns must be prefixed with there parents name to prevent collisions.
+            if (isset($options['parent_column'])) {
+                $blockName .= $options['parent_column']->getName().'_';
+            }
+
+            $blockName .= $column->getName();
+        }
+
+        $uniqueBlockPrefix = '_'.$blockName;
+        $blockPrefixes = [];
+
+        for ($type = $column->getType(); null !== $type; $type = $type->getParent()) {
+            array_unshift($blockPrefixes, $type->getBlockPrefix());
+        }
+
+        $blockPrefixes[] = $uniqueBlockPrefix;
+
         $view->attributes = array_replace($view->attributes, [
             'label_attr' => $options['label_attr'],
             'header_attr' => $options['header_attr'],
             'cell_attr' => $options['header_attr'],
             'label_translation_domain' => $options['label_translation_domain'],
+            'unique_block_prefix' => $uniqueBlockPrefix,
+            'block_prefixes' => $blockPrefixes,
         ]);
     }
 
@@ -47,6 +71,7 @@ abstract class BaseType extends AbstractType
             'header_attr' => [],
             'cell_attr' => [],
             'label_translation_domain' => null,
+            'block_name' => null,
         ]);
 
         $resolver->setDefault('parent_column', null);

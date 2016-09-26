@@ -35,7 +35,7 @@ class DateTimeTypeTest extends BaseTypeTest
             ]
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = $this->factory->createDatagrid('my_grid', [$column]);
 
         $object = new \stdClass();
         $object->key = new \DateTime();
@@ -58,6 +58,8 @@ class DateTimeTypeTest extends BaseTypeTest
                     'class' => 'striped',
                 ],
                 'label_translation_domain' => 'messages',
+                'unique_block_prefix' => '_my_grid_id',
+                'block_prefixes' => ['column', 'date_time', '_my_grid_id'],
             ],
             $view->attributes
         );
