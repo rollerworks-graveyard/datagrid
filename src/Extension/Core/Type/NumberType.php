@@ -25,7 +25,7 @@ class NumberType extends AbstractType
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        $column->addViewTransformer(new NumberToLocalizedStringTransformer(
+        $column->setViewTransformer(new NumberToLocalizedStringTransformer(
             $options['precision'],
             $options['grouping'],
             $options['rounding_mode']

@@ -206,16 +206,16 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getValue(ColumnInterface $column, $object, $useTransformers = true)
+    public function getValue(ColumnInterface $column, $object)
     {
         $dataProvider = $column->getDataProvider();
-        $values = $dataProvider($object);
+        $value = $dataProvider($object);
 
-        if ($useTransformers) {
-            $values = $this->normToView($column, $values);
+        if (null !== ($transformer = $column->getViewTransformer())) {
+            $value = $transformer->transform($value);
         }
 
-        return $values;
+        return $value;
     }
 
     /**
@@ -286,28 +286,5 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
         }
 
         return false;
-    }
-
-    /**
-     * Transforms the value if a value transformer is set.
-     *
-     * @param ColumnInterface $column
-     * @param mixed           $value  The value to transform
-     *
-     * @return mixed
-     */
-    protected function normToView(ColumnInterface $column, $value)
-    {
-        // Scalar values should be converted to strings to
-        // facilitate differentiation between empty ("") and zero (0).
-        if (!$column->getViewTransformers()) {
-            return null === $value || is_scalar($value) ? (string) $value : $value;
-        }
-
-        foreach ($column->getViewTransformers() as $transformer) {
-            $value = $transformer->transform($value);
-        }
-
-        return $value;
     }
 }

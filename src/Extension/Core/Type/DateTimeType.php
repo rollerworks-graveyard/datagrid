@@ -15,6 +15,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ChainTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\DateTimeToLocalizedStringTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\StringToDateTimeTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\TimestampToDateTimeTransformer;
@@ -43,17 +44,19 @@ class DateTimeType extends AbstractType
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
+        $transformer = new ChainTransformer();
+
         if ('string' === $options['input']) {
-            $column->addViewTransformer(
+            $transformer->append(
                 new StringToDateTimeTransformer($options['model_timezone'], $options['model_timezone'])
             );
         } elseif ('timestamp' === $options['input']) {
-            $column->addViewTransformer(
+            $transformer->append(
                 new TimestampToDateTimeTransformer($options['model_timezone'], $options['model_timezone'])
             );
         }
 
-        $column->addViewTransformer(new DateTimeToLocalizedStringTransformer(
+        $transformer->append(new DateTimeToLocalizedStringTransformer(
             $options['model_timezone'],
             $options['view_timezone'],
             $options['date_format'],
@@ -61,6 +64,8 @@ class DateTimeType extends AbstractType
             $options['calendar'],
             $options['format']
         ));
+
+        $column->setViewTransformer($transformer);
     }
 
     /**

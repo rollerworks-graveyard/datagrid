@@ -86,6 +86,26 @@ UPGRADE
   ```
   
 * The `type` property of the `CellView` is removed, this was already no longer populated.
+
+### View transformers
+
+* Adding multiple view transformers to a column is removed, a column can now only have one
+  view transformer. 
+  
+  Use the new `Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ChainTransformer`
+  to chain multiple transformers.
+  
+* A column with no transformers will pass the value as-is, scalars are no automatically
+  longer casted to a string.
+  
+* The `ColumnInterface::addViewTransformers` method is renamed to `ColumnInterface::setViewTransformer`.
+
+* The `ColumnInterface::getViewTransformers` method is renamed to `ColumnInterface::getViewTransformer`.
+
+* The `ColumnInterface::resetViewTransformers` method is removed, use `setViewTransformer` with `null`
+  to remove the configured view transformer.
+  
+* The `ResolvedColumnType::normToView` method is removed.
   
 ### CompoundColumn handling
 
