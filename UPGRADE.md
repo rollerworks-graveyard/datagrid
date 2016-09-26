@@ -123,6 +123,12 @@ powerful and developer friendly way to create and register a CompoundColumn.**
   but requires a `Closure` or `Symfony\Component\PropertyAccess\PropertyPath` object, or a string
   with a valid property-path.
   
+* The `ArrayToDateTimeTransformer` is removed, `DateTimeType` now only accepts,
+  a `DateTime` compatible object, string in a PHP date-supported format, or timestamp.
+  
+  And a minor bug with the `date_format` and `time_format` options was fixed, both now
+  only accept an integer and no longer fallback to the default.
+  
 ### DatagridBuilder
   
 * The `DatagridBuilder` now allows re-usage of the Builder instance.
