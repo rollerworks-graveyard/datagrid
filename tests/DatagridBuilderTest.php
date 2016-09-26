@@ -94,7 +94,12 @@ final class DatagridBuilderTest extends TestCase
 
         $datagrid = $builder->getDatagrid('my_grid');
 
-        self::assertDatagridHasColumn($datagrid, 'actions', CompoundColumnType::class, ['abel' => 'act']);
+        self::assertDatagridHasColumn(
+            $datagrid,
+            'actions',
+            CompoundColumnType::class,
+            ['abel' => 'act', 'data_provider' => null]
+        );
     }
 
     /** @test */

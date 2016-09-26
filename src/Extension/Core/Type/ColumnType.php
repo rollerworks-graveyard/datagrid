@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
-use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\Column\ColumnTypeInterface;
-use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\Exception\DataProviderException;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +22,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
-class ColumnType implements ColumnTypeInterface
+class ColumnType extends BaseType
 {
     /**
      * @var PropertyAccessor
@@ -51,11 +48,10 @@ class ColumnType implements ColumnTypeInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_provider' => null, 'label' => null]);
-        $resolver->setDefault('parent_column', null);
+        parent::configureOptions($resolver);
 
-        $resolver->setAllowedTypes('label', ['string', 'null']);
-        $resolver->setAllowedTypes('data_provider', ['Closure', 'null', 'string', PropertyPath::class]);
+        $resolver->setDefault('parent_data_provider', null);
+        $resolver->setAllowedTypes('parent_data_provider', ['Closure', 'null']);
     }
 
     /**
@@ -64,9 +60,10 @@ class ColumnType implements ColumnTypeInterface
     public function buildColumn(ColumnInterface $column, array $options)
     {
         $dataProvider = $options['data_provider'];
+        $parentDataProvider = $options['parent_data_provider'];
 
         if (!$dataProvider instanceof \Closure) {
-            $dataProvider = function ($data) use ($column, $dataProvider) {
+            $dataProvider = $parentDataProvider ?: function ($data) use ($column, $dataProvider) {
                 static $path;
 
                 if (null === $path) {
@@ -78,27 +75,6 @@ class ColumnType implements ColumnTypeInterface
         }
 
         $column->setDataProvider($dataProvider);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildCellView(CellView $view, ColumnInterface $column, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
     }
 
     /**

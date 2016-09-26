@@ -19,13 +19,17 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 
 class ColumnTypeTest extends BaseTypeTest
 {
-    public function testPassLabelToView()
+    public function testPassLabelAndOtherToView()
     {
         $column = $this->factory->createColumn(
             'id',
             $this->getTestedType(),
             [
                 'label' => 'My label',
+                'label_attr' => ['class' => 'info' ],
+                'header_attr' => ['class' => 'striped'],
+                'cell_attr' => ['class' => 'striped'],
+                'label_translation_domain' => 'messages',
                 'data_provider' => function ($data) {
                     return $data->key;
                 },
@@ -43,6 +47,21 @@ class ColumnTypeTest extends BaseTypeTest
         $view = $column->createHeaderView($view);
 
         $this->assertSame('My label', $view->label);
+        $this->assertEquals(
+            [
+                'label_attr' => [
+                    'class' => 'info',
+                ],
+                'header_attr' => [
+                    'class' => 'striped',
+                ],
+                'cell_attr' => [
+                    'class' => 'striped',
+                ],
+                'label_translation_domain' => 'messages',
+            ],
+            $view->attributes
+        );
     }
 
     public function testAutoConfigurationDataProvider()
