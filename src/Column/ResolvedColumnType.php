@@ -57,7 +57,6 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      * @param ResolvedColumnTypeInterface    $parent
      *
      * @throws UnexpectedTypeException  When one of the given extensions is not an ColumnTypeExtensionInterface
-     * @throws InvalidArgumentException When the Inner Fieldname is invalid
      */
     public function __construct(ColumnTypeInterface $innerType, array $typeExtensions = [], ResolvedColumnTypeInterface $parent = null)
     {
@@ -114,7 +113,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      * This configures the {@link ColumnInterface}.
      *
      * This method is called for each type in the hierarchy starting from the
-     * top most type. Type extensions can further modify the field.
+     * top most type. Type extensions can further modify the column.
      *
      * @param ColumnInterface $config
      * @param array           $options

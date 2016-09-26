@@ -39,7 +39,7 @@ interface DatagridInterface
      *
      * @return ColumnInterface
      */
-    public function getColumn($name): ColumnInterface;
+    public function getColumn(string $name): ColumnInterface;
 
     /**
      * Return all registered columns in the datagrid.
@@ -55,7 +55,7 @@ interface DatagridInterface
      *
      * @return bool
      */
-    public function hasColumn($name): bool;
+    public function hasColumn(string $name): bool;
 
     /**
      * Get whether column with a specific type is registered
@@ -65,7 +65,7 @@ interface DatagridInterface
      *
      * @return bool
      */
-    public function hasColumnType($type): bool;
+    public function hasColumnType(string $type): bool;
 
     /**
      * Create a new DatagridView object for rendering the datagrid.

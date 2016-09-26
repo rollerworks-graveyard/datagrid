@@ -44,11 +44,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * Add a column instance to the builder.
-     *
-     * @param ColumnInterface $column
-     *
-     * @return DatagridBuilderInterface
+     * {@inheritdoc}
      */
     public function set(ColumnInterface $column)
     {

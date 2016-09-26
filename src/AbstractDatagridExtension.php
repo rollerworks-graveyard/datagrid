@@ -40,35 +40,35 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($type): ColumnTypeInterface
+    public function getType(string $name): ColumnTypeInterface
     {
         if (null === $this->types) {
             $this->initColumnTypes();
         }
 
-        if (!isset($this->types[$type])) {
-            throw new InvalidArgumentException(sprintf('Column type "%s" can not be loaded by this extension.', $type));
+        if (!isset($this->types[$name])) {
+            throw new InvalidArgumentException(sprintf('Column type "%s" can not be loaded by this extension.', $name));
         }
 
-        return $this->types[$type];
+        return $this->types[$name];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasType($type): bool
+    public function hasType(string $name): bool
     {
         if (null === $this->types) {
             $this->initColumnTypes();
         }
 
-        return isset($this->types[$type]);
+        return isset($this->types[$name]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasTypeExtensions($type): bool
+    public function hasTypeExtensions(string $type): bool
     {
         if (null === $this->typesExtensions) {
             $this->initTypesExtensions();
@@ -80,7 +80,7 @@ abstract class AbstractDatagridExtension implements DatagridExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeExtensions($type): array
+    public function getTypeExtensions(string $type): array
     {
         if (null === $this->typesExtensions) {
             $this->initTypesExtensions();

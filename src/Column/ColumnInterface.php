@@ -67,7 +67,7 @@ interface ColumnInterface
      *
      * @return mixed The option value
      */
-    public function getOption($name, $default = null);
+    public function getOption(string $name, $default = null);
 
     /**
      * Returns whether a specific option exists.
@@ -76,7 +76,7 @@ interface ColumnInterface
      *
      * @return bool
      */
-    public function hasOption($name): bool;
+    public function hasOption(string $name): bool;
 
     /**
      * @param DatagridView $datagrid

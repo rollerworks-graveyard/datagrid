@@ -26,15 +26,19 @@ interface CompoundColumnBuilderInterface
      *
      * @return self
      */
-    public function add(string $name, string $type = null, array $options = []);
+    public function add(string $name, string $type = null, array $options = []): CompoundColumnBuilderInterface;
 
     /**
+     * Remove a column from the builder.
+     *
      * @return self
      */
-    public function remove(string $name);
+    public function remove(string $name): CompoundColumnBuilderInterface;
 
     /**
-     * {@inheritdoc}
+     * Returns whether the builder has a column with the name.
+     *
+     * @return bool
      */
     public function has(string $name): bool;
 

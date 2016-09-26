@@ -92,7 +92,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumn($name): ColumnInterface
+    public function getColumn(string $name): ColumnInterface
     {
         if (!isset($this->columns[$name])) {
             throw new UnknownColumnException($name, $this);
@@ -112,7 +112,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function hasColumn($name): bool
+    public function hasColumn(string $name): bool
     {
         return isset($this->columns[$name]);
     }
@@ -120,7 +120,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function hasColumnType($type): bool
+    public function hasColumnType(string $type): bool
     {
         foreach ($this->columns as $column) {
             if ($column->getType()->getInnerType() instanceof $type) {

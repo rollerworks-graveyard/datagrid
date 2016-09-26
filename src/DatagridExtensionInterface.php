@@ -25,22 +25,22 @@ interface DatagridExtensionInterface
     /**
      * Check if extension has column type of $type.
      *
-     * @param string $type
+     * @param string $name
      *
      * @return bool
      */
-    public function hasType($type): bool;
+    public function hasType(string $name): bool;
 
     /**
      * Get column type.
      *
-     * @param string $type
+     * @param string $name
      *
      * @throws DatagridException When the given column type is not provided by this extension
      *
      * @return ColumnTypeInterface
      */
-    public function getType($type): ColumnTypeInterface;
+    public function getType(string $name): ColumnTypeInterface;
 
     /**
      * Check if extension has any column type extension for column of $type.
@@ -49,7 +49,7 @@ interface DatagridExtensionInterface
      *
      * @return bool
      */
-    public function hasTypeExtensions($type): bool;
+    public function hasTypeExtensions(string $type): bool;
 
     /**
      * Return extensions for column type provided by this data grid extension.
@@ -58,5 +58,5 @@ interface DatagridExtensionInterface
      *
      * @return ColumnTypeExtensionInterface[]
      */
-    public function getTypeExtensions($type): array;
+    public function getTypeExtensions(string $type): array;
 }

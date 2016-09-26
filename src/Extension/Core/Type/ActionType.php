@@ -60,9 +60,6 @@ class ActionType extends AbstractType
                 'label' => function (Options $options) {
                     return $options['content'];
                 },
-
-                // This value should not be changed
-                'field_mapping_single' => false,
             ]
         );
 

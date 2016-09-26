@@ -70,7 +70,7 @@ final class CompoundColumnBuilder implements CompoundColumnBuilderInterface
      *
      * @return self
      */
-    public function add(string $name, string $type = null, array $options = [])
+    public function add(string $name, string $type = null, array $options = []): CompoundColumnBuilderInterface
     {
         $this->unresolvedColumns[$name] = [
             'type' => $type,
@@ -83,7 +83,7 @@ final class CompoundColumnBuilder implements CompoundColumnBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function remove(string $name)
+    public function remove(string $name): CompoundColumnBuilderInterface
     {
         unset($this->unresolvedColumns[$name]);
 

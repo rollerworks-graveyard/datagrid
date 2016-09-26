@@ -55,7 +55,7 @@ class HeaderView
      * @param DatagridView    $datagrid
      * @param string          $label
      */
-    public function __construct(ColumnInterface $column, DatagridView $datagrid, $label)
+    public function __construct(ColumnInterface $column, DatagridView $datagrid, string $label = null)
     {
         $this->datagrid = $datagrid;
         $this->prefix = $column->getType()->getBlockPrefix();
@@ -63,7 +63,7 @@ class HeaderView
         $this->label = $label;
     }
 
-    public function setAttribute($name, $value)
+    public function setAttribute(string $name, $value)
     {
         $this->attributes[$name] = $value;
 

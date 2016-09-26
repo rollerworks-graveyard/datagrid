@@ -63,7 +63,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($name): ResolvedColumnTypeInterface
+    public function getType(string $name): ResolvedColumnTypeInterface
     {
         if (!isset($this->types[$name])) {
             $type = null;
@@ -94,7 +94,7 @@ class ColumnTypeRegistry implements ColumnTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasType($name): bool
+    public function hasType(string $name): bool
     {
         if (isset($this->types[$name])) {
             return true;

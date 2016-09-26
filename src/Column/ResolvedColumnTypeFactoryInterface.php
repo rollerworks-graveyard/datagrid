@@ -28,7 +28,6 @@ interface ResolvedColumnTypeFactoryInterface
      * @param array                       $typeExtensions
      * @param ResolvedColumnTypeInterface $parent
      *
-     * @throws UnexpectedTypeException  if the types parent {@link ColumnTypeInterface::getParent()} is not a string
      * @throws InvalidArgumentException if the types parent can not be retrieved from any extension
      *
      * @return ResolvedColumnTypeInterface

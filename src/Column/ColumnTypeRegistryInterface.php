@@ -29,12 +29,11 @@ interface ColumnTypeRegistryInterface
      *
      * @param string $name The name of the type
      *
-     * @throws UnexpectedTypeException  if the passed name is not a string
      * @throws InvalidArgumentException if the type can not be retrieved from any extension
      *
      * @return ResolvedColumnTypeInterface The type
      */
-    public function getType($name): ResolvedColumnTypeInterface;
+    public function getType(string $name): ResolvedColumnTypeInterface;
 
     /**
      * Returns whether the given column type is supported.
@@ -43,7 +42,7 @@ interface ColumnTypeRegistryInterface
      *
      * @return bool Whether the type is supported
      */
-    public function hasType($name): bool;
+    public function hasType(string $name): bool;
 
     /**
      * Returns the extensions loaded by the component.

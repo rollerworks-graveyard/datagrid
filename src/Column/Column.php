@@ -129,7 +129,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         if (array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -141,7 +141,7 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function hasOption($name): bool
+    public function hasOption(string $name): bool
     {
         return array_key_exists($name, $this->options);
     }
