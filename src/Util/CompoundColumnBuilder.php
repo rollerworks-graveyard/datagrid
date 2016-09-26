@@ -24,10 +24,13 @@ use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
  * A CompoundColumn allows to group multiple columns together,
  * eg. one more more date value or one or more row actions.
  *
+ * The 'data_provider' of the CompoundColumn will be set as the 'data_provider'
+ * for each sub-column, unless a sub column sets the 'data_provider' explicitly.
+ *
  * <code>
- * createCompound('actions', ['label' => 'Actions'])
- *   ->add('edit', ActionType::class, ['data_provider' => '[id]', 'url_schema' => '/users/{id}/edit'])
- *   ->add('delete', ActionType::class, ['data_provider' => '[id]', 'url_schema' => '/users/{id}/edit'])
+ * createCompound('actions', ['label' => 'Actions', 'data_provider' => function ($data) {return ['id' => $data->id();}])
+ *   ->add('edit', ActionType::class, ['url_schema' => '/users/{id}/edit'])
+ *   ->add('delete', ActionType::class, ['url_schema' => '/users/{id}/edit'])
  * ->end() // This registers the CompoundColumn at the DatagridBuilder, and return the DatagridBuilder.
  * </code>
  */
@@ -47,6 +50,10 @@ final class CompoundColumnBuilder implements CompoundColumnBuilderInterface
         array $options = [],
         string $type = null
     ) {
+        if (!isset($options['data_provider'])) {
+            $options['data_provider'] = null;
+        }
+
         $this->factory = $factory;
         $this->builder = $builder;
         $this->name = $name;
@@ -102,6 +109,10 @@ final class CompoundColumnBuilder implements CompoundColumnBuilderInterface
         $columns = [];
 
         foreach ($this->unresolvedColumns as $n => $column) {
+            if (!isset($column['options']['data_provider'])) {
+                $column['options']['data_provider'] = $this->options['data_provider'];
+            }
+
             $columns[$n] = $this->factory->createColumn(
                 $n,
                 $column['type'],

@@ -89,7 +89,7 @@ class CompoundColumnBuilderTest extends TestCase
         }
 
         self::assertEquals('actions', $compoundColumn->getName());
-        self::assertEquals(['label' => 'act'], $compoundColumn->getOptions());
+        self::assertEquals(['label' => 'act', 'data_provider' => null], $compoundColumn->getOptions());
 
         $columns = $compoundColumn->getColumns();
 
@@ -97,8 +97,19 @@ class CompoundColumnBuilderTest extends TestCase
         self::assertArrayHasKey('name', $columns);
         self::assertArrayNotHasKey('date', $columns);
 
-        self::assertColumnEquals($columns['id'], 'id', NumberType::class, ['parent_column' => $compoundColumn]);
-        self::assertColumnEquals($columns['name'], 'name', TextType::class, ['format' => '%s', 'parent_column' => $compoundColumn]);
+        self::assertColumnEquals(
+            $columns['id'],
+            'id',
+            NumberType::class,
+            ['parent_column' => $compoundColumn, 'data_provider' => null]
+        );
+
+        self::assertColumnEquals(
+            $columns['name'],
+            'name',
+            TextType::class,
+            ['format' => '%s', 'parent_column' => $compoundColumn, 'data_provider' => null]
+        );
     }
 
     private static function assertColumnEquals(

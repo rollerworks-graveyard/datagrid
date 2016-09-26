@@ -13,45 +13,23 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
-use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\CompoundColumn;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * CompoundColumn allows multiple sub-columns for advanced view building.
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class CompoundColumnType extends AbstractType
+class CompoundColumnType extends BaseType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefault('label', null);
-        $resolver->setDefault('parent_column', null);
-
-        // Not used but required by the ResolvedColumnType
-        $resolver->setAllowedTypes('label', ['string', 'null']);
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        // Simple pass all $data to the sub-columns;
+        // Simple pass all $data to the sub-columns.
         $column->setDataProvider(
             function ($data) {
                 return $data;

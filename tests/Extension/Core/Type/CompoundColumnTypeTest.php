@@ -37,7 +37,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         );
 
         $rootColumn->setColumns(['id' => $column]);
-        $datagrid = $this->factory->createDatagrid('grid', [$rootColumn]);
+        $datagrid = $this->factory->createDatagrid('my_grid', [$rootColumn]);
 
         $object = new \stdClass();
         $object->key = ' foo ';
@@ -47,6 +47,17 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $view = $rootColumn->createHeaderView($datagridView);
 
         $this->assertSame('Ids', $view->label);
+        $this->assertEquals(
+            [
+                'label_attr' => [],
+                'header_attr' => [],
+                'cell_attr' => [],
+                'label_translation_domain' => null,
+                'unique_block_prefix' => '_my_grid_ids',
+                'block_prefixes' => ['compound_column', '_my_grid_ids'],
+            ],
+            $view->attributes
+        );
     }
 
     public function testSubCellsToView()
@@ -56,7 +67,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
         $columns = [];
         $columns['age'] = $this->factory->createColumn('age', NumberType::class, ['parent_column' => $column]);
-        $columns['name'] = $this->factory->createColumn('name', TextType::class, ['parent_column' => $column]);
+        $columns['name'] = $this->factory->createColumn('name', TextType::class, ['parent_column' => $column, 'block_name' => 'my_named']);
 
         $column->setColumns($columns);
 
@@ -78,6 +89,16 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $this->assertEquals('42', $view->value['age']->value);
         $this->assertEquals(' sheldon ', $view->value['name']->value);
         $this->assertArrayNotHasKey('key', $view->value);
+
+        $headerView = $columns['age']->createHeaderView($datagridView);
+
+        $this->assertEquals('_grid_actions_age', $headerView->attributes['unique_block_prefix']);
+        $this->assertEquals(['column', 'number', '_grid_actions_age'], $headerView->attributes['block_prefixes']);
+
+        $headerView = $columns['name']->createHeaderView($datagridView);
+
+        $this->assertEquals('_my_named', $headerView->attributes['unique_block_prefix']);
+        $this->assertEquals(['column', 'text', '_my_named'], $headerView->attributes['block_prefixes']);
     }
 
     private function assertDatagridCell($name, CellView $view)

@@ -69,15 +69,20 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
         $datagrid->add('group', TextType::class);
 
         $datagrid
-            ->createCompound('actions', ['label' => 'Actions'])
+            ->createCompound(
+                    'actions',
+                    [
+                        'label' => 'Actions',
+                        'data_provider' => function ($data) {
+                            return ['id' => $data['id']];
+                        },
+                    ]
+                )
                 ->add(
                     'modify',
                     ActionType::class,
                     [
                         'label' => 'Modify',
-                        'data_provider' => function ($data) {
-                            return ['id' => $data['id']];
-                        },
                         'uri_scheme' => 'entity/{id}/modify',
                     ]
                 )
@@ -150,15 +155,20 @@ class DatagridPerformanceTest extends DatagridPerformanceTestCase
         $datagrid->add('group', TextType::class);
 
         $datagrid
-            ->createCompound('actions', ['label' => 'Actions'])
+            ->createCompound(
+                    'actions',
+                    [
+                        'label' => 'Actions',
+                        'data_provider' => function ($data) {
+                            return ['id' => $data['id']];
+                        },
+                    ]
+                )
                 ->add(
                     'modify',
                     ActionType::class,
                     [
                         'label' => 'Modify',
-                        'data_provider' => function ($data) {
-                            return ['id' => $data['id']];
-                        },
                         'uri_scheme' => 'entity/{id}/modify',
                     ]
                 )
