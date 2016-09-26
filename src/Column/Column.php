@@ -43,9 +43,9 @@ class Column implements ColumnInterface
     protected $locked = false;
 
     /**
-     * @var array
+     * @var DataTransformerInterface|null
      */
-    private $viewTransformers = [];
+    private $viewTransformer;
 
     /**
      * @var callable
@@ -101,41 +101,21 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function addViewTransformer(DataTransformerInterface $viewTransformer, $forcePrepend = false)
+    public function setViewTransformer(DataTransformerInterface $viewTransformer = null)
     {
         if ($this->locked) {
             throw new BadMethodCallException('Column setter methods cannot be accessed anymore once the data is locked.');
         }
 
-        if ($forcePrepend) {
-            array_unshift($this->viewTransformers, $viewTransformer);
-        } else {
-            $this->viewTransformers[] = $viewTransformer;
-        }
-
-        return $this;
+        $this->viewTransformer = $viewTransformer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function resetViewTransformers()
+    public function getViewTransformer()
     {
-        if ($this->locked) {
-            throw new BadMethodCallException('Column setter methods cannot be accessed anymore once the data is locked.');
-        }
-
-        $this->viewTransformers = [];
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getViewTransformers(): array
-    {
-        return $this->viewTransformers;
+        return $this->viewTransformer;
     }
 
     /**

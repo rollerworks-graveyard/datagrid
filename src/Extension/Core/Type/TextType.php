@@ -15,6 +15,7 @@ namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
+use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ChainTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\EmptyValueTransformer;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,13 +27,17 @@ class TextType extends AbstractType
      */
     public function buildColumn(ColumnInterface $column, array $options)
     {
+        $transformer = new ChainTransformer();
+
         if (null !== $options['empty_value']) {
-            $column->addViewTransformer(new EmptyValueTransformer($options['empty_value']));
+            $transformer->append(new EmptyValueTransformer($options['empty_value']));
         }
 
         if (null !== $options['value_format'] || null !== $options['value_glue']) {
-            $column->addViewTransformer(new ValueFormatTransformer($options['value_glue'], $options['value_format']));
+            $transformer->append(new ValueFormatTransformer($options['value_glue'], $options['value_format']));
         }
+
+        $column->setViewTransformer($transformer);
     }
 
     /**

@@ -25,7 +25,7 @@ class MoneyType extends AbstractType
 {
     public function buildColumn(ColumnInterface $column, array $options)
     {
-        $column->addViewTransformer(new MoneyToLocalizedStringTransformer(
+        $column->setViewTransformer(new MoneyToLocalizedStringTransformer(
             $options['precision'],
             $options['grouping'],
             $options['rounding_mode'],

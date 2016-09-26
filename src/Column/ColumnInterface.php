@@ -36,31 +36,21 @@ interface ColumnInterface
     public function getType(): ResolvedColumnTypeInterface;
 
     /**
-     * Appends / prepends a transformer to the view transformer chain.
+     * Set the view transform of the column.
      *
      * The transform method of the transformer is used to convert data from the
      * normalized to the view format.
      *
-     * @param DataTransformerInterface $viewTransformer
-     * @param bool                     $forcePrepend    if set to true, prepend instead of appending
-     *
-     * @return self The configuration object
+     * @param DataTransformerInterface|null $viewTransformer
      */
-    public function addViewTransformer(DataTransformerInterface $viewTransformer, $forcePrepend = false);
+    public function setViewTransformer(DataTransformerInterface $viewTransformer = null);
 
     /**
-     * Clears the view transformers.
+     * Returns the view transformer of the column.
      *
-     * @return self The configuration object
+     * @return DataTransformerInterface|null
      */
-    public function resetViewTransformers();
-
-    /**
-     * Returns the view transformers of the column cell.
-     *
-     * @return DataTransformerInterface[] An array of {@link DataTransformerInterface} instances
-     */
-    public function getViewTransformers(): array;
+    public function getViewTransformer();
 
     /**
      * Returns all options passed during the construction of the column.
