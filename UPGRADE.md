@@ -149,6 +149,12 @@ powerful and developer friendly way to create and register a CompoundColumn.**
   And a minor bug with the `date_format` and `time_format` options was fixed, both now
   only accept an integer and no longer fallback to the default.
   
+* The `ColumnType` and `CompoundColumnType` now define the 'preferred' template blocks.
+  Together with a small addition of other data, like attributes and (label) translator domain.
+  
+  Whenever using a Template engine to render the Datagrid the template block-names
+  must be honored. They are stored only in the `HeaderView`.
+  
 ### DatagridBuilder
   
 * The `DatagridBuilder` now allows re-usage of the Builder instance.
