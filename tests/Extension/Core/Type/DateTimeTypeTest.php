@@ -25,7 +25,7 @@ class DateTimeTypeTest extends BaseTypeTest
             $this->getTestedType(),
             [
                 'label' => 'My label',
-                'label_attr' => ['class' => 'info' ],
+                'label_attr' => ['class' => 'info'],
                 'header_attr' => ['class' => 'striped'],
                 'cell_attr' => ['class' => 'striped'],
                 'label_translation_domain' => 'messages',

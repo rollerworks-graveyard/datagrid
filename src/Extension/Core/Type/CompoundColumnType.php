@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
-use Rollerworks\Component\Datagrid\Column\AbstractType;
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\CompoundColumn;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * CompoundColumn allows multiple sub-columns for advanced view building.

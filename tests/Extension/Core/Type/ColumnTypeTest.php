@@ -26,7 +26,7 @@ class ColumnTypeTest extends BaseTypeTest
             $this->getTestedType(),
             [
                 'label' => 'My label',
-                'label_attr' => ['class' => 'info' ],
+                'label_attr' => ['class' => 'info'],
                 'header_attr' => ['class' => 'striped'],
                 'cell_attr' => ['class' => 'striped'],
                 'label_translation_domain' => 'messages',
@@ -60,7 +60,7 @@ class ColumnTypeTest extends BaseTypeTest
                 ],
                 'label_translation_domain' => 'messages',
                 'unique_block_prefix' => '_my_grid_id',
-                'block_prefixes' => ['column', '_my_grid_id',],
+                'block_prefixes' => ['column', '_my_grid_id'],
             ],
             $view->attributes
         );
