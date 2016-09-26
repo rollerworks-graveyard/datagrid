@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Rollerworks\Component\Datagrid\Column;
 
 use Rollerworks\Component\Datagrid\DatagridView;
-use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -56,7 +55,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
      * @param ColumnTypeExtensionInterface[] $typeExtensions
      * @param ResolvedColumnTypeInterface    $parent
      *
-     * @throws UnexpectedTypeException  When one of the given extensions is not an ColumnTypeExtensionInterface
+     * @throws UnexpectedTypeException When one of the given extensions is not an ColumnTypeExtensionInterface
      */
     public function __construct(ColumnTypeInterface $innerType, array $typeExtensions = [], ResolvedColumnTypeInterface $parent = null)
     {

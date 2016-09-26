@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Rollerworks\Component\Datagrid\Column;
 
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
-use Rollerworks\Component\Datagrid\Exception\UnexpectedTypeException;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
