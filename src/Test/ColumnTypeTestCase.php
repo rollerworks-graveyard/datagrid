@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Test;
 
+use Rollerworks\Component\Datagrid\Datagrid;
+
 abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
 {
     public static function assertDateTimeEquals(\DateTime $expected, \DateTime $actual)
@@ -36,7 +38,7 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
             )
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
 
         if (!is_array($data)) {
             $object = new \stdClass();
@@ -74,7 +76,7 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
             )
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
 
         if (!is_array($data)) {
             $object = new \stdClass();

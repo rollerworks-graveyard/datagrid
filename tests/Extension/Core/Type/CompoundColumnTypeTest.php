@@ -15,6 +15,7 @@ namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\CompoundColumn;
+use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
@@ -37,7 +38,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         );
 
         $rootColumn->setColumns(['id' => $column]);
-        $datagrid = $this->factory->createDatagrid('my_grid', [$rootColumn]);
+        $datagrid = new Datagrid('my_grid', [$rootColumn]);
 
         $object = new \stdClass();
         $object->key = ' foo ';
@@ -71,7 +72,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
         $column->setColumns($columns);
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
 
         $object = new \stdClass();
         $object->key = ' foo ';

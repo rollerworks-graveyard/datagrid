@@ -16,6 +16,7 @@ namespace Rollerworks\Component\Datagrid\Test;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistry;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactory;
 use Rollerworks\Component\Datagrid\DatagridFactory;
+use Rollerworks\Component\Datagrid\DatagridRegistry;
 use Rollerworks\Component\Datagrid\Extension\Core\CoreExtension;
 
 abstract class DatagridIntegrationTestCase extends \PHPUnit_Framework_TestCase
@@ -33,7 +34,8 @@ abstract class DatagridIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $extensions = array_merge($extensions, $this->getExtensions());
 
         $typesRegistry = new ColumnTypeRegistry($extensions, $resolvedTypeFactory);
-        $this->factory = new DatagridFactory($typesRegistry);
+        $datagridRegistry = new DatagridRegistry();
+        $this->factory = new DatagridFactory($typesRegistry, $datagridRegistry);
     }
 
     protected function getExtensions(): array

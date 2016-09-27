@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
+use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\Exception\InvalidConfigurationException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\ActionType;
 
@@ -37,7 +38,7 @@ class ActionTypeTest extends BaseTypeTest
             ]
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
 
         $object = new \stdClass();
         $object->key = ' foo ';
@@ -253,7 +254,7 @@ class ActionTypeTest extends BaseTypeTest
             ]
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
 
         $object = new \stdClass();
         $object->id = 50;
