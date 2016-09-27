@@ -23,6 +23,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
     private $factory;
     private $columns = [];
     private $unresolvedColumns = [];
+    private $viewBuilder;
 
     public function __construct(DatagridFactoryInterface $factory)
     {
@@ -115,6 +116,24 @@ final class DatagridBuilder implements DatagridBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function setDatagridViewBuilder(callable $builder = null): DatagridBuilderInterface
+    {
+        $this->viewBuilder = $builder;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDatagridViewBuilder()
+    {
+        return $this->viewBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDatagrid(string $name): DatagridInterface
     {
         foreach ($this->unresolvedColumns as $n => $column) {
@@ -127,6 +146,6 @@ final class DatagridBuilder implements DatagridBuilderInterface
             unset($this->unresolvedColumns[$n]);
         }
 
-        return new Datagrid($name, $this->columns);
+        return new Datagrid($name, $this->columns, $this->viewBuilder);
     }
 }

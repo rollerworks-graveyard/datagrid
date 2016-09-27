@@ -21,6 +21,7 @@ use Rollerworks\Component\Datagrid\Column\ResolvedColumnType;
 use Rollerworks\Component\Datagrid\DatagridBuilder;
 use Rollerworks\Component\Datagrid\DatagridFactoryInterface;
 use Rollerworks\Component\Datagrid\DatagridInterface;
+use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\CompoundColumnType;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\NumberType;
@@ -63,21 +64,36 @@ final class DatagridBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_datagrid()
+    public function it_generates_a_datagrid()
     {
+        $viewExecuted = null;
+
         $builder = new DatagridBuilder($this->factory);
         $builder->add('id', NumberType::class);
         $builder->add('name', TextType::class, ['format' => '%s']);
+        $builder->setDatagridViewBuilder(
+            function (DatagridView $datagridView) use (&$viewExecuted) {
+                $viewExecuted = $datagridView;
+            }
+        );
 
         self::assertTrue($builder->has('id'));
         self::assertTrue($builder->has('name'));
         self::assertFalse($builder->has('date'));
 
         $datagrid = $builder->getDatagrid('my_grid');
+        $datagrid->setData([['id' => 0, 'name' => 'Who']]);
 
         self::assertSame('my_grid', $datagrid->getName());
         self::assertDatagridHasColumn($datagrid, 'id', NumberType::class);
         self::assertDatagridHasColumn($datagrid, 'name', TextType::class, ['format' => '%s']);
+
+        $view = $datagrid->createView();
+        self::assertSame($view, $viewExecuted);
+
+        // New view, new instance expected.
+        $view = $datagrid->createView();
+        self::assertSame($view, $viewExecuted);
     }
 
     /** @test */
