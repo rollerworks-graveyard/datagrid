@@ -166,6 +166,9 @@ powerful and developer friendly way to create and register a CompoundColumn.**
 * The `add` method no longer accepts a Column object, use the new method `set` method instead.
   *This was needed to make strict type-hints possible.*
   
+* The `setDatagridViewBuilder` and `getDatagridViewBuilder` methods are added to
+  to the `DatagridBuilderInterface`.
+
 * The `get` method now always returns an `ColumnInterface` instance.
 
 * Calling `DatagridBuilder::getDatagrid()` will re-use the resolved Column instance for

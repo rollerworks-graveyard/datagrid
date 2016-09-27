@@ -87,6 +87,22 @@ interface DatagridBuilderInterface
     public function get(string $name): ColumnInterface;
 
     /**
+     * Set DatagridView builder for the datagrid.
+     *
+     * @param callable|null $builder
+     *
+     * @return self
+     */
+    public function setDatagridViewBuilder(callable $builder = null): DatagridBuilderInterface;
+
+    /**
+     * Get the DatagridView builder that was set for this builder.
+     *
+     * @return callable|null
+     */
+    public function getDatagridViewBuilder();
+
+    /**
      * Return the configured datagrid instance.
      *
      * @param string $name
