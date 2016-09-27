@@ -45,7 +45,7 @@ interface DatagridBuilderInterface
      * eg. one more more date value or one or more row actions.
      *
      * <code>
-     * createCompound('actions', ['label' => 'Actions'])
+     * createCompound('actions', ['label' => 'Actions', 'data_provider' => function ($data) {return ['id' => $data->id();}])
      *   ->add('edit', ActionType::class, ['data_provider' => '[id]', 'url_schema' => '/users/{id}/edit'])
      *   ->add('delete', ActionType::class, ['data_provider' => '[id]', 'url_schema' => '/users/{id}/edit'])
      * ->end() // This registers the CompoundColumn at the DatagridBuilder, and return the DatagridBuilder.
