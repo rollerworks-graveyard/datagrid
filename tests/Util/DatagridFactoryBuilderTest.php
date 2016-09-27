@@ -16,6 +16,7 @@ namespace Rollerworks\Component\Datagrid\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistry;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
+use Rollerworks\Component\Datagrid\DatagridRegistryInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\CoreExtension;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\DateTimeType;
 use Rollerworks\Component\Datagrid\PreloadedExtension;
@@ -31,13 +32,18 @@ final class DatagridFactoryBuilderTest extends TestCase
     /** @var ResolvedColumnTypeFactoryInterface */
     private $resolvedColumnFactory;
 
+    /** @var DatagridRegistryInterface */
+    private $datagridRegistry;
+
     /** @before */
     public function setUpBuilder()
     {
         $this->resolvedColumnFactory = $this->createMock(ResolvedColumnTypeFactoryInterface::class);
+        $this->datagridRegistry = $this->createMock(DatagridRegistryInterface::class);
 
         $this->builder = new DatagridFactoryBuilder();
         $this->builder->setResolvedTypeFactory($this->resolvedColumnFactory);
+        $this->builder->setDatagridRegistry($this->datagridRegistry);
         $this->builder->addExtension(new CoreExtension());
         $this->builder->addType(new FooType());
         $this->builder->addTypeExtension(new DateTypeExtension());
@@ -54,6 +60,20 @@ final class DatagridFactoryBuilderTest extends TestCase
         self::assertSame(
             $this->resolvedColumnFactory,
             $this->extractObjectProperty($typeRegistry, 'resolvedTypeFactory')
+        );
+    }
+
+    /** @test */
+    public function custom_DatagridRegistry_is_used()
+    {
+        $factory = $this->builder->getDatagridFactory();
+
+        /** @var DatagridRegistryInterface $datagridRegistry */
+        $datagridRegistry = $this->extractObjectProperty($factory, 'datagridRegistry');
+
+        self::assertSame(
+            $this->datagridRegistry,
+            $datagridRegistry
         );
     }
 

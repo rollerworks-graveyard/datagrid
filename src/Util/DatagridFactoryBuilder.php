@@ -20,6 +20,8 @@ use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactory;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
 use Rollerworks\Component\Datagrid\DatagridExtensionInterface;
 use Rollerworks\Component\Datagrid\DatagridFactory;
+use Rollerworks\Component\Datagrid\DatagridRegistry;
+use Rollerworks\Component\Datagrid\DatagridRegistryInterface;
 use Rollerworks\Component\Datagrid\PreloadedExtension;
 
 /**
@@ -28,6 +30,7 @@ use Rollerworks\Component\Datagrid\PreloadedExtension;
 final class DatagridFactoryBuilder
 {
     private $resolvedTypeFactory;
+    private $datagridRegistry;
     private $extensions = [];
     private $types = [];
     private $typeExtensions = [];
@@ -40,6 +43,18 @@ final class DatagridFactoryBuilder
     public function setResolvedTypeFactory(ResolvedColumnTypeFactoryInterface $resolvedTypeFactory): self
     {
         $this->resolvedTypeFactory = $resolvedTypeFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param DatagridRegistryInterface $datagridRegistry
+     *
+     * @return DatagridFactoryBuilder
+     */
+    public function setDatagridRegistry(DatagridRegistryInterface $datagridRegistry): self
+    {
+        $this->datagridRegistry = $datagridRegistry;
 
         return $this;
     }
@@ -131,11 +146,11 @@ final class DatagridFactoryBuilder
             $extensions[] = new PreloadedExtension($this->types, $this->typeExtensions);
         }
 
-        $registry = new ColumnTypeRegistry(
+        $typesRegistry = new ColumnTypeRegistry(
             $extensions,
             $this->resolvedTypeFactory ?: new ResolvedColumnTypeFactory()
         );
 
-        return new DatagridFactory($registry);
+        return new DatagridFactory($typesRegistry, $this->datagridRegistry ?: new DatagridRegistry());
     }
 }

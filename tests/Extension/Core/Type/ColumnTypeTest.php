@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
+use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\Exception\DataProviderException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\ColumnType;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -36,7 +37,7 @@ class ColumnTypeTest extends BaseTypeTest
             ]
         );
 
-        $datagrid = $this->factory->createDatagrid('my_grid', [$column]);
+        $datagrid = new Datagrid('my_grid', [$column]);
 
         $object = new \stdClass();
         $object->key = new \DateTime();
@@ -80,7 +81,7 @@ class ColumnTypeTest extends BaseTypeTest
             ]
         );
 
-        $datagrid = $this->factory->createDatagrid('my_grid', [$column]);
+        $datagrid = new Datagrid('my_grid', [$column]);
 
         $object = new \stdClass();
         $object->key = new \DateTime();
@@ -114,7 +115,7 @@ class ColumnTypeTest extends BaseTypeTest
         $column1 = $this->factory->createColumn('key', ColumnType::class);
         $column2 = $this->factory->createColumn('key2', ColumnType::class);
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column1, $column2]);
+        $datagrid = new Datagrid('grid', [$column1, $column2]);
 
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
@@ -137,7 +138,7 @@ class ColumnTypeTest extends BaseTypeTest
         $column1 = $this->factory->createColumn('key', ColumnType::class);
         $column2 = $this->factory->createColumn('foo', ColumnType::class, ['data_provider' => 'key2']);
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column1, $column2]);
+        $datagrid = new Datagrid('grid', [$column1, $column2]);
 
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
@@ -164,7 +165,7 @@ class ColumnTypeTest extends BaseTypeTest
             ['data_provider' => new PropertyPath('key2')]
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column1, $column2]);
+        $datagrid = new Datagrid('grid', [$column1, $column2]);
 
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
@@ -185,7 +186,7 @@ class ColumnTypeTest extends BaseTypeTest
 
         $column = $this->factory->createColumn('key3', ColumnType::class);
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
         $datagrid->setData($data);
 
         $this->expectException(DataProviderException::class);
@@ -203,7 +204,7 @@ class ColumnTypeTest extends BaseTypeTest
 
         $column = $this->factory->createColumn('key2', ColumnType::class, ['data_provider' => 'key3']);
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
         $datagrid->setData($data);
 
         $this->expectException(DataProviderException::class);
@@ -221,7 +222,7 @@ class ColumnTypeTest extends BaseTypeTest
 
         $column = $this->factory->createColumn('key2', ColumnType::class, ['data_provider' => '][key3']);
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
         $datagrid->setData($data);
 
         $this->expectException(DataProviderException::class);

@@ -87,6 +87,12 @@ UPGRADE
   
 * The `type` property of the `CellView` is removed, this was already no longer populated.
 
+* The purpose of the `DatagridFactoryInterface::createDatagrid` method changed to create
+  a new Datagrid using a DatagridConfigurator which is loaded using a registry.
+   
+  The default registry's implementation registers Configurators lazily using closures 
+  and allows to load configurators using there FQCN (similar to ColumnType's).
+
 ### View transformers
 
 * Adding multiple view transformers to a column is removed, a column can now only have one

@@ -15,31 +15,39 @@ namespace Rollerworks\Component\Datagrid;
 
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
+use Rollerworks\Component\Datagrid\Util\StringUtil;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 class DatagridFactory implements DatagridFactoryInterface
 {
-    /**
-     * @var ColumnTypeRegistryInterface
-     */
     private $typeRegistry;
+    private $datagridRegistry;
 
-    /**
-     * @param ColumnTypeRegistryInterface $registry
-     */
-    public function __construct(ColumnTypeRegistryInterface $registry)
+    public function __construct(ColumnTypeRegistryInterface $typeRegistry, DatagridRegistryInterface $datagridRegistry)
     {
-        $this->typeRegistry = $registry;
+        $this->typeRegistry = $typeRegistry;
+        $this->datagridRegistry = $datagridRegistry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createDatagrid(string $name, array $columns): DatagridInterface
+    public function createDatagrid($configurator, string $name = null, array $options = []): DatagridInterface
     {
-        return new Datagrid($name, $columns);
+        if (!$configurator instanceof DatagridConfiguratorInterface) {
+            $configurator = $this->datagridRegistry->getConfigurator($configurator);
+        }
+
+        if (null === $name) {
+            $name = StringUtil::fqcnToBlockPrefix(get_class($configurator));
+        }
+
+        $builder = $this->createDatagridBuilder();
+        $configurator->buildDatagrid($builder, $options);
+
+        return $builder->getDatagrid($name);
     }
 
     /**

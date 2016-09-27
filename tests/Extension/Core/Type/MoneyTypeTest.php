@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
+use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\MoneyType;
 use Symfony\Component\Intl\Util\IntlTestHelper;
 
@@ -45,7 +46,7 @@ class MoneyTypeTest extends BaseTypeTest
             ]
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column]);
+        $datagrid = new Datagrid('grid', [$column]);
 
         $object = new \stdClass();
         $object->key = '20.00';
@@ -90,7 +91,7 @@ class MoneyTypeTest extends BaseTypeTest
         $column = $this->factory->createColumn('price', $this->getTestedType(), ['currency' => 'EUR']);
         $column2 = $this->factory->createColumn('price2', $this->getTestedType(), ['currency' => 'GBP']);
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column, $column2]);
+        $datagrid = new Datagrid('grid', [$column, $column2]);
 
         $object = new \stdClass();
         $object->price = '1.23';
@@ -122,7 +123,7 @@ class MoneyTypeTest extends BaseTypeTest
             ]
         );
 
-        $datagrid = $this->factory->createDatagrid('grid', [$column, $column2]);
+        $datagrid = new Datagrid('grid', [$column, $column2]);
 
         $object = new \stdClass();
         $object->price = '1.23';

@@ -34,12 +34,15 @@ interface DatagridFactoryInterface
     /**
      * Create a new DatagridInterface instance with a unique name.
      *
-     * @param string            $name    Name of the datagrid
-     * @param ColumnInterface[] $columns Columns of the datagrid
+     * @param string|DatagridConfiguratorInterface $configurator Configurator for building the datagrid,
+     *                                                           a string will be resolved to a configurator
+     * @param string                               $name         Name of the datagrid,
+     *                                                           defaults to the simple name of the configurator
+     * @param array                                $options      Additional options for the configurator
      *
      * @return DatagridInterface
      */
-    public function createDatagrid(string $name, array $columns): DatagridInterface;
+    public function createDatagrid($configurator, string $name = null, array $options = []): DatagridInterface;
 
     /**
      * Create a new DatagridBuilderInterface instance.

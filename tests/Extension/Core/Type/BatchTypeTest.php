@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\Type;
 
+use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\BatchType;
 use Rollerworks\Component\Datagrid\Test\ColumnTypeTestCase;
 
@@ -30,7 +31,7 @@ class BatchTypeTest extends ColumnTypeTestCase
         $data = [1 => $object1, 2 => $object2];
 
         $column = $this->factory->createColumn('key', BatchType::class);
-        $datagrid = $this->factory->createDatagrid('my_grid', [$column]);
+        $datagrid = new Datagrid('my_grid', [$column]);
 
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
