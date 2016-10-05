@@ -180,7 +180,7 @@ class Datagrid implements DatagridInterface
             'row_vars' => [
                 'unique_block_prefix' => $uniqueBlockPrefix.'_row',
                 'block_prefixes' => ['datagrid_row', $uniqueBlockPrefix.'_row'],
-            ]
+            ],
         ];
 
         if (null !== $this->viewBuilder) {

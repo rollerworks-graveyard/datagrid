@@ -13,18 +13,11 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
-use Prophecy\Argument;
-use Rollerworks\Component\Datagrid\Column\CellView;
-use Rollerworks\Component\Datagrid\Column\ColumnInterface;
-use Rollerworks\Component\Datagrid\Column\HeaderView;
-use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeInterface;
 use Rollerworks\Component\Datagrid\Datagrid;
-use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 use Rollerworks\Component\Datagrid\Test\MockTestCase;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
-use Rollerworks\Component\Datagrid\Util\StringUtil;
 
 class DatagridTest extends MockTestCase
 {
