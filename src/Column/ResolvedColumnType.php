@@ -146,7 +146,7 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}.
      */
     public function createHeaderView(ColumnInterface $column, DatagridView $datagrid): HeaderView
     {
@@ -154,11 +154,16 @@ class ResolvedColumnType implements ResolvedColumnTypeInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}.
+     *
+     * @param ColumnInterface $column
+     * @param HeaderView      $header
+     *
+     * @return CellView
      */
-    public function createCellView(ColumnInterface $column, DatagridView $datagrid): CellView
+    public function createCellView(ColumnInterface $column, HeaderView $header): CellView
     {
-        return new CellView($column, $datagrid);
+        return new CellView($header, $header->datagrid);
     }
 
     /**

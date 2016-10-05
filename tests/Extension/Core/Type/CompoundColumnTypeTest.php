@@ -48,7 +48,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $view = $rootColumn->createHeaderView($datagridView);
 
         $this->assertSame('Ids', $view->label);
-        $this->assertEquals(
+        self::assertViewVarsEquals(
             [
                 'label_attr' => [],
                 'header_attr' => [],
@@ -57,7 +57,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
                 'unique_block_prefix' => '_my_grid_ids',
                 'block_prefixes' => ['compound_column', '_my_grid_ids'],
             ],
-            $view->attributes
+            $view
         );
     }
 
@@ -82,7 +82,7 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
         $datagridView = $datagrid->createView();
 
-        $view = $column->createCellView($datagridView, $object, 0);
+        $view = $column->createCellView($datagridView->columns['actions'], $object, 0);
 
         $this->assertDatagridCell('age', $view);
         $this->assertDatagridCell('name', $view);
@@ -93,13 +93,13 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
         $headerView = $columns['age']->createHeaderView($datagridView);
 
-        $this->assertEquals('_grid_actions_age', $headerView->attributes['unique_block_prefix']);
-        $this->assertEquals(['column', 'number', '_grid_actions_age'], $headerView->attributes['block_prefixes']);
+        $this->assertEquals('_grid_actions_age', $headerView->vars['unique_block_prefix']);
+        $this->assertEquals(['column', 'number', '_grid_actions_age'], $headerView->vars['block_prefixes']);
 
         $headerView = $columns['name']->createHeaderView($datagridView);
 
-        $this->assertEquals('_my_named', $headerView->attributes['unique_block_prefix']);
-        $this->assertEquals(['column', 'text', '_my_named'], $headerView->attributes['block_prefixes']);
+        $this->assertEquals('_my_named', $headerView->vars['unique_block_prefix']);
+        $this->assertEquals(['column', 'text', '_my_named'], $headerView->vars['block_prefixes']);
     }
 
     private function assertDatagridCell($name, CellView $view)

@@ -22,11 +22,14 @@ use Rollerworks\Component\Datagrid\Datagrid;
 use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Exception\BadMethodCallException;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
+use Rollerworks\Component\Datagrid\Test\MockTestCase;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 use Rollerworks\Component\Datagrid\Util\StringUtil;
 
-class DatagridTest extends \PHPUnit_Framework_TestCase
+class DatagridTest extends MockTestCase
 {
+    const GRID_NAME = 'users';
+
     /**
      * @var Datagrid
      */
@@ -34,40 +37,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->datagrid = new Datagrid('grid', [$this->createColumn()]);
-    }
-
-    /**
-     * @param string $name
-     * @param string $typeName
-     *
-     * @return ColumnInterface
-     */
-    private function createColumn($name = 'foo1', $typeName = TextType::class)
-    {
-        $type = $this->prophesize(ResolvedColumnTypeInterface::class);
-        $type->getInnerType()->willReturn(new $typeName());
-        $type->getBlockPrefix()->willReturn(StringUtil::fqcnToBlockPrefix($typeName));
-
-        $column = $this->prophesize(ColumnInterface::class);
-        $column->getName()->willReturn($name);
-        $column->getType()->willReturn($type->reveal());
-
-        $column->createHeaderView(Argument::any(), Argument::any())->will(
-            function ($args) use ($name) {
-                /* @var \Prophecy\Prophecy\ObjectProphecy $this */
-                return new HeaderView($this->reveal(), $args[0], $name);
-            }
-        );
-
-        $column->createCellView(Argument::any(), Argument::any(), Argument::any())->will(
-            function ($args) use ($name) {
-                /* @var \Prophecy\Prophecy\ObjectProphecy $this */
-                return new CellView($this->reveal(), $args[0]);
-            }
-        );
-
-        return $column->reveal();
+        $this->datagrid = new Datagrid(self::GRID_NAME, [$this->createColumn()]);
     }
 
     /**
@@ -75,23 +45,21 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidColumnThrowsException()
     {
-        new Datagrid('grid', [$this->createColumn(), null]);
+        new Datagrid(self::GRID_NAME, [$this->createColumn(), null]);
     }
 
     public function testGetName()
     {
-        $this->assertSame('grid', $this->datagrid->getName());
+        self::assertSame(self::GRID_NAME, $this->datagrid->getName());
     }
 
     public function testHasColumn()
     {
-        $this->assertTrue($this->datagrid->hasColumn('foo1'));
-        $this->assertTrue($this->datagrid->hasColumnType(TextType::class));
+        self::assertTrue($this->datagrid->hasColumn('foo'));
+        self::assertTrue($this->datagrid->hasColumnType(TextType::class));
 
-        $this->assertFalse($this->datagrid->hasColumn('foo2'));
-        $this->assertFalse($this->datagrid->hasColumnType('this_type_cant_exists'));
-
-        $this->assertInstanceOf(ColumnInterface::class, $this->datagrid->getColumn('foo1'));
+        self::assertFalse($this->datagrid->hasColumn('foo2'));
+        self::assertFalse($this->datagrid->hasColumnType('this_type_cant_exists'));
     }
 
     public function testSetData()
@@ -103,7 +71,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->datagrid->setData($data);
 
-        $this->assertSame($data, $this->datagrid->getData());
+        self::assertSame($data, $this->datagrid->getData());
     }
 
     public function testSetDataWithArrayAsSource()
@@ -115,7 +83,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->datagrid->setData($data);
 
-        $this->assertSame($data, $this->datagrid->getData());
+        self::assertSame($data, $this->datagrid->getData());
     }
 
     public function testSetDataShouldOnlyBeCalledOnce()
@@ -145,8 +113,28 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $view = $this->datagrid->createView();
 
-        $this->assertInstanceOf(DatagridView::class, $view);
-        $this->assertTrue($view->hasColumn('foo1'));
-        $this->assertFalse($view->hasColumn('foo2'));
+        self::assertEquals(
+            '_users',
+            $view->vars['unique_block_prefix']
+        );
+
+        self::assertEquals(
+            [
+                'datagrid',
+                '_users',
+            ],
+            $view->vars['block_prefixes']
+        );
+
+        self::assertEquals(
+            [
+                'unique_block_prefix' => '_users_row',
+                'block_prefixes' => ['datagrid_row', '_users_row'],
+            ],
+            $view->vars['row_vars']
+        );
+
+        self::assertTrue($view->hasColumn('foo'));
+        self::assertFalse($view->hasColumn('foo2'));
     }
 }

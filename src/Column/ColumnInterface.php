@@ -86,13 +86,13 @@ interface ColumnInterface
     public function createHeaderView(DatagridView $datagrid): HeaderView;
 
     /**
-     * @param DatagridView $datagrid
-     * @param object       $object
-     * @param int|string   $index
+     * @param HeaderView $header
+     * @param object     $object
+     * @param int|string $index
      *
      * @return CellView
      */
-    public function createCellView(DatagridView $datagrid, $object, $index): CellView;
+    public function createCellView(HeaderView $header, $object, $index): CellView;
 
     /**
      * Set the data-provider for the column.

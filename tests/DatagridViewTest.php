@@ -18,9 +18,10 @@ use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
+use Rollerworks\Component\Datagrid\Test\MockTestCase;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\Entity;
 
-class DatagridViewTest extends \PHPUnit_Framework_TestCase
+class DatagridViewTest extends MockTestCase
 {
     /**
      * @var DatagridView
@@ -29,32 +30,16 @@ class DatagridViewTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $column = $this->createMock(ColumnInterface::class);
-
-        $column->expects($this->atLeastOnce())
-            ->method('getName')
-            ->willReturn('foo');
-
-        $column->expects($this->once())
-            ->method('createHeaderView')
-            ->willReturn($this->getMockBuilder(HeaderView::class)->disableOriginalConstructor()->getMock());
-
-        $datagrid = $this->createMock(DatagridInterface::class);
-
-        $datagrid->expects($this->once())
-            ->method('getColumns')
-            ->willReturn([$column]);
-
-        $datagrid->expects($this->once())
-            ->method('getData')
-            ->willReturn(
-                [
-                    new Entity('entity1'),
-                    new Entity('entity2'),
-                ]
-            );
+        $datagrid = $this->createDatagrid(
+            [$column = $this->createColumn()],
+            [
+                new Entity('entity1'),
+                new Entity('entity2'),
+            ]
+        );
 
         $this->gridView = new DatagridView($datagrid);
+        $this->gridView->init($datagrid);
     }
 
     public function testHasColumn()

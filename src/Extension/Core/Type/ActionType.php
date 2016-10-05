@@ -36,10 +36,10 @@ class ActionType extends AbstractType
             $options['content'] = $options['content']($mappingValues);
         }
 
-        $view->attributes['url'] = $this->createUrl($options, $mappingValues);
-        $view->attributes['content'] = $options['content'];
-        $view->attributes['attr'] = $options['attr'];
-        $view->attributes['url_attr'] = $options['url_attr'];
+        $view->vars['url'] = $this->createUrl($options, $mappingValues);
+        $view->vars['content'] = $options['content'];
+        $view->vars['attr'] = $options['attr'];
+        $view->vars['url_attr'] = $options['url_attr'];
     }
 
     /**

@@ -47,8 +47,8 @@ class ColumnTypeTest extends BaseTypeTest
         $view = $datagrid->createView();
         $view = $column->createHeaderView($view);
 
-        $this->assertSame('My label', $view->label);
-        $this->assertEquals(
+        self::assertSame('My label', $view->label);
+        self::assertViewVarsEquals(
             [
                 'label_attr' => [
                     'class' => 'info',
@@ -63,7 +63,7 @@ class ColumnTypeTest extends BaseTypeTest
                 'unique_block_prefix' => '_my_grid_id',
                 'block_prefixes' => ['column', '_my_grid_id'],
             ],
-            $view->attributes
+            $view
         );
     }
 
@@ -91,8 +91,8 @@ class ColumnTypeTest extends BaseTypeTest
         $view = $datagrid->createView();
         $view = $column->createHeaderView($view);
 
-        $this->assertSame('My label', $view->label);
-        $this->assertEquals(
+        self::assertSame('My label', $view->label);
+        self::assertViewVarsEquals(
             [
                 'label_attr' => [],
                 'header_attr' => [],
@@ -101,7 +101,7 @@ class ColumnTypeTest extends BaseTypeTest
                 'unique_block_prefix' => '_my_crazy_column',
                 'block_prefixes' => ['column', '_my_crazy_column'],
             ],
-            $view->attributes
+            $view
         );
     }
 
@@ -120,11 +120,11 @@ class ColumnTypeTest extends BaseTypeTest
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view1 = $column1->createCellView($datagridView, $object, 1);
-        $view2 = $column2->createCellView($datagridView, $object, 1);
+        $view1 = $column1->createCellView($datagridView->columns['key'], $object, 1);
+        $view2 = $column2->createCellView($datagridView->columns['key2'], $object, 1);
 
-        $this->assertEquals($object->key, $view1->value);
-        $this->assertEquals($object->key2, $view2->value);
+        self::assertEquals($object->key, $view1->value);
+        self::assertEquals($object->key2, $view2->value);
     }
 
     /** @test */
@@ -143,11 +143,11 @@ class ColumnTypeTest extends BaseTypeTest
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view1 = $column1->createCellView($datagridView, $object, 1);
-        $view2 = $column2->createCellView($datagridView, $object, 1);
+        $view1 = $column1->createCellView($datagridView->columns['key'], $object, 1);
+        $view2 = $column2->createCellView($datagridView->columns['foo'], $object, 1);
 
-        $this->assertEquals($object->key, $view1->value);
-        $this->assertEquals($object->key2, $view2->value);
+        self::assertEquals($object->key, $view1->value);
+        self::assertEquals($object->key2, $view2->value);
     }
 
     /** @test */
@@ -170,11 +170,11 @@ class ColumnTypeTest extends BaseTypeTest
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view1 = $column1->createCellView($datagridView, $object, 1);
-        $view2 = $column2->createCellView($datagridView, $object, 1);
+        $view1 = $column1->createCellView($datagridView->columns['key'], $object, 1);
+        $view2 = $column2->createCellView($datagridView->columns['foo'], $object, 1);
 
-        $this->assertEquals($object->key, $view1->value);
-        $this->assertEquals($object->key2, $view2->value);
+        self::assertEquals($object->key, $view1->value);
+        self::assertEquals($object->key2, $view2->value);
     }
 
     public function testAutoConfigurationDataProviderFailsForUnsupportedPath()

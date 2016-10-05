@@ -101,10 +101,10 @@ class MoneyTypeTest extends BaseTypeTest
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view = $column->createCellView($datagridView, $data[1], 1);
+        $view = $column->createCellView($datagridView->columns['price'], $data[1], 1);
         $this->assertSame('1,23 €', $view->value);
 
-        $view = $column2->createCellView($datagridView, $data[1], 1);
+        $view = $column2->createCellView($datagridView->columns['price2'], $data[1], 1);
         $this->assertSame('1,23 £', $view->value);
     }
 
@@ -140,10 +140,10 @@ class MoneyTypeTest extends BaseTypeTest
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view = $column->createCellView($datagridView, $data[1], 1);
+        $view = $column->createCellView($datagridView->columns['price'], $data[1], 1);
         $this->assertSame('1,23 €', $view->value);
 
-        $view = $column2->createCellView($datagridView, $data[2], 1);
+        $view = $column2->createCellView($datagridView->columns['price'], $data[2], 1);
         $this->assertSame('1,23 £', $view->value);
     }
 

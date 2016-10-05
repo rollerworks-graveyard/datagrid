@@ -37,9 +37,9 @@ class BatchType extends AbstractType
         // http://www.w3.org/TR/html401/struct/global.html#adef-id
         $id = ltrim($id, '_0123456789');
 
-        $view->attributes['datagrid_name'] = $view->datagrid->name;
-        $view->attributes['selection_name'] = sprintf('%s[%s][]', $view->datagrid->name, $view->name);
-        $view->attributes['selection_id'] = $id;
+        $view->vars['datagrid_name'] = $view->datagrid->name;
+        $view->vars['selection_name'] = sprintf('%s[%s][]', $view->datagrid->name, $view->name);
+        $view->vars['selection_id'] = $id;
     }
 
     /**
@@ -47,6 +47,6 @@ class BatchType extends AbstractType
      */
     public function buildHeaderView(HeaderView $view, ColumnInterface $column, array $options)
     {
-        $view->attributes['datagrid_name'] = $view->datagrid->name;
+        $view->vars['datagrid_name'] = $view->datagrid->name;
     }
 }

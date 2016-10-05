@@ -86,11 +86,11 @@ interface ResolvedColumnTypeInterface
      * Creates a new cell view for a column of this type.
      *
      * @param ColumnInterface $column
-     * @param DatagridView    $datagrid
+     * @param HeaderView      $header
      *
      * @return CellView
      */
-    public function createCellView(ColumnInterface $column, DatagridView $datagrid): CellView;
+    public function createCellView(ColumnInterface $column, HeaderView $header): CellView;
 
     /**
      * Configures a header view for the type hierarchy.

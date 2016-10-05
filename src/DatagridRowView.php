@@ -19,7 +19,7 @@ use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class DatagridRowView implements \IteratorAggregate, \Countable
+class DatagridRowView extends BaseView implements \IteratorAggregate, \Countable
 {
     /**
      * READ-ONLY: Cells views.
@@ -64,7 +64,9 @@ class DatagridRowView implements \IteratorAggregate, \Countable
         $this->index = $index;
 
         foreach ($columns as $column) {
-            $this->cells[$column->getName()] = $column->createCellView($datagridView, $source, $index);
+            $name = $column->getName();
+
+            $this->cells[$name] = $column->createCellView($datagridView->columns[$name], $source, $index);
         }
     }
 
