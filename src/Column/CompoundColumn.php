@@ -31,7 +31,7 @@ class CompoundColumn extends Column
         return parent::createHeaderView($datagrid);
     }
 
-    public function createCellView(DatagridView $datagrid, $object, $index): CellView
+    public function createCellView(HeaderView $header, $object, $index): CellView
     {
         if (!$this->locked || !$this->columns) {
             throw new BadMethodCallException(
@@ -39,7 +39,7 @@ class CompoundColumn extends Column
             );
         }
 
-        return parent::createCellView($datagrid, $object, $index);
+        return parent::createCellView($header, $object, $index);
     }
 
     /**

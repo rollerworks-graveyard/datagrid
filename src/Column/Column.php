@@ -164,15 +164,15 @@ class Column implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function createCellView(DatagridView $datagrid, $object, $index): CellView
+    public function createCellView(HeaderView $header, $object, $index): CellView
     {
         // The methods createCellView(), buildCellView() are called
         // explicitly here in order to be able to override either of them
         // in a custom resolved column type.
 
-        $view = $this->type->createCellView($this, $datagrid);
+        $view = $this->type->createCellView($this, $header);
 
-        $view->attributes['row'] = $index;
+        $view->vars['row'] = $index;
         $view->value = $this->type->getValue($this, $object);
         $view->source = $object;
 

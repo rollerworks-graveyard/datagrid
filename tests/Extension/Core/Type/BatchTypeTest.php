@@ -36,27 +36,27 @@ class BatchTypeTest extends ColumnTypeTestCase
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view1 = $column->createCellView($datagridView, $object1, 1);
-        $view2 = $column->createCellView($datagridView, $object2, 2);
+        $view1 = $column->createCellView($datagridView->columns['key'], $object1, 1);
+        $view2 = $column->createCellView($datagridView->columns['key'], $object2, 2);
 
         self::assertEquals(
-            [
+            $this->normalizeViewExpectation([
                 'row' => 1,
                 'datagrid_name' => 'my_grid',
                 'selection_name' => 'my_grid[key][]',
                 'selection_id' => 'my_grid-key__b2-3b-fa-31-31-fb',
-            ],
-            $view1->attributes
+            ], $view1),
+            $view1->vars
         );
 
         self::assertEquals(
-            [
+            $this->normalizeViewExpectation([
                 'row' => 2,
                 'datagrid_name' => 'my_grid',
                 'selection_name' => 'my_grid[key][]',
                 'selection_id' => 'my_grid-key__12-3b-fa-31-31-fb',
-            ],
-            $view2->attributes
+            ], $view2),
+            $view2->vars
         );
     }
 

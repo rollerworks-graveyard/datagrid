@@ -49,14 +49,14 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view = $column->createCellView($datagridView, $data[$idx], $idx);
+        $view = $column->createCellView($datagridView->columns['id'], $data[$idx], $idx);
 
         $this->assertEquals($expectedValue, $view->value);
 
         if (null !== $viewAttributes) {
             $viewAttributes['row'] = 1;
 
-            $this->assertEquals($viewAttributes, $view->attributes);
+            self::assertViewVarsEquals($viewAttributes, $view);
         }
     }
 
@@ -88,9 +88,55 @@ abstract class ColumnTypeTestCase extends DatagridIntegrationTestCase
         $datagrid->setData($data);
         $datagridView = $datagrid->createView();
 
-        $view = $column->createCellView($datagridView, $data[$idx], $idx);
+        $view = $column->createCellView($datagridView->columns['id'], $data[$idx], $idx);
         $this->assertNotEquals($expectedValue, $view->value);
     }
 
+    protected static function assertViewVarsEquals(array $viewAttributes, $view)
+    {
+        self::assertEquals(
+            self::normalizeViewExpectation($viewAttributes, $view),
+            $view->vars
+        );
+    }
+
     abstract protected function getTestedType(): string;
+
+    /**
+     * Ensures the 'base' view-vars are set.
+     *
+     * @param array $viewAttributes
+     * @param       $view
+     *
+     * @return array
+     */
+    protected static function normalizeViewExpectation(array $viewAttributes, $view)
+    {
+        if (!isset($view->vars['unique_block_prefix'])) {
+            return $viewAttributes;
+        }
+
+        $viewAttributes = array_replace(
+            [
+                'unique_block_prefix' => $view->vars['unique_block_prefix'],
+                'block_prefixes' => $view->vars['block_prefixes'],
+                'cache_key' => $view->vars['cache_key'],
+            ],
+            $viewAttributes
+        );
+
+        if (isset($view->vars['header_attr']) && !isset($viewAttributes['header_attr'])) {
+            $viewAttributes['header_attr'] = $view->vars['header_attr'];
+        }
+
+        if (isset($view->vars['label_attr']) && !isset($viewAttributes['label_attr'])) {
+            $viewAttributes['label_attr'] = $view->vars['label_attr'];
+        }
+
+        if (isset($view->vars['cell_attr']) && !isset($viewAttributes['cell_attr'])) {
+            $viewAttributes['cell_attr'] = $view->vars['cell_attr'];
+        }
+
+        return $viewAttributes;
+    }
 }

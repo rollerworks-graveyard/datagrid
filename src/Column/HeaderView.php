@@ -13,22 +13,18 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Column;
 
+use Rollerworks\Component\Datagrid\BaseView;
 use Rollerworks\Component\Datagrid\DatagridView;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class HeaderView
+class HeaderView extends BaseView
 {
     /**
      * @var string
      */
     public $label;
-
-    /**
-     * @var array
-     */
-    public $attributes = [];
 
     /**
      * @var DatagridView
@@ -41,16 +37,6 @@ class HeaderView
     public $name;
 
     /**
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @var string
-     */
-    public $prefix;
-
-    /**
      * @param ColumnInterface $column
      * @param DatagridView    $datagrid
      * @param string          $label
@@ -58,15 +44,7 @@ class HeaderView
     public function __construct(ColumnInterface $column, DatagridView $datagrid, string $label = null)
     {
         $this->datagrid = $datagrid;
-        $this->prefix = $column->getType()->getBlockPrefix();
         $this->name = $column->getName();
         $this->label = $label;
-    }
-
-    public function setAttribute(string $name, $value)
-    {
-        $this->attributes[$name] = $value;
-
-        return $this;
     }
 }

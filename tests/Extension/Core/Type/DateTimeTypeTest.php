@@ -47,7 +47,7 @@ class DateTimeTypeTest extends BaseTypeTest
         $view = $column->createHeaderView($view);
 
         $this->assertSame('My label', $view->label);
-        $this->assertEquals(
+        self::assertViewVarsEquals(
             [
                 'label_attr' => [
                     'class' => 'info',
@@ -62,7 +62,7 @@ class DateTimeTypeTest extends BaseTypeTest
                 'unique_block_prefix' => '_my_grid_id',
                 'block_prefixes' => ['column', 'date_time', '_my_grid_id'],
             ],
-            $view->attributes
+            $view
         );
     }
 

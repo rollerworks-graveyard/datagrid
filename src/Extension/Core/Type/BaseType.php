@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Rollerworks\Component\Datagrid\Extension\Core\Type;
 
 use Rollerworks\Component\Datagrid\Column\AbstractType;
+use Rollerworks\Component\Datagrid\Column\CellView;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -53,13 +54,35 @@ abstract class BaseType extends AbstractType
 
         $blockPrefixes[] = $uniqueBlockPrefix;
 
-        $view->attributes = array_replace($view->attributes, [
+        $view->vars = array_replace($view->vars, [
             'label_attr' => $options['label_attr'],
             'header_attr' => $options['header_attr'],
             'cell_attr' => $options['header_attr'],
             'label_translation_domain' => $options['label_translation_domain'],
             'unique_block_prefix' => $uniqueBlockPrefix,
             'block_prefixes' => $blockPrefixes,
+            // The cache key is used for caching in the render-engine.
+            // multiple columns can share the same block-name but have a different type.
+            // To prevent rendering the wrong block use the type also, this is rather an
+            // edge-case but Symfony Form also does it this way, so lets not cause confusion.
+            'cache_key' => $uniqueBlockPrefix.'_'.$column->getType()->getBlockPrefix(),
+        ]);
+    }
+
+    public function buildCellView(CellView $view, ColumnInterface $column, array $options)
+    {
+        $parent = $view->column;
+
+        // Set shared information from the header.
+        // This information is not recomputed for better performance.
+        // Each header is created once, but this method will be called
+        // 5000 times for a grid with 500 rows!
+
+        $view->vars = array_replace($view->vars, [
+            'cell_attr' => $options['cell_attr'],
+            'unique_block_prefix' => $parent->vars['unique_block_prefix'],
+            'block_prefixes' => $parent->vars['block_prefixes'],
+            'cache_key' => $parent->vars['cache_key'],
         ]);
     }
 

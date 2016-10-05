@@ -46,8 +46,8 @@ class CompoundColumnType extends BaseType
 
         /** @var CompoundColumn $column */
         foreach ($column->getColumns() as $subColumn) {
-            $subView = $subColumn->createCellView($view->datagrid, $view->source, $view->attributes['row']);
-            $subView->attributes['compound'] = true;
+            $subView = $subColumn->createCellView($view->column, $view->source, $view->vars['row']);
+            $subView->vars['compound'] = true;
 
             $cells[$subColumn->getName()] = $subView;
         }

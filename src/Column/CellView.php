@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Column;
 
+use Rollerworks\Component\Datagrid\BaseView;
 use Rollerworks\Component\Datagrid\DatagridView;
 
 /**
@@ -20,7 +21,7 @@ use Rollerworks\Component\Datagrid\DatagridView;
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class CellView
+class CellView extends BaseView
 {
     /**
      * Cell value.
@@ -46,13 +47,6 @@ class CellView
     public $source;
 
     /**
-     * Cell attributes.
-     *
-     * @var array
-     */
-    public $attributes = [];
-
-    /**
      * @var HeaderView
      */
     public $column;
@@ -68,20 +62,15 @@ class CellView
     public $name;
 
     /**
-     * @var string
-     */
-    public $prefix;
-
-    /**
      * Constructor.
      *
-     * @param ColumnInterface $column
-     * @param DatagridView    $datagrid
+     * @param HeaderView   $column
+     * @param DatagridView $datagrid
      */
-    public function __construct(ColumnInterface $column, DatagridView $datagrid)
+    public function __construct(HeaderView $column, DatagridView $datagrid)
     {
-        $this->prefix = $column->getType()->getBlockPrefix();
-        $this->name = $column->getName();
+        $this->name = $column->name;
         $this->datagrid = $datagrid;
+        $this->column = $column;
     }
 }

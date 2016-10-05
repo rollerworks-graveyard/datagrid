@@ -23,7 +23,7 @@ use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-class DatagridView implements \IteratorAggregate, \Countable
+class DatagridView extends BaseView implements \IteratorAggregate, \Countable
 {
     /**
      * READ-ONLY: The Datagrid name.
@@ -46,31 +46,33 @@ class DatagridView implements \IteratorAggregate, \Countable
      */
     public $rows = [];
 
-    /**
-     * Extra variables for view rendering.
-     *
-     * It's possible to set values directly.
-     * But the property type itself should not be changed!
-     *
-     * @var array
-     */
-    public $vars = [];
-
     public function __construct(DatagridInterface $datagrid)
     {
         $this->name = $datagrid->getName();
-        $columns = $datagrid->getColumns();
+    }
 
+    /**
+     * Initialize the datagrid view.
+     */
+    public function init(DatagridInterface $datagrid)
+    {
         if (null === $data = $datagrid->getData()) {
             throw new InvalidArgumentException('No data provided for the view.');
         }
+
+        $columns = $datagrid->getColumns();
 
         foreach ($columns as $column) {
             $this->columns[$column->getName()] = $column->createHeaderView($this);
         }
 
+        if (!isset($this->vars['row_vars'])) {
+            $this->vars['row_vars'] = [];
+        }
+
         foreach ($data as $id => $value) {
-            $this->rows[$id] = new DatagridRowView($this, $columns, $value, $id);
+            $this->rows[$id] = $row = new DatagridRowView($this, $columns, $value, $id);
+            $row->vars = $this->vars['row_vars'];
         }
     }
 
@@ -86,26 +88,6 @@ class DatagridView implements \IteratorAggregate, \Countable
         }
 
         throw new InvalidArgumentException(sprintf('Column "%s" does not exist in datagrid.', $name));
-    }
-
-    /**
-     * Get a variable value by key.
-     *
-     * This method should only be used when the key can null.
-     * Else it's faster to get ths var's value directly.
-     *
-     * @param string $key
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function getVar(string $key, $default = null)
-    {
-        if (array_key_exists($key, $this->vars)) {
-            return $this->vars[$key];
-        }
-
-        return $default;
     }
 
     /**

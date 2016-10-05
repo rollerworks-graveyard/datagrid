@@ -168,12 +168,27 @@ class Datagrid implements DatagridInterface
             );
         }
 
+        $blockName = $this->getName();
+        $uniqueBlockPrefix = '_'.$blockName;
+
         $view = new DatagridView($this);
+        $view->vars = [
+            'cache_key' => $uniqueBlockPrefix.'_datagrid',
+            'unique_block_prefix' => $uniqueBlockPrefix,
+            'block_prefixes' => ['datagrid', $uniqueBlockPrefix],
+            // Vars for the row-view
+            'row_vars' => [
+                'unique_block_prefix' => $uniqueBlockPrefix.'_row',
+                'block_prefixes' => ['datagrid_row', $uniqueBlockPrefix.'_row'],
+            ]
+        ];
 
         if (null !== $this->viewBuilder) {
             $builder = $this->viewBuilder;
             $builder($view);
         }
+
+        $view->init($this);
 
         return $view;
     }

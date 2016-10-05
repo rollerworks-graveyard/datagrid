@@ -1,6 +1,26 @@
 UPGRADE
 =======
 
+## Upgrade FROM 0.10 to 0.11
+
+* All view classes now extend the `BaseView` class.
+
+* The `attributes` property of the view classes is renamed
+  to `vars`.
+  
+* The first argument of `ColumnInterface::createCellView`
+  now expects a `HeaderView` instead of `DatagridView`.  
+
+* The second argument of `ResolvedColumnTypeInterface::createCellView`
+  now expects a `HeaderView` instead of `DatagridView`.
+  
+* The `DatagridView` no longer initializes the headers and rows
+  within the constructor. You must call `DatagridView::init` with
+  the actual datagrid instance.
+  
+  **Note:** When you use the (default) `Datagrid` class, this is already
+  done for you.
+
 ## Upgrade FROM 0.9 to 0.10
 
 **Support for PHP 5.5 is dropped, you need at least PHP 7.0.**
