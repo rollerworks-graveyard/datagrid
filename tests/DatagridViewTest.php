@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
-use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\HeaderView;
-use Rollerworks\Component\Datagrid\DatagridInterface;
 use Rollerworks\Component\Datagrid\DatagridView;
 use Rollerworks\Component\Datagrid\Exception\InvalidArgumentException;
 use Rollerworks\Component\Datagrid\Test\MockTestCase;
