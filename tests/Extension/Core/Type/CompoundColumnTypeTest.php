@@ -47,7 +47,10 @@ class CompoundColumnTypeTest extends BaseTypeTest
         $datagridView = $datagrid->createView();
         $view = $rootColumn->createHeaderView($datagridView);
 
-        $this->assertSame('Ids', $view->label);
+        // Comparing this is to much work at this stage.
+        unset($view->vars['_sub_headers']);
+
+        self::assertSame('Ids', $view->label);
         self::assertViewVarsEquals(
             [
                 'label_attr' => [],
@@ -82,30 +85,66 @@ class CompoundColumnTypeTest extends BaseTypeTest
 
         $datagridView = $datagrid->createView();
 
-        $view = $column->createCellView($datagridView->columns['actions'], $object, 0);
+        $row = $datagridView->rows[1]->cells;
 
-        $this->assertDatagridCell('age', $view);
-        $this->assertDatagridCell('name', $view);
+        // Actions (root) column
+        $view = $row['actions'];
 
-        $this->assertEquals('42', $view->value['age']->value);
-        $this->assertEquals(' sheldon ', $view->value['name']->value);
-        $this->assertArrayNotHasKey('key', $view->value);
+        self::assertDatagridCompoundCell('age', ['unique_block_prefix' => '_grid_actions', 'row' => 1], $view);
+        self::assertDatagridCompoundCell('name', ['unique_block_prefix' => '_grid_actions', 'row' => 1], $view);
 
-        $headerView = $columns['age']->createHeaderView($datagridView);
+        self::assertArrayHasKey('age', $view->value);
+        self::assertArrayHasKey('name', $view->value);
+        self::assertArrayNotHasKey('key', $view->value);
 
-        $this->assertEquals('_grid_actions_age', $headerView->vars['unique_block_prefix']);
-        $this->assertEquals(['column', 'number', '_grid_actions_age'], $headerView->vars['block_prefixes']);
+        // Internal cells
+        $cells = $view->value;
 
-        $headerView = $columns['name']->createHeaderView($datagridView);
+        self::assertDatagridCell(
+            'age',
+            '42',
+            [
+                'unique_block_prefix' => '_grid_actions_age',
+                'block_prefixes' => ['column', 'number', '_grid_actions_age'],
+                'cache_key' => '_grid_actions_age_number',
+                'row' => 1,
+                'compound' => true,
+            ],
+            $cells['age']
+        );
 
-        $this->assertEquals('_my_named', $headerView->vars['unique_block_prefix']);
-        $this->assertEquals(['column', 'text', '_my_named'], $headerView->vars['block_prefixes']);
+        self::assertDatagridCell(
+            'name',
+            ' sheldon ',
+            [
+                'unique_block_prefix' => '_my_named',
+                'block_prefixes' => ['column', 'text', '_my_named'],
+                'cache_key' => '_my_named_text',
+                'row' => 1,
+                'compound' => true,
+            ],
+            $cells['name']
+        );
     }
 
-    private function assertDatagridCell($name, CellView $view)
+    private static function assertDatagridCell($name, $value, array $vars, CellView $view)
     {
-        $this->assertInternalType('array', $view->value);
-        $this->assertArrayHasKey($name, $view->value);
-        $this->assertInstanceOf(CellView::class, $view->value[$name]);
+        self::assertEquals($name, $view->name);
+        self::assertEquals($value, $view->value);
+
+        if ([] !== $vars) {
+            self::assertViewVarsEquals($vars, $view);
+        }
+    }
+
+    private function assertDatagridCompoundCell($name, array $vars, CellView $view)
+    {
+        self::assertInternalType('array', $view->value);
+        self::assertArrayHasKey($name, $view->value);
+        self::assertInstanceOf(CellView::class, $view->value[$name]);
+
+        if ([] !== $vars) {
+            self::assertViewVarsEquals($vars, $view);
+        }
     }
 }
