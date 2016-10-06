@@ -62,9 +62,7 @@ abstract class BaseType extends AbstractType
             'unique_block_prefix' => $uniqueBlockPrefix,
             'block_prefixes' => $blockPrefixes,
             // The cache key is used for caching in the render-engine.
-            // multiple columns can share the same block-name but have a different type.
-            // To prevent rendering the wrong block use the type also, this is rather an
-            // edge-case but Symfony Form also does it this way, so lets not cause confusion.
+            // multiple columns can share the same block-name but have a different type (sub columns).
             'cache_key' => $uniqueBlockPrefix.'_'.$column->getType()->getBlockPrefix(),
         ]);
     }
