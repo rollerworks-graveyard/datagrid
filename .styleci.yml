@@ -1,17 +1,21 @@
 preset: symfony
 
-risky: true
+linting: true
 
 enabled:
+    - newline_after_open_tag
     #- ordered_class_elements
-    - ordered_imports
+    - ordered_use
     - phpdoc_order
     - short_array_syntax
+
+    # Strict
     - strict_param
-    #- declare_strict_types
+    - declare_strict_types
 
 disabled:
-    - simplified_null_return # PHP 7.1 compatiblity (void !== null)
+    - phpdoc_no_empty_return
+    - simplified_null_return
 
 finder:
     path:
