@@ -23,7 +23,7 @@ class NumberTypeTest extends BaseTypeTest
         parent::setUp();
 
         // we test against "de_DE", so we need the full implementation
-        IntlTestHelper::requireFullIntl($this);
+        IntlTestHelper::requireFullIntl($this, '58.1');
 
         \Locale::setDefault('de_DE');
     }

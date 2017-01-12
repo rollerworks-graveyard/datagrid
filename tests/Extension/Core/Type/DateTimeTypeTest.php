@@ -75,7 +75,7 @@ class DateTimeTypeTest extends BaseTypeTest
     {
         // we test against different locales, so we need the full
         // implementation
-        IntlTestHelper::requireFullIntl($this);
+        IntlTestHelper::requireFullIntl($this, '58.1');
 
         parent::setUp();
     }
