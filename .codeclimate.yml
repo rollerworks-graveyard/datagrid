@@ -1,0 +1,26 @@
+---
+engines:
+  duplication:
+    enabled: true
+    checks:
+      Similar code:
+        enabled: false
+    config:
+      languages:
+      - javascript
+      - php
+  phpcodesniffer:
+    enabled: false
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+ratings:
+  paths:
+  - "**.inc"
+  - "**.js"
+  - "**.jsx"
+  - "**.php"
+exclude_paths:
+  - tests/
+  - doc/
