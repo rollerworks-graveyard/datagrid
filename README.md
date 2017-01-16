@@ -3,126 +3,147 @@ RollerworksDatagrid
 
 RollerworksDatagrid provides a powerful datagrid system for your PHP applications.
 
-The system has a modular design and can work with any PHP framework,
-user locale, data format or storage system.
-
 Displaying an objects list is one of the most common tasks in web applications
-and probably the easiest one, so you could ask how can this library help you?
+and probably the easiest one. So how can this library help you?
 
-The Datagrid system allows you to create one action that handles
-displaying all kinds of lists in your application without duplicating code.
+The Datagrid system makes the styling and transforming of your data more uniform
+and easier to use. Secondly the system can take care of specific (styling) issues
+like sorting and paginating. All without duplicating code or degrading performance.
 
-**WARNING. This project is still under development, compatibility breaks may occur.**
-**Documentation is currently missing or may outdated from time to time.**
+## Features
 
-> Compatibility breaks will result in a new minor version like 0.x.0.
-> And are documented in the UPGRADE.md
+RollerworksDatagrid provides you with all features needed, including:
 
-Requirements
-------------
+* An Advanced column type system for uniform data transformation and styling
+  in your datagrids.
+* Auto mapping of data to the datagrid.
+* Support for any data source (PHP array or any object implementing `\Traversable`).
+* (Optional, and coming soon) search/filter using [RollerworksSearch].
+* (Optional, and coming soon) Integrated Paginating using [Pagerfanta](https://github.com/whiteoctober/Pagerfanta)
 
-You need at least PHP 7.0, and the Intl extension if you want international support.
+> **Note:** Passing a `Pagerfanta` object as data source _does already work_
+> due to the `IteratorAggregate` implementation. The integration bridge however 
+> will make the rendering more uniform for datagrids.
 
-For framework integration you may use the following;
+## Framework integration
+
+RollerworksDatagrid can be used with any Framework of your choice, but for the best
+possible experience use the provided framework integration plug-ins.
 
 * [Symfony Bundle](https://github.com/rollerworks/datagrid-bundle)
-* Symfony DependencyInjection extension (coming soon)
 * ZendFramework2 Plugin (coming soon)
 * Silex Plugin (coming soon)
 
-Features
---------
+Your favorite framework not listed? No problem, see the [Contributing Guidelines]
+on how you can help!
 
-The following types are provided out of the box, building your own is also
-possible and very straightforward. You can use any type of data
-(including nested sets).
+## Installation and usage
 
-**Tip:** All types listed below support localization.
+*Please ignore the instructions below if your use a framework integration.*
+[Read the Documentation for master] for complete instructions and information. 
 
-## ColumnTypes
+Install the RollerworksDatagrid "core" library using [Composer]:
 
-* Action
-* Batch (selection only)
-* Boolean
-* CompoundColumn (nested columns)
-* DateTime
-* Money
-* Number
-* Text
+```bash
+$ composer install rollerworks/datagrid
+```
 
-Installation
-------------
+And create the `DatagridFactory` to get started:
 
-For installing and integrating RollerworksDatagrid, you can find all the
-details in the manual.
+```php
+use Rollerworks\Component\Datagrid\Datagrids;
+use Rollerworks\Component\Datagrid\Extension\Core\Type as ColumnType;
 
-[Installing](http://rollerworksdatagrid.readthedocs.org/en/latest/installing.html)
+$datagridFactory = Datagrids::createDatagridFactory();
 
-Documentation
--------------
+$datagrid = $datagridFactory->createDatagridBuilder()
+   ->add('id', ColumnType\NumberType::class)
+   ->add('username', ColumnType\TextType::class)
+   ->add('registered_on', ColumnType\DateTimeType::class)
+   ->add('enabled', ColumnType\BooleanType::class, ['true_value' => 'Yes', 'false_value' => 'No'])
+   ->getDatagrid('users_datagrid')
+;
 
-[Read the Documentation for master][6]
+// Now set the data for the grid, this cannot be changed afterwards.
+$datagrid->setData([
+    ['id' => 1, 'username' => 'sstok', 'registered_on' => new \DateTime('2017-01-12 14:26:00 CET'), 'enabled' => true], 
+    ['id' => 1, 'username' => 'doctorw', 'registered_on' => new \DateTime('1980-04-12 09:26:00 CET'), 'enabled' => false], 
+    // etc...
+]);
 
-The documentation for RollerworksDatagrid is written in [reStructuredText][3] and can be built
-into standard HTML using [Sphinx][4].
+// Almost done, the datagrid needs to be rendered, see bellow.
+```
 
-To build the documentation do the following:
+### Rendering
 
-1. Install [Spinx][4]
-2. Change to the `doc` directory on the command line
-3. Run `make html`
+The core package however doesn't provide an implementation for this, 
+you are free to use any compatible template engine you wish.
+ 
+This example uses the [TwigRendererEngine](https://github.com/rollerworks/datagrid-twig) 
+(which needs to be installed separately).
 
-This will build the documentation into the `doc/_build/html` directory.
+```php
+use Rollerworks\Component\Datagrid\Twig\Extension\DatagridExtension;
+use Rollerworks\Component\Datagrid\Twig\Renderer\TwigRenderer;
+use Rollerworks\Component\Datagrid\Twig\Renderer\TwigRendererEngine;
 
-Further information can be found in The Symfony [documentation format][5] article.
+// Provide the path to the base theme.
+$loader = new \Twig_Loader_Filesystem([...]);
 
-> The Sphinx extensions and theme are installed under Git submodules
-> and don't need to be downloaded separately.
+$environment = new \Twig_Environment($loader);
+$environment->addExtension(new DatagridExtension());
+$environment->addRuntimeLoader(new \Twig_FactoryRuntimeLoader([TwigRenderer::class => function () uses ($environment) {
+    // The second argument are filenames of datagrid themes.
+    $rendererEngine = new TwigRendererEngine($environment, ['datagrid.html.twig']);
+    
+    return new TwigRenderer($rendererEngine);
+}]));
 
-Versioning
-----------
+$environment->render('my_page.html.twig', ['datagrid' => $datagrid->createView()]);
+```
 
-For transparency and insight into the release cycle, and for striving
-to maintain backwards compatibility, RollerworksDatagrid is maintained under
-the Semantic Versioning guidelines as much as possible.
+And in the `my_page.html.twig` twig Template simple use:
 
-Releases will be numbered with the following format:
+```jinja
+{{ rollerworks_datagrid(datagrid) }}
+```
 
-`<major>.<minor>.<patch>`
+That's it! Your datagrid is now rendered, but not only that! Whenever you use an
+advanced technique like search you only need this much code in your template.
 
-And constructed with the following guidelines:
+## Resources
 
-* Breaking backward compatibility bumps the major (and resets the minor and patch) number
-* New additions without breaking backwards compatibility bumps the minor (and resets the patch) number
-* Bug fixes and misc changes bump the patch number
+* [Read the Documentation for master]
+* RollerworksDatagrid is maintained under the [Semantic Versioning guidelines](http://semver.org/)
 
-For more information on SemVer, please visit <http://semver.org/>.
+## Who is behind RollerworksDatagrid?
 
-Credits
--------
+RollerworksDatagrid is brought to you by [Sebastiaan Stok](https://github.com/sstok).
 
-The column-type extensions are largely inspired on the Symfony Form
-component, and contains a fair amount of code originally developed
-by the amazing Symfony community.
+## License
 
-This package contains code originally provided by FSi sp. z o.o.
+RollerworksDatagrid is released under the [MIT license](LICENSE).
 
-License
--------
+The types and extensions are largely inspired on the Symfony Form Component, 
+and contain a big amount of code from the Symfony project.
 
-This package is provided under the none-restrictive MIT license.
+## Support
 
-[LICENSE](LICENSE)
+[Join the chat] or use the issue tracker if your question is to complex for quick support.
 
-Contributing
-------------
+> **Note:** RollerworksDatagrid doesn't have a support forum at the moment, if you know
+> a good free service let us know by opening an issue :+1:
+
+## Contributing
 
 This is an open source project. If you'd like to contribute,
-please read the [Contributing Code][1] part of Symfony for the basics. If you're submitting
-a pull request, please follow the guidelines in the [Submitting a Patch][2] section.
+please read the [Contributing Guidelines]. If you're submitting
+a pull request, please follow the guidelines in the [Submitting a Patch] section.
 
-[1]: http://symfony.com/doc/current/contributing/code/index.html
-[2]: http://symfony.com/doc/current/contributing/code/patches.html#check-list
-[3]: http://docutils.sourceforge.net/rst.html
-[4]: http://sphinx-doc.org/
-[5]: http://symfony.com/doc/current/contributing/documentation/format.html
+[RollerworksSearch]: https://github.com/rollerworks/search
+[Join the chat at https://gitter.im/rollerworks/datagrid](https://gitter.im/rollerworks/datagrid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[Composer]: https://getcomposer.org/doc/00-intro.md
+[Contributing Guidelines]: https://github.com/rollerworks/contributing
+[Submitting a Patch]: https://contributing.readthedocs.org/en/latest/code/patches.html
+[Read the Documentation for master]: http://rollerworksdatagrid.readthedocs.org/en/latest/
+[Join the chat]: https://gitter.im/rollerworks/datagrid
