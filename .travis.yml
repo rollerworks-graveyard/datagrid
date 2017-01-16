@@ -9,10 +9,19 @@ branches:
 
 matrix:
     include:
-        - php: '7.0'
+        - php: '7.1'
           env: coverage=1
         - php: '7.1'
           env: deps='low'
+        #- php: '7.1'
+        #  env: deps='dev'
+        # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
+        #- php: hhvm-3.12
+        #  sudo: required
+        #  dist: trusty
+        #  group: edge
+    allow_failures:
+        - env: deps='dev'
 
 cache:
     directories:
