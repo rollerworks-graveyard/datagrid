@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by sstok at 2017-01-14T15:43:48Z
+
+Some parts missing about the actual pagination, as this is not handled from the core library itself.
+
+---------------------------------------------------------------------------
+
+by sstok at 2017-01-16T10:31:01Z
+
+What part of `[skip ci]` do those CI services don't understand 💀
