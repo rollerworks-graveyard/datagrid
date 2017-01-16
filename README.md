@@ -67,7 +67,7 @@ $datagrid = $datagridFactory->createDatagridBuilder()
 // Now set the data for the grid, this cannot be changed afterwards.
 $datagrid->setData([
     ['id' => 1, 'username' => 'sstok', 'registered_on' => new \DateTime('2017-01-12 14:26:00 CET'), 'enabled' => true], 
-    ['id' => 1, 'username' => 'doctorw', 'registered_on' => new \DateTime('1980-04-12 09:26:00 CET'), 'enabled' => false], 
+    ['id' => 2, 'username' => 'doctorw', 'registered_on' => new \DateTime('1980-04-12 09:26:00 CET'), 'enabled' => false], 
     // etc...
 ]);
 
