@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\Datagrid\Column\ColumnInterface;
 use Rollerworks\Component\Datagrid\Column\ColumnTypeRegistryInterface;
 use Rollerworks\Component\Datagrid\Column\ResolvedColumnTypeFactoryInterface;
@@ -23,7 +24,7 @@ use Rollerworks\Component\Datagrid\DatagridRegistryInterface;
 use Rollerworks\Component\Datagrid\Extension\Core\Type\TextType;
 use Rollerworks\Component\Datagrid\Tests\Fixtures\UsersDatagrid;
 
-class DatagridFactoryTest extends \PHPUnit_Framework_TestCase
+class DatagridFactoryTest extends TestCase
 {
     /**
      * @var DatagridFactory

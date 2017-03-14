@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\ValueFormatTransformer;
 
-class ValueFormatTransformerTest extends \PHPUnit_Framework_TestCase
+class ValueFormatTransformerTest extends TestCase
 {
     public function testTransformWithDefaults()
     {

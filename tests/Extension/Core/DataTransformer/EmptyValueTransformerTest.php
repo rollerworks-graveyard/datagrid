@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\EmptyValueTransformer;
 
-class EmptyValueTransformerTest extends \PHPUnit_Framework_TestCase
+class EmptyValueTransformerTest extends TestCase
 {
     public function testTransformWithDefaults()
     {

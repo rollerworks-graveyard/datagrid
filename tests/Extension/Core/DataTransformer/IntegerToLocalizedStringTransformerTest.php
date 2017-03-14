@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\Datagrid\Extension\Core\DataTransformer\IntegerToLocalizedStringTransformer;
 use Symfony\Component\Intl\Util\IntlTestHelper;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class IntegerToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCase
+class IntegerToLocalizedStringTransformerTest extends TestCase
 {
     protected function setUp()
     {

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Rollerworks\Component\Datagrid\Tests\Extension\Core\DataTransformer;
 
-abstract class DateTimeTestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class DateTimeTestCase extends TestCase
 {
     public static function assertDateTimeEquals(\DateTime $expected, \DateTime $actual)
     {
