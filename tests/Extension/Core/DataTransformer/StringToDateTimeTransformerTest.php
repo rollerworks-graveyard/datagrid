@@ -102,7 +102,7 @@ class StringToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new StringToDateTimeTransformer();
 
-        $this->setExpectedException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
+        $this->expectException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
 
         $transformer->transform(1234);
     }
@@ -111,7 +111,7 @@ class StringToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new StringToDateTimeTransformer();
 
-        $this->setExpectedException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
+        $this->expectException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
 
         $transformer->transform('2010-2010-2010');
     }
@@ -120,7 +120,7 @@ class StringToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new StringToDateTimeTransformer();
 
-        $this->setExpectedException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
+        $this->expectException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
 
         $transformer->transform('2010-04-31');
     }

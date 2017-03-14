@@ -87,10 +87,8 @@ class DatagridTest extends MockTestCase
 
         $this->datagrid->setData($data);
 
-        $this->setExpectedException(
-            BadMethodCallException::class,
-            'Datagrid::setData() can only be called once.'
-        );
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Datagrid::setData() can only be called once.');
 
         $this->datagrid->setData($data);
     }

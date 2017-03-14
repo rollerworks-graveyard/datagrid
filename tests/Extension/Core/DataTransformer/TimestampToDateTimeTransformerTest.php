@@ -52,7 +52,7 @@ class TimestampToDateTimeTransformerTest extends DateTimeTestCase
     {
         $transformer = new TimestampToDateTimeTransformer();
 
-        $this->setExpectedException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
+        $this->expectException('Rollerworks\Component\Datagrid\Exception\TransformationFailedException');
 
         $transformer->transform('2010-2010-2010');
     }
